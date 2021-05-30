@@ -21,6 +21,8 @@ typedef struct
     };
 } Matrix;
 
+// TODO: benchmark performance float vs double
+
 #define MATRIX_D(x) (x)->d_matrix
 #define MATRIX_F(x) (x)->f_matrix
 
