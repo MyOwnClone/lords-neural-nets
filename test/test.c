@@ -33,7 +33,7 @@ bool is_non_zero(Matrix *matrix)
     {
         for (int j = 0; j < matrix->cols; j++)
         {
-            if (matrix->matrix[i][j] != 0)
+            if (MATRIX_GET(matrix, j, i) != 0)
             {
                 return true;
             }
