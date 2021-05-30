@@ -12,7 +12,7 @@ Matrix* create_matrix(int rows, int cols, const double mat[][cols])
     matrix->matrix = NULL;
     matrix->d_matrix = NULL;
     matrix->f_matrix = NULL;
-    matrix->type = MDT_DOUBLE;
+    matrix->type = D_DOUBLE;
 
     if (rows > 0 && cols > 0) {
         matrix->matrix = (double**) malloc (sizeof (double*) *rows);
@@ -45,7 +45,7 @@ Matrix* create_matrix_float(int rows, int cols, const float mat[][cols])
     matrix->matrix = NULL;
     matrix->d_matrix = NULL;
     matrix->f_matrix = NULL;
-    matrix->type = MDT_FLOAT;
+    matrix->type = D_FLOAT;
 
     if (rows > 0 && cols > 0) {
         matrix->matrix = (float**) malloc (sizeof (float*) *rows);

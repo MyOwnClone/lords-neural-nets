@@ -53,5 +53,5 @@ int main()
 
     eval_test_result("All tests finished!", res);
 
-    return 0;
+    return res < 0 ? 1 : 0; // different exit code for passing and failing
 }

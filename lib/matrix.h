@@ -5,8 +5,8 @@
 
 typedef enum
 {
-    MDT_FLOAT,
-    MDT_DOUBLE
+    D_FLOAT,
+    D_DOUBLE
 } MatrixDataType;
 
 typedef struct 
@@ -24,9 +24,9 @@ typedef struct
 #define MATRIX_D(x) (x)->d_matrix
 #define MATRIX_F(x) (x)->f_matrix
 
-#define MATRIX_GET(x, col, row) (((x)->type == MDT_FLOAT) ? MATRIX_F(x)[col][row] : MATRIX_D(x)[col][row])
+#define MATRIX_GET(x, col, row) (((x)->type == D_FLOAT) ? MATRIX_F(x)[col][row] : MATRIX_D(x)[col][row])
 
-#define MATRIX_SET(x, col, row, val) if ((x)->type == MDT_FLOAT) \
+#define MATRIX_SET(x, col, row, val) if ((x)->type == D_FLOAT) \
                                 (x)->f_matrix[col][row] = val; \
                                 else \
                                 (x)->d_matrix[col][row] = val;
