@@ -10,6 +10,9 @@ Matrix* create_matrix(int rows, int cols, const double mat[][cols])
     matrix->rows = rows;
     matrix->cols = cols;
     matrix->matrix = NULL;
+    matrix->d_matrix = NULL;
+    matrix->f_matrix = NULL;
+    matrix->type = MDT_DOUBLE;
 
     if (rows > 0 && cols > 0) {
         matrix->matrix = (double**) malloc (sizeof (double*) *rows);
@@ -20,11 +23,44 @@ Matrix* create_matrix(int rows, int cols, const double mat[][cols])
             {
                 if (mat != NULL)
                 {
-                    matrix->matrix[i][j] = mat[i][j];
+                    MATRIX_SET(matrix, i, j, mat[i][j]);
                 }
                 else
                 {
-                    matrix->matrix[i][j] = 0;
+                    MATRIX_SET(matrix, i, j, 0);
+                }
+            }
+        }
+    }
+
+    return matrix;
+}
+
+Matrix* create_matrix_float(int rows, int cols, const float mat[][cols])
+{
+    Matrix *matrix = (Matrix *) malloc (sizeof (Matrix));
+
+    matrix->rows = rows;
+    matrix->cols = cols;
+    matrix->matrix = NULL;
+    matrix->d_matrix = NULL;
+    matrix->f_matrix = NULL;
+    matrix->type = MDT_FLOAT;
+
+    if (rows > 0 && cols > 0) {
+        matrix->matrix = (float**) malloc (sizeof (float*) *rows);
+        for (int i = 0; i < rows; i++)
+        {
+            matrix->matrix[i] = (float*) malloc (sizeof (float) *cols);
+            for (int j = 0; j < cols; j++)
+            {
+                if (mat != NULL)
+                {
+                    MATRIX_SET(matrix, i, j, mat[i][j]);
+                }
+                else
+                {
+                    MATRIX_SET(matrix, i, j, 0);
                 }
             }
         }
@@ -40,7 +76,7 @@ void print_matrix(Matrix *matrix)
         printf("[ ");
         for (int j = 0; j < matrix->cols; j++)
         {
-            printf("%.2f ", matrix->matrix[i][j]);
+            printf("%.2f ", MATRIX_GET(matrix, i, j));
         }
         printf("]\n");
     }    
@@ -67,7 +103,7 @@ int transpose(Matrix *a, Matrix *result)
     {
         for (int j = 0; j < a->cols; j++)
         {
-            result->matrix[j][i] = a->matrix[i][j];
+            MATRIX_ASSIGN_XY(result, a, j, i, i, j);
         }        
     }
     
@@ -90,10 +126,11 @@ int multiply(Matrix *a, Matrix *b, Matrix *result)
     {
         for (int j = 0; j < b->cols; j++)
         {
-            result->matrix[i][j] = 0;
+            MATRIX_SET(result, i, j, 0);
+
             for (int k = 0; k < a->cols; k++)
             {
-                result->matrix[i][j] += a->matrix[i][k] * b->matrix[k][j];
+                MATRIX_ADD(result, i, j, MATRIX_GET(a, i, k) * MATRIX_GET(b, k, j))
             }            
         }        
     }
@@ -117,10 +154,11 @@ int multiply_transposed(Matrix *a, Matrix *b_t, Matrix *result)
     {
         for (int j = 0; j < b_t->rows; j++)
         {
-            result->matrix[i][j] = 0;
+            MATRIX_SET(result, i, j, 0);
+
             for (int k = 0; k < a->cols; k++)
             {
-                result->matrix[i][j] += a->matrix[i][k] * b_t->matrix[j][k];
+                MATRIX_ADD(result, i, j, MATRIX_GET(a, i, k) * MATRIX_GET(b_t, j, k))
             }            
         }        
     }

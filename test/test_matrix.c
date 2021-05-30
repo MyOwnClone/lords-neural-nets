@@ -15,11 +15,32 @@ static bool is_equal(Matrix *matrix, int rows, int cols, const double mat[rows][
     {
         for (int j = 0; j < cols; j++)
         {
-            if (matrix->matrix[i][j] != mat[i][j])
+            if (MATRIX_GET(matrix, i, j) != mat[i][j])
             {
                 return false;
             }
         }        
+    }
+
+    return true;
+}
+
+static bool is_equal_float(Matrix *matrix, int rows, int cols, const float mat[rows][cols])
+{
+    if (matrix->rows != rows || matrix->cols != cols)
+    {
+        return false;
+    }
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            if (MATRIX_GET(matrix, i, j) != mat[i][j])
+            {
+                return false;
+            }
+        }
     }
 
     return true;
@@ -149,7 +170,7 @@ static int test_transpose()
     return eval_test_result(__func__, res);
 }
 
-static int test_multiply()
+static int test_multiply_double()
 {
     // Setup
     int res = 0;
@@ -205,6 +226,65 @@ static int test_multiply()
     delete_matrix(res_wrong_dims_mat);
     delete_matrix(res_matrix);
    
+    return eval_test_result(__func__, res);
+}
+
+static int test_multiply_float()
+{
+    // Setup
+    int res = 0;
+
+    int a_rows = 3;
+    int a_cols = 2;
+    const float a_mat[3][2] = {{2,1}, {3,2}, {5,3}};
+    Matrix *a_matrix = create_matrix_float(a_rows, a_cols, a_mat);
+
+    int b_rows = 2;
+    int b_cols = 3;
+    const float b_mat[2][3] = {{5,0,3}, {4,1,7}};
+    Matrix *b_matrix = create_matrix_float(b_rows, b_cols, b_mat);
+
+    int c_rows = 4;
+    int c_cols = 5;
+    Matrix *c_matrix = create_matrix_float(c_rows, c_cols, NULL);
+
+    // Test multiply wrong dimensions
+    Matrix *res_wrong_dims_mat = create_matrix_float(a_cols, c_rows, NULL);
+    int res_wrong_dims = multiply(a_matrix, c_matrix, res_wrong_dims_mat);
+    if (res_wrong_dims != -1)
+    {
+        res+=fail(__func__, "Mismatched dimension should not be multiplied");
+    }
+
+    // Test multiply correct dimensions
+    int res_rows = 3;
+    int res_cols = 3;
+    const float res_mat[3][3] = {
+            {14.00, 1.00, 13.00 },
+            {23.00, 2.00, 23.00 },
+            {37.00, 3.00, 36.00 }
+    };
+
+    Matrix *res_matrix = create_matrix(res_rows, res_cols, NULL);
+    multiply(a_matrix, b_matrix, res_matrix);
+
+    if (is_null(res_matrix))
+    {
+        res+=fail(__func__, "Matrix should not be null");
+    }
+
+    if (!is_equal_float(res_matrix, res_rows, res_cols, res_mat))
+    {
+        res+=fail(__func__, "Wrong matrix dimensions or values");
+    }
+
+    // Cleanup
+    delete_matrix(a_matrix);
+    delete_matrix(b_matrix);
+    delete_matrix(c_matrix);
+    delete_matrix(res_wrong_dims_mat);
+    delete_matrix(res_matrix);
+
     return eval_test_result(__func__, res);
 }
 
@@ -569,7 +649,8 @@ int test_matrix()
     res += test_create_matrix();
     res += test_is_null();
     res += test_transpose();
-    res += test_multiply();
+    res += test_multiply_double();
+    res += test_multiply_float();
     res += test_multiply_transposed();
     res += test_add();
     res += test_subtract();
