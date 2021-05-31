@@ -111,6 +111,9 @@ void mnist_float()
 
 int main()
 {
+    // TODO: 1 remove _f() functions, use only original functions which select mode of operation based on the input matrix types
+    // TODO: 2 check for matrix type mismatch with new method is_type_equal(m1, m2)
+
     double double_msecs = print_elapsed_time(mnist_float, "mnist float", 1);
     //double float_msecs = print_elapsed_time(mnist_double, "mnist double", 1);
 
