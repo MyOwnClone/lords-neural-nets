@@ -14,9 +14,11 @@ typedef struct
     MatrixDataType type;
     int rows;
     int cols;
+
+    float **f_matrix;
+
     union {
         double **matrix;    // just a hack to be able to use old name 'matrix' and also new name 'd_matrix' for the same double matrix
-        float **f_matrix;
         double **d_matrix;
     };
 } Matrix;
@@ -24,8 +26,8 @@ typedef struct
 // TODO: benchmark performance float vs double
 // TODO: in memory dataset/loader
 
-double** matrix_d(Matrix* x);
-float** MATRIX_F(Matrix* x);
+inline double** matrix_d(Matrix* x);
+inline float** MATRIX_F(Matrix* x);
 
 // Item GET
 #define MATRIX_IGET(x, col, row) (((x)->type == D_FLOAT) ? MATRIX_F(x)[col][row] : matrix_d(x)[col][row])

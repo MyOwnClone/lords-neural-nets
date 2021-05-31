@@ -2,16 +2,32 @@
 #include <sys/time.h>
 #include "bench_utils.h"
 
-void print_elapsed_time(fn func, char* desc)
+double print_elapsed_time(fn func, char* desc, long repeat_count)
 {
-    struct timeval tval_before, tval_after, tval_result;
+    struct timeval tval_before, tval_after, tval_result, tval_overall;
 
-    gettimeofday(&tval_before, NULL);
+    timerclear(&tval_overall);
 
-    func();
+    for (long repeat = 0; repeat < repeat_count; repeat++)
+    {
+        gettimeofday(&tval_before, NULL);
 
-    gettimeofday(&tval_after, NULL);
+        func();
 
-    timersub(&tval_after, &tval_before, &tval_result);
-    printf("%s: Time elapsed: %ld.%06ld\n", (desc), (long int)tval_result.tv_sec, (long int)tval_result.tv_usec);
+        gettimeofday(&tval_after, NULL);
+
+        timersub(&tval_after, &tval_before, &tval_result);
+
+        timeradd(&tval_result, &tval_overall, &tval_overall);
+    }
+
+    long seconds_as_usecs = (long int)tval_overall.tv_sec * 1000 * 1000;
+    long usecs = (long int)tval_overall.tv_usec;
+
+    long average_usecs = (seconds_as_usecs + usecs) / repeat_count;
+    double average_msecs = (double)average_usecs / 1000.0f;
+
+    printf("%s: Average time elapsed over %ld runs: %f ms\n", (desc), repeat_count, average_msecs);
+
+    return average_msecs;
 }

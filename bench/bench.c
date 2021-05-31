@@ -2,11 +2,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <assert.h>
 #include "bench_utils.h"
 
 const long MILLION = 1000l * 1000l;
 const long BILLION = 1000l * MILLION;
-const long TEST_REPEAT_COUNT = 100l * MILLION;
+const long TEST_REPEAT_COUNT = 500l * MILLION;
 
 void double_multiply()
 {
@@ -70,6 +71,16 @@ void float_multiply()
 
 int main()
 {
-    print_elapsed_time(float_multiply, "float");
-    print_elapsed_time(double_multiply, "double");
+    printf("sizeof(float) == %ld\n", sizeof(float) );
+    printf("sizeof(double) == %ld\n", sizeof(double) );
+
+    assert(sizeof(float) == 4);
+    assert(sizeof(double) == 8);
+
+    long repeat_count = 10;
+
+    double float_msecs = print_elapsed_time(float_multiply, "float", repeat_count);
+    double double_msecs = print_elapsed_time(double_multiply, "double", repeat_count);
+
+    printf("float over double speed-up factor: %f x\n", (double_msecs / float_msecs));
 }

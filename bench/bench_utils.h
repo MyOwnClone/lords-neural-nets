@@ -1,3 +1,3 @@
 typedef void (*fn)(void);
 
-void print_elapsed_time(fn func, char* desc);
+double print_elapsed_time(fn func, char* desc, long repeat_count);
