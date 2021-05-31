@@ -6,14 +6,14 @@
 inline double** matrix_d(Matrix* x) { return x->d_matrix; }
 inline float** MATRIX_F(Matrix* x) { return x->f_matrix; }
 
-inline void matrix_assign(Matrix *x, Matrix *y, int col1, int row1, int col2, int row2)
+inline void matrix_item_assign(Matrix *x, Matrix *y, int col1, int row1, int col2, int row2)
 {
-    MATRIX_SET(x, col1, row1, MATRIX_GET(y, col2, row2));
+    MATRIX_ISET(x, col1, row1, MATRIX_IGET(y, col2, row2));
 }
 
-inline void matrix_assign_direct(Matrix *x, Matrix *y, int col, int row)
+inline void matrix_item_assign_direct(Matrix *x, Matrix *y, int col, int row)
 {
-    MATRIX_SET(x, col, row, MATRIX_GET(y, col, row))
+    MATRIX_ISET(x, col, row, MATRIX_IGET(y, col, row))
 }
 
 Matrix* create_matrix(int rows, int cols, const double mat[][cols])
@@ -36,11 +36,11 @@ Matrix* create_matrix(int rows, int cols, const double mat[][cols])
             {
                 if (mat != NULL)
                 {
-                    MATRIX_SET(matrix, i, j, mat[i][j]);
+                    MATRIX_ISET(matrix, i, j, mat[i][j]);
                 }
                 else
                 {
-                    MATRIX_SET(matrix, i, j, 0);
+                    MATRIX_ISET(matrix, i, j, 0);
                 }
             }
         }
@@ -69,11 +69,11 @@ Matrix* create_matrix_float(int rows, int cols, const float mat[][cols])
             {
                 if (mat != NULL)
                 {
-                    MATRIX_SET(matrix, i, j, mat[i][j]);
+                    MATRIX_ISET(matrix, i, j, mat[i][j]);
                 }
                 else
                 {
-                    MATRIX_SET(matrix, i, j, 0);
+                    MATRIX_ISET(matrix, i, j, 0);
                 }
             }
         }
@@ -89,7 +89,7 @@ void print_matrix(Matrix *matrix)
         printf("[ ");
         for (int j = 0; j < matrix->cols; j++)
         {
-            printf("%.2f ", MATRIX_GET(matrix, i, j));
+            printf("%.2f ", MATRIX_IGET(matrix, i, j));
         }
         printf("]\n");
     }    
@@ -116,7 +116,7 @@ int transpose(Matrix *a, Matrix *result)
     {
         for (int j = 0; j < a->cols; j++)
         {
-            matrix_assign(result, a, j, i, i, j);
+            matrix_item_assign(result, a, j, i, i, j);
         }        
     }
     
@@ -139,11 +139,11 @@ int multiply(Matrix *a, Matrix *b, Matrix *result)
     {
         for (int j = 0; j < b->cols; j++)
         {
-            MATRIX_SET(result, i, j, 0);
+            MATRIX_ISET(result, i, j, 0);
 
             for (int k = 0; k < a->cols; k++)
             {
-                MATRIX_ADD(result, i, j, MATRIX_GET(a, i, k) * MATRIX_GET(b, k, j))
+                MATRIX_IADD(result, i, j, MATRIX_IGET(a, i, k) * MATRIX_IGET(b, k, j))
             }            
         }        
     }
@@ -167,11 +167,11 @@ int multiply_transposed(Matrix *a, Matrix *b_t, Matrix *result)
     {
         for (int j = 0; j < b_t->rows; j++)
         {
-            MATRIX_SET(result, i, j, 0);
+            MATRIX_ISET(result, i, j, 0);
 
             for (int k = 0; k < a->cols; k++)
             {
-                MATRIX_ADD(result, i, j, MATRIX_GET(a, i, k) * MATRIX_GET(b_t, j, k))
+                MATRIX_IADD(result, i, j, MATRIX_IGET(a, i, k) * MATRIX_IGET(b_t, j, k))
             }            
         }        
     }
@@ -195,7 +195,7 @@ int add(Matrix *a, Matrix *b)
     {
         for (int j = 0; j < a->cols; j++)
         {
-            MATRIX_ADD(a, i, j, MATRIX_GET(b, i, j));
+            MATRIX_IADD(a, i, j, MATRIX_IGET(b, i, j));
         }        
     }
 
@@ -218,7 +218,7 @@ int subtract(Matrix *a, Matrix *b)
     {
         for (int j = 0; j < a->cols; j++)
         {
-            MATRIX_SUB(a, i, j, MATRIX_GET(b, i, j));
+            MATRIX_ISUB(a, i, j, MATRIX_IGET(b, i, j));
         }        
     }
 
@@ -236,7 +236,7 @@ int scalar_multiply(Matrix *a, double x)
     {
         for (int j = 0; j < a->cols; j++)
         {
-            MATRIX_MULS(a, i, j, x);
+            MATRIX_IMULS(a, i, j, x);
         }        
     }  
 
@@ -253,7 +253,7 @@ int scalar_add(Matrix *a, double x) {
     {
         for (int j = 0; j < a->cols; j++)
         {
-            MATRIX_ADDS(a, i, j, x);
+            MATRIX_IADDS(a, i, j, x);
         }        
     }
 
@@ -285,7 +285,7 @@ int apply(Matrix *a, Matrix *result, double (*fn)(double))
     {
         for (int j = 0; j < a->cols; j++)
         {
-            result->matrix[i][j] = fn(a->matrix[i][j]);
+            MATRIX_IAPPLY_FN(result, i, j, a, fn);
         }        
     }
 
@@ -308,7 +308,7 @@ int hadamard(Matrix *a, Matrix *b, Matrix *result)
     {
         for (int j = 0; j < a->cols; j++)
         {
-            result->matrix[i][j] = a->matrix[i][j] * b->matrix[i][j];
+            MATRIX_ISET(result, i, j, MATRIX_IGET(a, i, j) * MATRIX_IGET(b, i, j) );
         }        
     }
 
@@ -323,7 +323,7 @@ int argmax(Matrix *a)
     {
         for (int i = 0; i < a->cols; i++)
         {
-            if (a->matrix[0][i] > a->matrix[0][max])
+            if (MATRIX_IGET(a, 0, i) > MATRIX_IGET(a, 0, max))
             {
                 max = i;
             }
@@ -333,7 +333,7 @@ int argmax(Matrix *a)
     {
         for (int i = 0; i < a->rows; i++)
         {
-            if (a->matrix[i][0] > a->matrix[max][0])
+            if (MATRIX_IGET(a, i, 0) > MATRIX_IGET(a, max, 0))
             {
                 max = i;
             }
@@ -358,7 +358,7 @@ int reset_matrix(Matrix *a)
     {
         for (int j = 0; j < a->cols; j++)
         {
-            a->matrix[i][j] = 0;
+            MATRIX_ISET(a, i, j, 0);
         }        
     }
 
@@ -372,12 +372,30 @@ int delete_matrix(Matrix *a)
         return -1;
     }
 
-    for (int i = 0; i < a->rows; i++)
+    if (a->type == D_FLOAT)
     {
-        free(a->matrix[i]);
+        for (int i = 0; i < a->rows; i++)
+        {
+            free(a->f_matrix[i]);
+        }
+    }
+    else
+    {
+        for (int i = 0; i < a->rows; i++)
+        {
+            free(a->d_matrix[i]);
+        }
     }
 
-    free(a->matrix);
+    if (a->type == D_FLOAT)
+    {
+        free(a->f_matrix);
+    }
+    else
+    {
+        free(a->d_matrix);
+    }
+
     free(a);
     a = NULL;
     

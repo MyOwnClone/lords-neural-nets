@@ -15,7 +15,7 @@ static bool is_equal(Matrix *matrix, int rows, int cols, const double mat[rows][
     {
         for (int j = 0; j < cols; j++)
         {
-            if (MATRIX_GET(matrix, i, j) != mat[i][j])
+            if (MATRIX_IGET(matrix, i, j) != mat[i][j])
             {
                 return false;
             }
@@ -36,7 +36,7 @@ static bool is_equal_float(Matrix *matrix, int rows, int cols, const float mat[r
     {
         for (int j = 0; j < cols; j++)
         {
-            if (MATRIX_GET(matrix, i, j) != mat[i][j])
+            if (MATRIX_IGET(matrix, i, j) != mat[i][j])
             {
                 return false;
             }

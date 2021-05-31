@@ -27,22 +27,30 @@ typedef struct
 double** matrix_d(Matrix* x);
 float** MATRIX_F(Matrix* x);
 
-#define MATRIX_GET(x, col, row) (((x)->type == D_FLOAT) ? MATRIX_F(x)[col][row] : matrix_d(x)[col][row])
+// Item GET
+#define MATRIX_IGET(x, col, row) (((x)->type == D_FLOAT) ? MATRIX_F(x)[col][row] : matrix_d(x)[col][row])
 
-#define MATRIX_SET(x, col, row, val) if ((x)->type == D_FLOAT) { \
+// Item SET
+#define MATRIX_ISET(x, col, row, val) if ((x)->type == D_FLOAT) { \
                                 (x)->f_matrix[col][row] = val; \
                                 } else {\
                                 (x)->d_matrix[col][row] = val; };
 
-void matrix_assign_direct(Matrix *x, Matrix *y, int col, int row);
-void matrix_assign(Matrix *x, Matrix *y, int col1, int row1, int col2, int row2);
+void matrix_item_assign_direct(Matrix *x, Matrix *y, int col, int row);
+void matrix_item_assign(Matrix *x, Matrix *y, int col1, int row1, int col2, int row2);
 
-#define MATRIX_ADD(x, col, row, val) MATRIX_SET(x, col, row, MATRIX_GET(x, col, row) + val)
-#define MATRIX_SUB(x, col, row, val) MATRIX_SET(x, col, row, MATRIX_GET(x, col, row) - val)
+// Item APPLY FuNction
+#define MATRIX_IAPPLY_FN(result, col, row, source, function) MATRIX_ISET(result, col, row, function(MATRIX_IGET(source, col, row)))
 
-// MULtiply by Scalar
-#define MATRIX_MULS(x, col, row, val) MATRIX_SET(x, col, row, MATRIX_GET(x, col, row) * val)
-#define MATRIX_ADDS(x, col, row, val) MATRIX_SET(x, col, row, MATRIX_GET(x, col, row) + val)
+// Item ADD
+#define MATRIX_IADD(x, col, row, val) MATRIX_ISET(x, col, row, MATRIX_IGET(x, col, row) + val)
+
+// Item SUBtract
+#define MATRIX_ISUB(x, col, row, val) MATRIX_ISET(x, col, row, MATRIX_IGET(x, col, row) - val)
+
+// Item MULtiply by Scalar
+#define MATRIX_IMULS(x, col, row, val) MATRIX_ISET(x, col, row, MATRIX_IGET(x, col, row) * val)
+#define MATRIX_IADDS(x, col, row, val) MATRIX_ISET(x, col, row, MATRIX_IGET(x, col, row) + val)
 
 Matrix *create_matrix(int rows, int cols, const double mat[][cols]);
 Matrix *create_matrix_float(int rows, int cols, const float mat[][cols]);
