@@ -22,20 +22,27 @@ typedef struct
 } Matrix;
 
 // TODO: benchmark performance float vs double
+// TODO: in memory dataset/loader
 
-#define MATRIX_D(x) (x)->d_matrix
-#define MATRIX_F(x) (x)->f_matrix
+double** matrix_d(Matrix* x);
+float** MATRIX_F(Matrix* x);
 
-#define MATRIX_GET(x, col, row) (((x)->type == D_FLOAT) ? MATRIX_F(x)[col][row] : MATRIX_D(x)[col][row])
+#define MATRIX_GET(x, col, row) (((x)->type == D_FLOAT) ? MATRIX_F(x)[col][row] : matrix_d(x)[col][row])
 
-#define MATRIX_SET(x, col, row, val) if ((x)->type == D_FLOAT) \
+#define MATRIX_SET(x, col, row, val) if ((x)->type == D_FLOAT) { \
                                 (x)->f_matrix[col][row] = val; \
-                                else \
-                                (x)->d_matrix[col][row] = val;
+                                } else {\
+                                (x)->d_matrix[col][row] = val; };
 
-#define MATRIX_ASSIGN(x, y, col, row) MATRIX_SET(x, col, row, MATRIX_GET(y, col, row))
-#define MATRIX_ASSIGN_XY(x, y, col1, row1, col2, row2) MATRIX_SET(x, col1, row1, MATRIX_GET(y, col2, row2))
+void matrix_assign_direct(Matrix *x, Matrix *y, int col, int row);
+void matrix_assign(Matrix *x, Matrix *y, int col1, int row1, int col2, int row2);
+
 #define MATRIX_ADD(x, col, row, val) MATRIX_SET(x, col, row, MATRIX_GET(x, col, row) + val)
+#define MATRIX_SUB(x, col, row, val) MATRIX_SET(x, col, row, MATRIX_GET(x, col, row) - val)
+
+// MULtiply by Scalar
+#define MATRIX_MULS(x, col, row, val) MATRIX_SET(x, col, row, MATRIX_GET(x, col, row) * val)
+#define MATRIX_ADDS(x, col, row, val) MATRIX_SET(x, col, row, MATRIX_GET(x, col, row) + val)
 
 Matrix *create_matrix(int rows, int cols, const double mat[][cols]);
 Matrix *create_matrix_float(int rows, int cols, const float mat[][cols]);

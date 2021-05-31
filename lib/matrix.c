@@ -3,6 +3,19 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+inline double** matrix_d(Matrix* x) { return x->d_matrix; }
+inline float** MATRIX_F(Matrix* x) { return x->f_matrix; }
+
+inline void matrix_assign(Matrix *x, Matrix *y, int col1, int row1, int col2, int row2)
+{
+    MATRIX_SET(x, col1, row1, MATRIX_GET(y, col2, row2));
+}
+
+inline void matrix_assign_direct(Matrix *x, Matrix *y, int col, int row)
+{
+    MATRIX_SET(x, col, row, MATRIX_GET(y, col, row))
+}
+
 Matrix* create_matrix(int rows, int cols, const double mat[][cols])
 {
     Matrix *matrix = (Matrix *) malloc (sizeof (Matrix));
@@ -48,10 +61,10 @@ Matrix* create_matrix_float(int rows, int cols, const float mat[][cols])
     matrix->type = D_FLOAT;
 
     if (rows > 0 && cols > 0) {
-        matrix->matrix = (float**) malloc (sizeof (float*) *rows);
+        matrix->f_matrix = (float**) malloc (sizeof (float*) *rows);
         for (int i = 0; i < rows; i++)
         {
-            matrix->matrix[i] = (float*) malloc (sizeof (float) *cols);
+            matrix->f_matrix[i] = (float*) malloc (sizeof (float) *cols);
             for (int j = 0; j < cols; j++)
             {
                 if (mat != NULL)
@@ -103,7 +116,7 @@ int transpose(Matrix *a, Matrix *result)
     {
         for (int j = 0; j < a->cols; j++)
         {
-            MATRIX_ASSIGN_XY(result, a, j, i, i, j);
+            matrix_assign(result, a, j, i, i, j);
         }        
     }
     
@@ -182,7 +195,7 @@ int add(Matrix *a, Matrix *b)
     {
         for (int j = 0; j < a->cols; j++)
         {
-            a->matrix[i][j] += b->matrix[i][j];
+            MATRIX_ADD(a, i, j, MATRIX_GET(b, i, j));
         }        
     }
 
@@ -205,7 +218,7 @@ int subtract(Matrix *a, Matrix *b)
     {
         for (int j = 0; j < a->cols; j++)
         {
-            a->matrix[i][j] -= b->matrix[i][j];
+            MATRIX_SUB(a, i, j, MATRIX_GET(b, i, j));
         }        
     }
 
@@ -223,7 +236,7 @@ int scalar_multiply(Matrix *a, double x)
     {
         for (int j = 0; j < a->cols; j++)
         {
-            a->matrix[i][j] *= x;
+            MATRIX_MULS(a, i, j, x);
         }        
     }  
 
@@ -240,7 +253,7 @@ int scalar_add(Matrix *a, double x) {
     {
         for (int j = 0; j < a->cols; j++)
         {
-            a->matrix[i][j] += x;
+            MATRIX_ADDS(a, i, j, x);
         }        
     }
 
