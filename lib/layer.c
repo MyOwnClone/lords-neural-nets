@@ -73,7 +73,7 @@ static int init_layer_f(Layer *layer)
     Matrix *bias = layer->bias;
 
     srand(time(NULL));
-    float range = sqrtf((float) 6/(weights->rows + weights->cols));
+    float range = sqrtf((float) 6/(float)(weights->rows + weights->cols));
 
     for (int i = 0; i < weights->rows; i++)
     {

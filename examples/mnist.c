@@ -27,7 +27,7 @@ int main()
     char *test_labels_fn = "./resources/mnist_test_labels.csv";
     Matrix **test_labels = load_csv(test_labels_fn, num_test, 1);
     vectorize(test_labels, num_test, 10);
-    logger(INFO, __func__, "Created test lables dataset");
+    logger(INFO, __func__, "Created test labels dataset");
 
 
     Dataset *dataset = create_dataset(num_train, 28*28, 10, num_test, train_inputs, train_labels, test_inputs, test_labels);

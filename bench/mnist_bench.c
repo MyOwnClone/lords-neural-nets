@@ -30,7 +30,7 @@ void mnist_double()
     char *test_labels_fn = "./resources/mnist_test_labels.csv";
     Matrix **test_labels = load_csv(test_labels_fn, num_test, 1);
     vectorize(test_labels, num_test, 10);
-    logger(INFO, __func__, "Created test lables dataset");
+    logger(INFO, __func__, "Created test labels dataset");
 
 
     Dataset *dataset = create_dataset(num_train, 28*28, 10, num_test, train_inputs, train_labels, test_inputs, test_labels);
@@ -81,7 +81,7 @@ void mnist_float()
     char *test_labels_fn = "./resources/mnist_test_labels.csv";
     Matrix **test_labels = load_csv_f(test_labels_fn, num_test, 1);
     vectorize_f(test_labels, num_test, 10);
-    logger(INFO, __func__, "Created test lables dataset");
+    logger(INFO, __func__, "Created test labels dataset");
 
 
     Dataset *dataset = create_dataset(num_train, 28*28, 10, num_test, train_inputs, train_labels, test_inputs, test_labels);
@@ -115,4 +115,11 @@ int main()
     double float_msecs = print_elapsed_time(mnist_double, "mnist double", 1);
 
     printf("float over double speed-up factor: %fx\n", (double_msecs / float_msecs));
+
+    // mingw 64
+    /*
+     *  mnist float: Average time elapsed over 1 runs: 286_297.000000 ms :-( :-(
+     *
+     *  mnist double: Average time elapsed over 1 runs: 183_488.000000 ms
+     */
 }
