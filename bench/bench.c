@@ -82,5 +82,5 @@ int main()
     double float_msecs = print_elapsed_time(float_multiply, "float", repeat_count);
     double double_msecs = print_elapsed_time(double_multiply, "double", repeat_count);
 
-    printf("float over double speed-up factor: %f x\n", (double_msecs / float_msecs));
+    printf("float over double speed-up factor: %fx\n", (double_msecs / float_msecs));
 }
