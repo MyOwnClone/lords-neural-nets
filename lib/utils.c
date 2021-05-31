@@ -10,10 +10,14 @@ void logger(int log_level, const char *function_name, const char *message)
     {
         if (log_level == EXCEPTION)
         {
+#ifndef __MINGW64__
             RED_COLOR;
+#endif
         }
         printf("%s: %s\n", function_name, message);
+#ifndef __MINGW64__
         RESET_COLOR;
+#endif
     }
 }
 
