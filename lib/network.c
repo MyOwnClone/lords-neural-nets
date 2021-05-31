@@ -255,7 +255,7 @@ static int backpropagate(
 
         // Compute delta weights
         res = 0;
-        res += multiply_transposed(deltas[l], prev_act, temp_delta_weights[l]);
+        res += multiply_transposed(deltas[l], prev_act, temp_delta_weights[l]); // FIXME
         res += add(delta_weights[l], temp_delta_weights[l]);
         if (res < 0)
         {
@@ -536,6 +536,8 @@ int train_f(
                 // Get weights adjustment
                 scalar_multiply(delta_weights[j], eta);
 
+                //print_matrix(momentums[j]);
+
                 // Add momentum
                 add(delta_weights[j], momentums[j]);
 
@@ -545,6 +547,8 @@ int train_f(
 
                 // L2 Regularization
                 scalar_multiply(network->layers[j]->weights, 1 - ((learning_rate * reg_lambda)/(float)(dataset->train_size)));
+
+                print_matrix(delta_weights[j]);
 
                 // Set new weights
                 add(network->layers[j]->weights, delta_weights[j]);
@@ -737,6 +741,8 @@ int train(
                 // Add momentum
                 add(delta_weights[j], momentums[j]);
 
+                //print_matrix(momentums[j]);
+
                 // printf("Weights Matrix before adjustment\n");
                 // print_matrix(network->layers[j]->weights);
                 // printf("\n");
@@ -746,6 +752,8 @@ int train(
 
                 // Set new weights
                 add(network->layers[j]->weights, delta_weights[j]);
+
+                print_matrix(delta_weights[j]);
 
                 // printf("Weights Matrix after adjustment\n");
                 // print_matrix(network->layers[j]->weights);

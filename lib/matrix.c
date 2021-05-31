@@ -89,7 +89,7 @@ void print_matrix(Matrix *matrix)
         printf("[ ");
         for (int j = 0; j < matrix->cols; j++)
         {
-            printf("%.2f ", MATRIX_IGET(matrix, i, j));
+            printf("%.8f ", MATRIX_IGET(matrix, i, j));
         }
         printf("]\n");
     }    

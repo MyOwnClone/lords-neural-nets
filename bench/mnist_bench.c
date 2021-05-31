@@ -97,7 +97,7 @@ void mnist_float()
     training_options->cost_type = cost_type;
     training_options->epochs = EPOCH_COUNT;
     training_options->batch_size = 10;   // 10
-    training_options->learning_rate = 0.01;
+    training_options->learning_rate = 0.1;
     training_options->momentum = 0.9;
     training_options->regularization_lambda = 0.09;
 
@@ -112,9 +112,9 @@ void mnist_float()
 int main()
 {
     double double_msecs = print_elapsed_time(mnist_float, "mnist float", 1);
-    double float_msecs = print_elapsed_time(mnist_double, "mnist double", 1);
+    //double float_msecs = print_elapsed_time(mnist_double, "mnist double", 1);
 
-    printf("float over double speed-up factor: %fx\n", (double_msecs / float_msecs));
+    //printf("float over double speed-up factor: %fx\n", (double_msecs / float_msecs));
 
     // mingw 64
     /*
