@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-inline double** matrix_d(Matrix* x) { return x->d_matrix; }
-inline float** MATRIX_F(Matrix* x) { return x->f_matrix; }
+double** matrix_d(Matrix* x) { return x->d_matrix; }
+float** MATRIX_F(Matrix* x) { return x->f_matrix; }
 
 inline void matrix_item_assign(Matrix *x, Matrix *y, int col1, int row1, int col2, int row2)
 {
@@ -97,7 +97,7 @@ void print_matrix(Matrix *matrix)
 
 bool is_null(Matrix *a)
 {
-    if (a == NULL || a->matrix == NULL)
+    if (a == NULL || (a->matrix == NULL && a->f_matrix == NULL))
     {
         return true;
     }
@@ -255,6 +255,38 @@ int scalar_add(Matrix *a, double x) {
         {
             MATRIX_IADDS(a, i, j, x);
         }        
+    }
+
+    return 0;
+}
+
+int apply_f(Matrix *a, Matrix *result, float (*fn)(float))
+{
+    if (is_null(result))
+    {
+        result = a;
+    }
+    else if (a->rows != result->rows || a->cols != result->cols)
+    {
+        return -1;
+    }
+
+    if (is_null(a))
+    {
+        return -1;
+    }
+
+    if (fn == NULL)
+    {
+        return -1;
+    }
+
+    for (int i = 0; i < a->rows; i++)
+    {
+        for (int j = 0; j < a->cols; j++)
+        {
+            MATRIX_IAPPLY_FN(result, i, j, a, fn);
+        }
     }
 
     return 0;

@@ -15,6 +15,7 @@ typedef struct
 } Layer;
 
 Layer* create_layer(int layer_size, int input_size, Activation *activation);
+Layer* create_layer_f(int layer_size, int input_size, Activation *activation);
 int layer_compute(Layer *layer, Matrix *input);
 int delete_layer(Layer *layer);
 

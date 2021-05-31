@@ -26,11 +26,11 @@ typedef struct
 // TODO: benchmark performance float vs double
 // TODO: in memory dataset/loader
 
-inline double** matrix_d(Matrix* x);
-inline float** MATRIX_F(Matrix* x);
+double** matrix_d(Matrix* x);
+float** MATRIX_F(Matrix* x);
 
 // Item GET
-#define MATRIX_IGET(x, col, row) (((x)->type == D_FLOAT) ? MATRIX_F(x)[col][row] : matrix_d(x)[col][row])
+#define MATRIX_IGET(x, col, row) (((x)->type == D_FLOAT) ? (float)(MATRIX_F(x)[col][row]) : (double)(matrix_d(x)[col][row]))
 
 // Item SET
 #define MATRIX_ISET(x, col, row, val) if ((x)->type == D_FLOAT) { \
@@ -66,6 +66,7 @@ int subtract(Matrix *a, Matrix *b);
 int scalar_multiply(Matrix *matrix, double a);
 int scalar_add(Matrix *matrix, double a);
 int apply(Matrix *a, Matrix *result, double (*fn)(double));
+int apply_f(Matrix *a, Matrix *result, float (*fn)(float));
 int hadamard(Matrix *a, Matrix *b, Matrix *result);
 int argmax(Matrix *a);
 int reset_matrix(Matrix *a);

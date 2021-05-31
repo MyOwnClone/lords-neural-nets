@@ -74,6 +74,39 @@ int delete_dataset(Dataset *dataset)
     return 0;
 }
 
+Matrix** load_csv_f(char *filename, int lines, int line_length)
+{
+    FILE* fp = fopen(filename, "r");
+
+    if (!fp)
+    {
+        logger(EXCEPTION, __func__, "Failed to open csv file");
+        return NULL;
+    }
+
+    Matrix **result = (Matrix**) malloc (sizeof (Matrix*) * lines);
+
+    int buffer_length = line_length*4;
+    char buffer[buffer_length];
+
+    int line_idx = 0;
+    while(fgets(buffer, buffer_length, fp)) {
+        char *token = strtok(buffer, ",");
+        float mat[line_length][1];
+
+        int i = 0;
+        while( token != NULL ) {
+            mat[i++][0] = strtof(token, NULL);
+            token = strtok(NULL, ",");
+        }
+
+        result[line_idx++] = create_matrix_float(line_length, 1, mat);
+    }
+
+    fclose(fp);
+    return result;
+}
+
 Matrix** load_csv(char *filename, int lines, int line_length)
 {
     FILE* fp = fopen(filename, "r");
@@ -105,6 +138,31 @@ Matrix** load_csv(char *filename, int lines, int line_length)
 
     fclose(fp);
     return result;
+}
+
+int vectorize_f(Matrix **a, int length, int num_classes)
+{
+    for (int i = 0; i < length; i++)
+    {
+        int index = (int) MATRIX_IGET(a[i], 0, 0);
+        if (index >= num_classes)
+        {
+            return -1;
+        }
+
+        float mat[num_classes][1];
+        for (int j = 0; j < num_classes; j++)
+        {
+            mat[j][0] = 0;
+        }
+
+        mat[index][0] = 1;
+
+        delete_matrix(a[i]);
+        a[i] = create_matrix_float(num_classes, 1, mat);
+    }
+
+    return 0;
 }
 
 int vectorize(Matrix **a, int length, int num_classes)
@@ -146,7 +204,7 @@ int normalize(Matrix **a, int length, int max_num)
         {
             for (int k = 0; k < matrix->cols; k++)
             {
-                matrix->matrix[j][k] = matrix->matrix[j][k] / max_num;
+                MATRIX_ISET(matrix, j, k, MATRIX_IGET(matrix, j, k) / max_num);
             }            
         }        
     }

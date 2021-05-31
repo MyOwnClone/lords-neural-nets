@@ -7,6 +7,7 @@
 #include <stdio.h>
 
 static int init_layer(Layer *layer);
+static int init_layer_f(Layer *layer);
 
 Layer* create_layer(int layer_size, int input_size, Activation *activation)
 {
@@ -21,6 +22,23 @@ Layer* create_layer(int layer_size, int input_size, Activation *activation)
     layer->neurons_act = create_matrix(layer_size, 1, NULL);
 
     init_layer(layer);
+
+    return layer;
+}
+
+Layer* create_layer_f(int layer_size, int input_size, Activation *activation)
+{
+    Layer *layer = (Layer *) malloc (sizeof (Layer));
+
+    layer->num_neurons = layer_size;
+    layer->activation = activation;
+
+    layer->weights = create_matrix_float(layer_size, input_size, NULL);
+    layer->bias = create_matrix_float(layer_size, 1, NULL);
+    layer->neurons = create_matrix_float(layer_size, 1, NULL);
+    layer->neurons_act = create_matrix_float(layer_size, 1, NULL);
+
+    init_layer_f(layer);
 
     return layer;
 }
@@ -49,11 +67,42 @@ static int init_layer(Layer *layer)
     return 0;
 }
 
+static int init_layer_f(Layer *layer)
+{
+    Matrix *weights = layer->weights;
+    Matrix *bias = layer->bias;
+
+    srand(time(NULL));
+    float range = sqrtf((float) 6/(weights->rows + weights->cols));
+
+    for (int i = 0; i < weights->rows; i++)
+    {
+        for (int j = 0; j < weights->cols; j++)
+        {
+            MATRIX_ISET(weights, i, j, (float) rand()/(float) (RAND_MAX*2*range - range));
+        }
+    }
+
+    for (int i = 0; i < bias->rows; i++)
+    {
+        MATRIX_ISET(bias, i, 0, (float) rand()/(float)RAND_MAX);
+    }
+
+    return 0;
+}
+
 int layer_compute(Layer *layer, Matrix *input)
 {
     multiply(layer->weights, input, layer->neurons);
     add(layer->neurons, layer->bias);
-    apply(layer->neurons, layer->neurons_act, layer->activation->fn);
+
+    if (layer->neurons->type == D_FLOAT)
+    {
+        apply_f(layer->neurons, layer->neurons_act, layer->activation->fn_f);
+    }
+    else {
+        apply(layer->neurons, layer->neurons_act, layer->activation->fn);
+    }
 
     return 0;
 }
