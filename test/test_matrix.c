@@ -265,7 +265,7 @@ static int test_multiply_float()
             {37.00, 3.00, 36.00 }
     };
 
-    Matrix *res_matrix = create_matrix(res_rows, res_cols, NULL);
+    Matrix *res_matrix = create_matrix_float(res_rows, res_cols, NULL);
     multiply(a_matrix, b_matrix, res_matrix);
 
     if (is_null(res_matrix))
