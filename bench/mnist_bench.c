@@ -60,8 +60,8 @@ void mnist_double()
 
 void mnist_float()
 {
-    int num_train = 60000;
-    int num_test = 10000;
+    int num_train = 60000;//60000;
+    int num_test = 10000;//10000;
 
     char *train_inputs_fn = "./resources/mnist_train_vectors.csv";
     Matrix **train_inputs = load_csv_f(train_inputs_fn, num_train, 28*28);

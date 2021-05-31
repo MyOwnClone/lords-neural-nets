@@ -105,6 +105,11 @@ Matrix** load_csv_f(char *filename, int lines, int line_length)
         }
 
         result[line_idx++] = create_matrix_float(line_length, 1, mat);
+
+        if (line_idx > lines)
+        {
+            break;
+        }
     }
 
     fclose(fp);

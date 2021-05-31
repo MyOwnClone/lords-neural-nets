@@ -6,14 +6,14 @@
 double** matrix_d(Matrix* x) { return x->d_matrix; }
 float** MATRIX_F(Matrix* x) { return x->f_matrix; }
 
-inline void matrix_item_assign(Matrix *x, Matrix *y, int col1, int row1, int col2, int row2)
+inline void matrix_item_assign(Matrix *x, Matrix *y, int row1, int col1, int row2, int col2 )
 {
-    MATRIX_ISET(x, col1, row1, MATRIX_IGET(y, col2, row2));
+    MATRIX_ISET(x, row1, col1, MATRIX_IGET(y, row2, col2));
 }
 
 inline void matrix_item_assign_direct(Matrix *x, Matrix *y, int col, int row)
 {
-    MATRIX_ISET(x, col, row, MATRIX_IGET(y, col, row))
+    MATRIX_ISET(x, row, col, MATRIX_IGET(y, row, col))
 }
 
 Matrix* create_matrix(int rows, int cols, const double mat[][cols])
@@ -62,18 +62,18 @@ Matrix* create_matrix_float(int rows, int cols, const float mat[][cols])
 
     if (rows > 0 && cols > 0) {
         matrix->f_matrix = (float**) malloc (sizeof (float*) *rows);
-        for (int i = 0; i < rows; i++)
+        for (int row = 0; row < rows; row++)
         {
-            matrix->f_matrix[i] = (float*) malloc (sizeof (float) *cols);
-            for (int j = 0; j < cols; j++)
+            matrix->f_matrix[row] = (float*) malloc (sizeof (float) *cols);
+            for (int col = 0; col < cols; col++)
             {
                 if (mat != NULL)
                 {
-                    MATRIX_ISET(matrix, i, j, mat[i][j]);
+                    MATRIX_ISET(matrix, row, col, mat[row][col]);
                 }
                 else
                 {
-                    MATRIX_ISET(matrix, i, j, 0);
+                    MATRIX_ISET(matrix, row, col, 0);
                 }
             }
         }
@@ -112,11 +112,11 @@ int transpose(Matrix *a, Matrix *result)
         return -1;
     }
 
-    for (int i = 0; i < a->rows; i++)
+    for (int row = 0; row < a->rows; row++)
     {
-        for (int j = 0; j < a->cols; j++)
+        for (int col = 0; col < a->cols; col++)
         {
-            matrix_item_assign(result, a, j, i, i, j);
+            matrix_item_assign(result, a, col, row, row, col);
         }        
     }
     
@@ -135,15 +135,15 @@ int multiply(Matrix *a, Matrix *b, Matrix *result)
         return -1;
     }
 
-    for (int i = 0; i < a->rows; i++)
+    for (int row = 0; row < a->rows; row++)
     {
-        for (int j = 0; j < b->cols; j++)
+        for (int col = 0; col < b->cols; col++)
         {
-            MATRIX_ISET(result, i, j, 0);
+            MATRIX_ISET(result, row, col, 0);
 
             for (int k = 0; k < a->cols; k++)
             {
-                MATRIX_IADD(result, i, j, MATRIX_IGET(a, i, k) * MATRIX_IGET(b, k, j))
+                MATRIX_IADD(result, row, col, MATRIX_IGET(a, row, k) * MATRIX_IGET(b, k, col))
             }            
         }        
     }
@@ -191,11 +191,11 @@ int add(Matrix *a, Matrix *b)
         return -1;
     }
 
-    for (int i = 0; i < a->rows; i++)
+    for (int row = 0; row < a->rows; row++)
     {
-        for (int j = 0; j < a->cols; j++)
+        for (int col = 0; col < a->cols; col++)
         {
-            MATRIX_IADD(a, i, j, MATRIX_IGET(b, i, j));
+            MATRIX_IADD(a, row, col, MATRIX_IGET(b, row, col));
         }        
     }
 
@@ -214,11 +214,11 @@ int subtract(Matrix *a, Matrix *b)
         return -1;
     }
 
-    for (int i = 0; i < a->rows; i++)
+    for (int row = 0; row < a->rows; row++)
     {
-        for (int j = 0; j < a->cols; j++)
+        for (int col = 0; col < a->cols; col++)
         {
-            MATRIX_ISUB(a, i, j, MATRIX_IGET(b, i, j));
+            MATRIX_ISUB(a, row, col, MATRIX_IGET(b, row, col));
         }        
     }
 
@@ -232,11 +232,11 @@ int scalar_multiply(Matrix *a, double x)
         return -1;
     }
 
-    for (int i = 0; i < a->rows; i++)
+    for (int row = 0; row < a->rows; row++)
     {
-        for (int j = 0; j < a->cols; j++)
+        for (int col = 0; col < a->cols; col++)
         {
-            MATRIX_IMULS(a, i, j, x);
+            MATRIX_IMULS(a, row, col, x);
         }        
     }  
 
@@ -249,11 +249,11 @@ int scalar_add(Matrix *a, double x) {
         return -1;
     }
 
-    for (int i = 0; i < a->rows; i++)
+    for (int row = 0; row < a->rows; row++)
     {
-        for (int j = 0; j < a->cols; j++)
+        for (int col = 0; col < a->cols; col++)
         {
-            MATRIX_IADDS(a, i, j, x);
+            MATRIX_IADDS(a, row, col, x);
         }        
     }
 
@@ -281,11 +281,11 @@ int apply_f(Matrix *a, Matrix *result, float (*fn)(float))
         return -1;
     }
 
-    for (int i = 0; i < a->rows; i++)
+    for (int row = 0; row < a->rows; row++)
     {
-        for (int j = 0; j < a->cols; j++)
+        for (int col = 0; col < a->cols; col++)
         {
-            MATRIX_IAPPLY_FN(result, i, j, a, fn);
+            MATRIX_IAPPLY_FN(result, row, col, a, fn);
         }
     }
 
@@ -336,11 +336,11 @@ int hadamard(Matrix *a, Matrix *b, Matrix *result)
         return -1;
     }
 
-    for (int i = 0; i < a->rows; i++)
+    for (int row = 0; row < a->rows; row++)
     {
-        for (int j = 0; j < a->cols; j++)
+        for (int col = 0; col < a->cols; col++)
         {
-            MATRIX_ISET(result, i, j, MATRIX_IGET(a, i, j) * MATRIX_IGET(b, i, j) );
+            MATRIX_ISET(result, row, col, MATRIX_IGET(a, row, col) * MATRIX_IGET(b, row, col) );
         }        
     }
 
@@ -386,11 +386,11 @@ int reset_matrix(Matrix *a)
         return -1;
     }
 
-    for (int i = 0; i < a->rows; i++)
+    for (int row = 0; row < a->rows; row++)
     {
-        for (int j = 0; j < a->cols; j++)
+        for (int col = 0; col < a->cols; col++)
         {
-            MATRIX_ISET(a, i, j, 0);
+            MATRIX_ISET(a, row, col, 0);
         }        
     }
 

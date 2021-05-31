@@ -75,17 +75,17 @@ static int init_layer_f(Layer *layer)
     srand(time(NULL));
     float range = sqrtf((float) 6/(float)(weights->rows + weights->cols));
 
-    for (int i = 0; i < weights->rows; i++)
+    for (int row = 0; row < weights->rows; row++)
     {
-        for (int j = 0; j < weights->cols; j++)
+        for (int col = 0; col < weights->cols; col++)
         {
-            MATRIX_ISET(weights, i, j, (float) rand()/(float) (RAND_MAX*2*range - range));
+            MATRIX_ISET(weights, row, col, (float) rand() / (float) (RAND_MAX * 2 * range - range));
         }
     }
 
-    for (int i = 0; i < bias->rows; i++)
+    for (int row = 0; row < bias->rows; row++)
     {
-        MATRIX_ISET(bias, i, 0, (float) rand()/(float)RAND_MAX);
+        MATRIX_ISET(bias, row, 0, (float) rand() / (float)RAND_MAX);
     }
 
     return 0;
