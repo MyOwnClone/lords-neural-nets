@@ -111,6 +111,8 @@ void mnist_float()
 
 int main()
 {
-    print_elapsed_time(mnist_float, "mnist float", 1);
-    print_elapsed_time(mnist_double, "mnist double", 1);
+    double double_msecs = print_elapsed_time(mnist_float, "mnist float", 1);
+    double float_msecs = print_elapsed_time(mnist_double, "mnist double", 1);
+
+    printf("float over double speed-up factor: %fx\n", (double_msecs / float_msecs));
 }
