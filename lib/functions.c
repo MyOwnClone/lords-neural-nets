@@ -143,7 +143,7 @@ float cost_cross_entropy_f(Matrix *prediction, Matrix *target)
     float loss = 0;
     for (int i = 0; i < prediction->rows; i++)
     {
-        float prediction_logf = log((float)(MATRIX_IGET(prediction, i, 0)));
+        float prediction_logf = logf((float)(MATRIX_IGET(prediction, i, 0)));
         float part1 = (float)(-1.0f) * ((float)MATRIX_IGET(target, i, 0) * prediction_logf);
         float part2 = (1.0f - (float) MATRIX_IGET(target, i, 0)) * logf((float)(1.0f) - (float) MATRIX_IGET(prediction, i, 0));
 

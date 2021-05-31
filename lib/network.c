@@ -583,7 +583,7 @@ int train_f(
         logger(INFO, __func__, acc_train_buffer);
 
         float final_epoch_loss = (float) epoch_loss / (float) dataset->train_size;
-        char loss_buffer[23];
+        char loss_buffer[1000];
         sprintf(loss_buffer, "Training loss: %.5f", final_epoch_loss);
         logger(INFO, __func__, loss_buffer);
 
