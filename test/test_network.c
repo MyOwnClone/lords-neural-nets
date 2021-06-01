@@ -19,7 +19,7 @@ static int test_create_network()
     int layers[] = {30,20,10};
 
     Activation *sigmoid = create_sigmoid_activation();
-    Network *network = create_network(input_size, num_layers, layers, sigmoid);
+    Network *network = create_network(input_size, num_layers, layers, sigmoid, D_DOUBLE);
 
     if (network->num_layers != num_layers)
     {
@@ -53,10 +53,10 @@ static int test_predict()
     int layers[] = {30,20,10};
 
     Activation *sigmoid = create_sigmoid_activation();
-    Network *network = create_network(input_size, num_layers, layers, sigmoid);
+    Network *network = create_network(input_size, num_layers, layers, sigmoid, D_DOUBLE);
 
     double input_mat[10][1] =  {{1},{1},{1},{1},{1},{1},{1},{1},{1},{1}};
-    Matrix *input = create_matrix(10, 1, input_mat);
+    Matrix *input = create_matrix(10, 1, input_mat, D_DOUBLE);
 
     Matrix *result = predict(network, input);
 

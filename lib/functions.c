@@ -48,19 +48,14 @@ float act_relu_der_f(float num)
 Activation* create_sigmoid_activation()
 {
     Activation *activation = (Activation *) malloc ( sizeof (Activation));
+
     activation->fn = &act_sigmoid;
-    activation->fn_der = &act_sigmoid_der;
-    activation->type = SIGMOID;
-
-    return activation;
-}
-
-Activation* create_sigmoid_activation_f()
-{
-    Activation *activation = (Activation *) malloc ( sizeof (Activation));
     activation->fn_f = &act_sigmoid_f;
-    activation->fn_der_f = &act_sigmoid_der_f;
-    activation->type = SIGMOID_F;
+
+    activation->fn_der = &act_sigmoid_der;
+    activation->fn_der_f = &act_sigmoid_der;
+
+    activation->type = SIGMOID;
 
     return activation;
 }

@@ -9,36 +9,19 @@
 static int init_layer(Layer *layer);
 static int init_layer_f(Layer *layer);
 
-Layer* create_layer(int layer_size, int input_size, Activation *activation)
+Layer* create_layer(int layer_size, int input_size, Activation *activation, MatrixDataType dataType)
 {
     Layer *layer = (Layer *) malloc (sizeof (Layer));
 
     layer->num_neurons = layer_size;
     layer->activation = activation;
 
-    layer->weights = create_matrix(layer_size, input_size, NULL);
-    layer->bias = create_matrix(layer_size, 1, NULL);
-    layer->neurons = create_matrix(layer_size, 1, NULL);
-    layer->neurons_act = create_matrix(layer_size, 1, NULL);
+    layer->weights = create_matrix(layer_size, input_size, NULL, dataType);
+    layer->bias = create_matrix(layer_size, 1, NULL, dataType);
+    layer->neurons = create_matrix(layer_size, 1, NULL, dataType);
+    layer->neurons_act = create_matrix(layer_size, 1, NULL, dataType);
 
     init_layer(layer);
-
-    return layer;
-}
-
-Layer* create_layer_f(int layer_size, int input_size, Activation *activation)
-{
-    Layer *layer = (Layer *) malloc (sizeof (Layer));
-
-    layer->num_neurons = layer_size;
-    layer->activation = activation;
-
-    layer->weights = create_matrix_float(layer_size, input_size, NULL);
-    layer->bias = create_matrix_float(layer_size, 1, NULL);
-    layer->neurons = create_matrix_float(layer_size, 1, NULL);
-    layer->neurons_act = create_matrix_float(layer_size, 1, NULL);
-
-    init_layer_f(layer);
 
     return layer;
 }
@@ -48,44 +31,43 @@ static int init_layer(Layer *layer)
     Matrix *weights = layer->weights;
     Matrix *bias = layer->bias;
 
-    srand(time(NULL));
-    double range = sqrt((double) 6/(weights->rows + weights->cols));
+    bool is_float = is_float_matrix(layer->weights);
 
-    for (int i = 0; i < weights->rows; i++)
+    if (is_float)
     {
-        for (int j = 0; j < weights->cols; j++)
+        srand(time(NULL));
+        float range = sqrtf((float) 6/(float)(weights->rows + weights->cols));
+
+        for (int row = 0; row < weights->rows; row++)
         {
-            weights->matrix[i][j] = (double) rand()/RAND_MAX*2*range - range;
-        }        
-    }
+            for (int col = 0; col < weights->cols; col++)
+            {
+                MATRIX_ISET(weights, row, col, (float) rand() / (float) (RAND_MAX * 2 * range - range));
+            }
+        }
 
-    for (int i = 0; i < bias->rows; i++)
-    {
-        bias->matrix[i][0] = (double) rand()/RAND_MAX;
-    }
-
-    return 0;
-}
-
-static int init_layer_f(Layer *layer)
-{
-    Matrix *weights = layer->weights;
-    Matrix *bias = layer->bias;
-
-    srand(time(NULL));
-    float range = sqrtf((float) 6/(float)(weights->rows + weights->cols));
-
-    for (int row = 0; row < weights->rows; row++)
-    {
-        for (int col = 0; col < weights->cols; col++)
+        for (int row = 0; row < bias->rows; row++)
         {
-            MATRIX_ISET(weights, row, col, (float) rand() / (float) (RAND_MAX * 2 * range - range));
+            MATRIX_ISET(bias, row, 0, (float) rand() / (float)RAND_MAX);
         }
     }
-
-    for (int row = 0; row < bias->rows; row++)
+    else
     {
-        MATRIX_ISET(bias, row, 0, (float) rand() / (float)RAND_MAX);
+        srand(time(NULL));
+        double range = sqrt((double) 6 / (weights->rows + weights->cols));
+
+        for (int i = 0; i < weights->rows; i++)
+        {
+            for (int j = 0; j < weights->cols; j++)
+            {
+                weights->matrix[i][j] = (double) rand() / RAND_MAX * 2 * range - range;
+            }
+        }
+
+        for (int i = 0; i < bias->rows; i++)
+        {
+            bias->matrix[i][0] = (double) rand() / RAND_MAX;
+        }
     }
 
     return 0;

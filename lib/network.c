@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <limits.h>
 
-Network* create_network(int input_size, int num_layers, int layers[], Activation *activation)
+Network* create_network(int input_size, int num_layers, int layers[], Activation *activation, MatrixDataType dataType)
 {
     Network *network = (Network *) malloc (sizeof (Network));
     network->num_layers = num_layers;
@@ -15,26 +15,10 @@ Network* create_network(int input_size, int num_layers, int layers[], Activation
     int prev_layer_size = input_size;
     for (int i = 0; i < num_layers; i++)
     {
-        network->layers[i] = create_layer(layers[i], prev_layer_size, activation);
+        network->layers[i] = create_layer(layers[i], prev_layer_size, activation, dataType);
         prev_layer_size = layers[i];
     }
     
-    return network;
-}
-
-Network* create_network_f(int input_size, int num_layers, int layers[], Activation *activation)
-{
-    Network *network = (Network *) malloc (sizeof (Network));
-    network->num_layers = num_layers;
-
-    network->layers = (Layer **) malloc (sizeof (Layer*) *num_layers);
-    int prev_layer_size = input_size;
-    for (int i = 0; i < num_layers; i++)
-    {
-        network->layers[i] = create_layer_f(layers[i], prev_layer_size, activation);
-        prev_layer_size = layers[i];
-    }
-
     return network;
 }
 
@@ -127,46 +111,6 @@ double accuracy(Network *network, Matrix **inputs, Matrix **targets, int input_l
     return (double) correct/input_length;    
 }
 
-static int init_training_f(
-        Network *network,
-        Matrix **deltas,
-        Matrix **temp_deltas,
-        Matrix **delta_weights,
-        Matrix **temp_delta_weights,
-        Matrix **transposed_weights,
-        Matrix **delta_bias,
-        Matrix **momentums)
-{
-    for (int i = 0; i < network->num_layers; i++)
-    {
-        int rows = network->layers[i]->weights->rows;
-        int cols = network->layers[i]->weights->cols;
-
-        delta_weights[i] = create_matrix_float(rows, cols, NULL);
-        momentums[i] = create_matrix_float(rows, cols, NULL);
-        temp_delta_weights[i] = create_matrix_float(rows, cols, NULL);
-
-        if (i>0)
-        {
-            transposed_weights[i-1] = create_matrix_float(cols, rows, NULL);
-            transpose(network->layers[i]->weights, transposed_weights[i-1]);
-        }
-
-        int bias_rows = network->layers[i]->bias->rows;
-        int bias_cols = network->layers[i]->bias->cols;
-
-        delta_bias[i] = create_matrix_float(bias_rows, bias_cols, NULL);
-        deltas[i] = create_matrix_float(bias_rows, bias_cols, NULL);
-
-        if (i>0)
-        {
-            temp_deltas[i-1] = create_matrix_float(cols, bias_cols, NULL);
-        }
-    }
-
-    return 0;
-}
-
 static int init_training(
     Network *network,
     Matrix **deltas,
@@ -179,28 +123,30 @@ static int init_training(
 {
     for (int i = 0; i < network->num_layers; i++)
     {
+        MatrixDataType type = network->layers[i]->weights->type;
+
         int rows = network->layers[i]->weights->rows;
         int cols = network->layers[i]->weights->cols;
 
-        delta_weights[i] = create_matrix(rows, cols, NULL);
-        momentums[i] = create_matrix(rows, cols, NULL);
-        temp_delta_weights[i] = create_matrix(rows, cols, NULL);
+        delta_weights[i] = create_matrix(rows, cols, NULL, type);
+        momentums[i] = create_matrix(rows, cols, NULL, type);
+        temp_delta_weights[i] = create_matrix(rows, cols, NULL, type);
 
         if (i>0)
         {
-            transposed_weights[i-1] = create_matrix(cols, rows, NULL);
+            transposed_weights[i-1] = create_matrix(cols, rows, NULL, type);
             transpose(network->layers[i]->weights, transposed_weights[i-1]);
         }
 
         int bias_rows = network->layers[i]->bias->rows;
         int bias_cols = network->layers[i]->bias->cols;
 
-        delta_bias[i] = create_matrix(bias_rows, bias_cols, NULL);
-        deltas[i] = create_matrix(bias_rows, bias_cols, NULL);
+        delta_bias[i] = create_matrix(bias_rows, bias_cols, NULL, type);
+        deltas[i] = create_matrix(bias_rows, bias_cols, NULL, type);
 
         if (i>0)
         {
-            temp_deltas[i-1] = create_matrix(cols, bias_cols, NULL);
+            temp_deltas[i-1] = create_matrix(cols, bias_cols, NULL, type);
         }
     }
 
@@ -429,7 +375,7 @@ int train_f(
     float momentum = (float)  training_options->momentum;
     float reg_lambda = (float) training_options->regularization_lambda;
 
-    init_training_f(
+    init_training(
             network,
             deltas,
             temp_deltas,

@@ -40,7 +40,7 @@ void mnist_double()
 
     Activation *act_sigmoid = create_sigmoid_activation();
     CostType cost_type = CROSS_ENTROPY;
-    Network *mnist_network = create_network(28*28, 2, layers, act_sigmoid);
+    Network *mnist_network = create_network(28*28, 2, layers, act_sigmoid, D_DOUBLE);
 
     TrainingOptions *training_options = init_training_options();
     training_options->cost_type = cost_type;
@@ -113,9 +113,9 @@ void mnist_float()
 
     int layers[] = {100,10};
 
-    Activation *act_sigmoid = create_sigmoid_activation_f();
+    Activation *act_sigmoid = create_sigmoid_activation();
     CostType cost_type = CROSS_ENTROPY;
-    Network *mnist_network = create_network_f(28*28, 2, layers, act_sigmoid);
+    Network *mnist_network = create_network(28*28, 2, layers, act_sigmoid, D_FLOAT);
 
     TrainingOptions *training_options = init_training_options();
     training_options->cost_type = cost_type;

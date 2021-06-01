@@ -16,7 +16,7 @@ inline void matrix_item_assign_direct(Matrix *x, Matrix *y, int col, int row)
     MATRIX_ISET(x, row, col, MATRIX_IGET(y, row, col))
 }
 
-Matrix* create_matrix(int rows, int cols, const double mat[][cols])
+Matrix* create_matrix(int rows, int cols, const double mat[][cols], MatrixDataType dataType)
 {
     Matrix *matrix = (Matrix *) malloc (sizeof (Matrix));
 
@@ -25,55 +25,43 @@ Matrix* create_matrix(int rows, int cols, const double mat[][cols])
     matrix->matrix = NULL;
     matrix->d_matrix = NULL;
     matrix->f_matrix = NULL;
-    matrix->type = D_DOUBLE;
+    matrix->type = dataType;
 
     if (rows > 0 && cols > 0) {
-        matrix->matrix = (double**) malloc (sizeof (double*) *rows);
-        for (int i = 0; i < rows; i++)
+        if (dataType == D_DOUBLE)
         {
-            matrix->matrix[i] = (double*) malloc (sizeof (double) *cols);
-            for (int j = 0; j < cols; j++)
+            matrix->matrix = (double **) malloc(sizeof(double *) * rows);
+            for (int i = 0; i < rows; i++)
             {
-                if (mat != NULL)
+                matrix->matrix[i] = (double *) malloc(sizeof(double) * cols);
+                for (int j = 0; j < cols; j++)
                 {
-                    MATRIX_ISET(matrix, i, j, mat[i][j]);
-                }
-                else
-                {
-                    MATRIX_ISET(matrix, i, j, 0);
+                    if (mat != NULL)
+                    {
+                        MATRIX_ISET(matrix, i, j, mat[i][j]);
+                    } else
+                    {
+                        MATRIX_ISET(matrix, i, j, 0);
+                    }
                 }
             }
         }
-    }
-
-    return matrix;
-}
-
-Matrix* create_matrix_float(int rows, int cols, const float mat[][cols])
-{
-    Matrix *matrix = (Matrix *) malloc (sizeof (Matrix));
-
-    matrix->rows = rows;
-    matrix->cols = cols;
-    matrix->matrix = NULL;
-    matrix->d_matrix = NULL;
-    matrix->f_matrix = NULL;
-    matrix->type = D_FLOAT;
-
-    if (rows > 0 && cols > 0) {
-        matrix->f_matrix = (float**) malloc (sizeof (float*) *rows);
-        for (int row = 0; row < rows; row++)
+        else
         {
-            matrix->f_matrix[row] = (float*) malloc (sizeof (float) *cols);
-            for (int col = 0; col < cols; col++)
+            matrix->f_matrix = (float**) malloc (sizeof (float*) *rows);
+            for (int row = 0; row < rows; row++)
             {
-                if (mat != NULL)
+                matrix->f_matrix[row] = (float*) malloc (sizeof (float) *cols);
+                for (int col = 0; col < cols; col++)
                 {
-                    MATRIX_ISET(matrix, row, col, mat[row][col]);
-                }
-                else
-                {
-                    MATRIX_ISET(matrix, row, col, 0);
+                    if (mat != NULL)
+                    {
+                        MATRIX_ISET(matrix, row, col, mat[row][col]);
+                    }
+                    else
+                    {
+                        MATRIX_ISET(matrix, row, col, 0);
+                    }
                 }
             }
         }
