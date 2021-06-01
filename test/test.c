@@ -6,22 +6,40 @@
 
 int fail(const char *test_name, const char *message)
 {
+#ifndef __MINGW64__
     RED_COLOR;
+#endif
     printf("%s %s\n", test_name, message);
+#ifndef __MINGW64__
     RESET_COLOR;
+#endif
     return -1;
 }
 
 int eval_test_result(const char *test_name, int result)
 {
     if (result<0) {
+#ifndef __MINGW64__
         RED_COLOR;
+#else
+        printf("X ");
+#endif
         printf("%s\n", test_name);
+#ifndef __MINGW64__
         RESET_COLOR;
-    } else {
+#endif
+    }
+    else
+    {
+#ifndef __MINGW64__
         GREEN_COLOR;
+#else
+        printf("* ");
+#endif
         printf("%s\n", test_name);
+#ifndef __MINGW64__
         RESET_COLOR;
+#endif
     }
 
     return result;

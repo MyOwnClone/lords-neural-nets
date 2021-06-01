@@ -64,25 +64,49 @@ void mnist_float()
     int num_test = 10000;//10000;
 
     char *train_inputs_fn = "./resources/mnist_train_vectors.csv";
-    Matrix **train_inputs = load_csv_f(train_inputs_fn, num_train, 28*28);
+    Matrix **train_inputs = load_csv(train_inputs_fn, num_train, 28*28);
+
+    for (int i = 0; i < num_train; i++)
+    {
+        convert_matrix_to_float(train_inputs[i]);
+    }
+
     normalize(train_inputs, num_train, 255);
+
     logger(INFO, __func__, "Created training dataset");
 
     char *train_labels_fn = "./resources/mnist_train_labels.csv";
-    Matrix **train_labels = load_csv_f(train_labels_fn, num_train, 1);
-    vectorize_f(train_labels, num_train, 10);
+    Matrix **train_labels = load_csv(train_labels_fn, num_train, 1);
+
+    for (int i = 0; i < num_train; i++)
+    {
+        convert_matrix_to_float(train_labels[i]);
+    }
+
+    vectorize(train_labels, num_train, 10);
     logger(INFO, __func__, "Created training labels dataset");
 
     char *test_inputs_fn = "./resources/mnist_test_vectors.csv";
-    Matrix **test_inputs = load_csv_f(test_inputs_fn, num_test, 28*28);
+    Matrix **test_inputs = load_csv(test_inputs_fn, num_test, 28*28);
+
+    for (int i = 0; i < num_test; i++)
+    {
+        convert_matrix_to_float(test_inputs[i]);
+    }
+
     normalize(test_inputs, num_test, 255);
     logger(INFO, __func__, "Created test dataset");
 
     char *test_labels_fn = "./resources/mnist_test_labels.csv";
-    Matrix **test_labels = load_csv_f(test_labels_fn, num_test, 1);
-    vectorize_f(test_labels, num_test, 10);
-    logger(INFO, __func__, "Created test labels dataset");
+    Matrix **test_labels = load_csv(test_labels_fn, num_test, 1);
 
+    for (int i = 0; i < num_test; i++)
+    {
+        convert_matrix_to_float(test_labels[i]);
+    }
+
+    vectorize(test_labels, num_test, 10);
+    logger(INFO, __func__, "Created test labels dataset");
 
     Dataset *dataset = create_dataset(num_train, 28*28, 10, num_test, train_inputs, train_labels, test_inputs, test_labels);
     Monitor monitor[] = {acc, loss};

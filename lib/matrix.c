@@ -434,3 +434,52 @@ int delete_matrix(Matrix *a)
     return 0;
 }
 
+void convert_matrix_to_float(Matrix *matrix)
+{
+    if (is_float_matrix(matrix))
+    {
+        return;
+    }
+
+    int rows = matrix->rows;
+    int cols = matrix->cols;
+
+    if (rows > 0 && cols > 0) {
+        matrix->f_matrix = (float**) malloc (sizeof (float*) *rows);
+        for (int row = 0; row < rows; row++)
+        {
+            matrix->f_matrix[row] = (float*) malloc (sizeof (float) *cols);
+            for (int col = 0; col < cols; col++)
+            {
+                matrix->f_matrix[row][col] = (float) matrix->d_matrix[row][col];
+            }
+        }
+    }
+
+    if (matrix->d_matrix != NULL)
+    {
+        free(matrix->d_matrix);
+
+        matrix->d_matrix = NULL;
+    }
+
+    if (matrix->matrix != NULL)
+    {
+        free(matrix->matrix);
+
+        matrix->matrix = NULL;
+    }
+
+    matrix->type = D_FLOAT;
+}
+
+bool is_float_matrix(Matrix *a)
+{
+    return a->type == D_FLOAT;
+}
+
+bool is_double_matrix(Matrix *a)
+{
+    return a->type == D_DOUBLE;
+}
+

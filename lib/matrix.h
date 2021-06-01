@@ -5,8 +5,8 @@
 
 typedef enum
 {
-    D_FLOAT,
-    D_DOUBLE
+    D_FLOAT = 0,
+    D_DOUBLE = 1
 } MatrixDataType;
 
 typedef struct 
@@ -56,6 +56,7 @@ void matrix_item_assign(Matrix *x, Matrix *y, int row1, int col1, int row2, int 
 
 Matrix *create_matrix(int rows, int cols, const double mat[][cols]);
 Matrix *create_matrix_float(int rows, int cols, const float mat[][cols]);
+void convert_matrix_to_float(Matrix *matrix);
 void print_matrix(Matrix *matrix);
 bool is_null(Matrix *matrix);
 int transpose(Matrix *a, Matrix *result);
@@ -71,5 +72,7 @@ int hadamard(Matrix *a, Matrix *b, Matrix *result);
 int argmax(Matrix *a);
 int reset_matrix(Matrix *a);
 int delete_matrix(Matrix *a);
+bool is_float_matrix(Matrix *a);
+bool is_double_matrix(Matrix *a);
 
 #endif /* MATRIX_H */
