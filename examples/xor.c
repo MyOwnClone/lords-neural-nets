@@ -9,7 +9,7 @@ int main() {
     int layers[] = {2,1};
 
     Activation *act_sigmoid = create_sigmoid_activation();
-    Network *xor_network = create_network(2, 2, layers, act_sigmoid);
+    Network *xor_network = create_network(2, 2, layers, act_sigmoid, D_DOUBLE);
 
     Matrix **inputs = (Matrix**) malloc (sizeof (Matrix*) * 4);
     double inputs_mat[4][2][1] = {
@@ -29,8 +29,8 @@ int main() {
 
     for (int i = 0; i < 4; i++)
     {
-        inputs[i] = create_matrix(2, 1, inputs_mat[i]);
-        labels[i] = create_matrix(1, 1, labels_mat[i]);
+        inputs[i] = create_matrix(2, 1, inputs_mat[i], NULL, D_DOUBLE);
+        labels[i] = create_matrix(1, 1, labels_mat[i], NULL, D_DOUBLE);
     }
 
     Monitor monitor[] = {acc, loss};

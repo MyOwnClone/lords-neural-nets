@@ -37,7 +37,7 @@ int main()
 
     Activation *act_sigmoid = create_sigmoid_activation();
     CostType cost_type = CROSS_ENTROPY;
-    Network *mnist_network = create_network(28*28, 2, layers, act_sigmoid);
+    Network *mnist_network = create_network(28*28, 2, layers, act_sigmoid, D_DOUBLE);
 
     TrainingOptions *training_options = init_training_options();
     training_options->cost_type = cost_type;
