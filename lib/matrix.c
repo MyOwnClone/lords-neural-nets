@@ -107,6 +107,8 @@ bool is_null(Matrix *a)
     return false;
 }
 
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "ArgumentSelectionDefects"
 int transpose(Matrix *a, Matrix *result)
 {
     if (is_null(a) || is_null(result))
@@ -124,6 +126,7 @@ int transpose(Matrix *a, Matrix *result)
     
     return 0;
 }
+#pragma clang diagnostic pop
 
 int multiply(Matrix *a, Matrix *b, Matrix *result)
 {
