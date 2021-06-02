@@ -16,10 +16,10 @@ Layer* create_layer(int layer_size, int input_size, Activation *activation, Matr
     layer->num_neurons = layer_size;
     layer->activation = activation;
 
-    layer->weights = create_matrix(layer_size, input_size, NULL, dataType);
-    layer->bias = create_matrix(layer_size, 1, NULL, dataType);
-    layer->neurons = create_matrix(layer_size, 1, NULL, dataType);
-    layer->neurons_act = create_matrix(layer_size, 1, NULL, dataType);
+    layer->weights = create_matrix(layer_size, input_size, NULL, NULL, dataType);
+    layer->bias = create_matrix(layer_size, 1, NULL, NULL, dataType);
+    layer->neurons = create_matrix(layer_size, 1, NULL, NULL, dataType);
+    layer->neurons_act = create_matrix(layer_size, 1, NULL, NULL, dataType);
 
     init_layer(layer);
 

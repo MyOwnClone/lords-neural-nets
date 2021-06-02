@@ -3,6 +3,7 @@
 #include "../lib/matrix.h"
 #include "../lib/functions.h"
 #include <stdbool.h>
+#include <stdlib.h>
 
 static int test_create_layer()
 {
@@ -71,7 +72,7 @@ int test_layer_compute()
     Layer *layer = create_layer(layer_size, input_size, sigmoid, D_DOUBLE);
 
     double mat[10][1] = {{1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}};
-    Matrix *input = create_matrix(input_size, 1, mat, D_DOUBLE);
+    Matrix *input = create_matrix(input_size, 1, mat, NULL, D_DOUBLE);
 
     if (layer_compute(layer, input) < 0)
     {

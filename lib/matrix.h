@@ -54,7 +54,7 @@ void matrix_item_assign(Matrix *x, Matrix *y, int row1, int col1, int row2, int 
 #define MATRIX_IMULS(x, row, col, val) MATRIX_ISET(x, row, col, MATRIX_IGET(x, row, col) * val)
 #define MATRIX_IADDS(x, row, col, val) MATRIX_ISET(x, row, col, MATRIX_IGET(x, row, col) + val)
 
-Matrix *create_matrix(int rows, int cols, const double mat[][cols], MatrixDataType dataType);
+Matrix* create_matrix(int rows, int cols, const double double_mat[][cols], const float float_mat[][cols], MatrixDataType dataType);
 void convert_matrix_to_float(Matrix *matrix);
 void print_matrix(Matrix *matrix);
 bool is_null(Matrix *matrix);

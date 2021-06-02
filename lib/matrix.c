@@ -16,7 +16,7 @@ inline void matrix_item_assign_direct(Matrix *x, Matrix *y, int col, int row)
     MATRIX_ISET(x, row, col, MATRIX_IGET(y, row, col))
 }
 
-Matrix* create_matrix(int rows, int cols, const double mat[][cols], MatrixDataType dataType)
+Matrix* create_matrix(int rows, int cols, const double double_mat[][cols], const float float_mat[][cols], MatrixDataType dataType)
 {
     Matrix *matrix = (Matrix *) malloc (sizeof (Matrix));
 
@@ -27,6 +27,20 @@ Matrix* create_matrix(int rows, int cols, const double mat[][cols], MatrixDataTy
     matrix->f_matrix = NULL;
     matrix->type = dataType;
 
+    if (dataType == D_FLOAT && float_mat == NULL && double_mat != NULL)
+    {
+        printf("DataType set to a float but a double matrix is set instead!");
+
+        return NULL;
+    }
+
+    if (dataType == D_DOUBLE && double_mat == NULL && float_mat != NULL)
+    {
+        printf("DataType set to a double but a float matrix is set instead!");
+
+        return NULL;
+    }
+
     if (rows > 0 && cols > 0) {
         if (dataType == D_DOUBLE)
         {
@@ -36,9 +50,9 @@ Matrix* create_matrix(int rows, int cols, const double mat[][cols], MatrixDataTy
                 matrix->matrix[i] = (double *) malloc(sizeof(double) * cols);
                 for (int j = 0; j < cols; j++)
                 {
-                    if (mat != NULL)
+                    if (double_mat != NULL)
                     {
-                        MATRIX_ISET(matrix, i, j, mat[i][j]);
+                        MATRIX_ISET(matrix, i, j, double_mat[i][j]);
                     } else
                     {
                         MATRIX_ISET(matrix, i, j, 0);
@@ -54,9 +68,9 @@ Matrix* create_matrix(int rows, int cols, const double mat[][cols], MatrixDataTy
                 matrix->f_matrix[row] = (float*) malloc (sizeof (float) *cols);
                 for (int col = 0; col < cols; col++)
                 {
-                    if (mat != NULL)
+                    if (float_mat != NULL)
                     {
-                        MATRIX_ISET(matrix, row, col, mat[row][col]);
+                        MATRIX_ISET(matrix, row, col, float_mat[row][col]);
                     }
                     else
                     {

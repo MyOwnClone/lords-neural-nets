@@ -16,7 +16,7 @@ static int test_vectorize()
     Matrix **a = (Matrix**) malloc (sizeof (Matrix*) * 15);
     for (int i = 0; i < 15; i++)
     {
-        a[i] = create_matrix(1,1,mat[i], D_DOUBLE);
+        a[i] = create_matrix(1,1,mat[i], NULL, D_DOUBLE);
     }
 
     vectorize(a, 15, 15);
@@ -73,7 +73,7 @@ static int test_normalize()
 
     for (int i = 0; i < 3; i++)
     {
-        a[i] = create_matrix(3,3, mat[i], D_DOUBLE);
+        a[i] = create_matrix(3,3, mat[i], NULL, D_DOUBLE);
     }
 
     normalize(a, 3, 4);

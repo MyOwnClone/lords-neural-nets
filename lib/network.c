@@ -128,25 +128,25 @@ static int init_training(
         int rows = network->layers[i]->weights->rows;
         int cols = network->layers[i]->weights->cols;
 
-        delta_weights[i] = create_matrix(rows, cols, NULL, type);
-        momentums[i] = create_matrix(rows, cols, NULL, type);
-        temp_delta_weights[i] = create_matrix(rows, cols, NULL, type);
+        delta_weights[i] = create_matrix(rows, cols, NULL, NULL, type);
+        momentums[i] = create_matrix(rows, cols, NULL, NULL, type);
+        temp_delta_weights[i] = create_matrix(rows, cols, NULL, NULL, type);
 
         if (i>0)
         {
-            transposed_weights[i-1] = create_matrix(cols, rows, NULL, type);
+            transposed_weights[i-1] = create_matrix(cols, rows, NULL, NULL, type);
             transpose(network->layers[i]->weights, transposed_weights[i-1]);
         }
 
         int bias_rows = network->layers[i]->bias->rows;
         int bias_cols = network->layers[i]->bias->cols;
 
-        delta_bias[i] = create_matrix(bias_rows, bias_cols, NULL, type);
-        deltas[i] = create_matrix(bias_rows, bias_cols, NULL, type);
+        delta_bias[i] = create_matrix(bias_rows, bias_cols, NULL, NULL, type);
+        deltas[i] = create_matrix(bias_rows, bias_cols, NULL, NULL, type);
 
         if (i>0)
         {
-            temp_deltas[i-1] = create_matrix(cols, bias_cols, NULL, type);
+            temp_deltas[i-1] = create_matrix(cols, bias_cols, NULL, NULL, type);
         }
     }
 
