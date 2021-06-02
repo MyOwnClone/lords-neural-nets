@@ -4,7 +4,7 @@
 #include <stdbool.h>
 
 double** matrix_d(Matrix* x) { return x->d_matrix; }
-float** MATRIX_F(Matrix* x) { return x->f_matrix; }
+float** matrix_f(Matrix* x) { return x->f_matrix; }
 
 inline void matrix_item_assign(Matrix *x, Matrix *y, int row1, int col1, int row2, int col2 )
 {

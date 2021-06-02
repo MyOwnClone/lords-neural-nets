@@ -7,7 +7,7 @@
 
 const long MILLION = 1000l * 1000l;
 const long BILLION = 1000l * MILLION;
-const long TEST_REPEAT_COUNT = 500l * MILLION;
+const long MUL_REPEAT_COUNT = 500l * MILLION;
 
 void double_multiply()
 {
@@ -27,7 +27,7 @@ void double_multiply()
 
     Matrix *res_matrix = create_matrix(res_rows, res_cols, NULL, NULL, D_DOUBLE);
 
-    for (long i = 0; i < TEST_REPEAT_COUNT; i++)
+    for (long i = 0; i < MUL_REPEAT_COUNT; i++)
     {
         reset_matrix(res_matrix);
         multiply(a_matrix, b_matrix, res_matrix);
@@ -57,7 +57,7 @@ void float_multiply()
 
     Matrix *res_matrix = create_matrix(res_rows, res_cols, NULL, NULL, D_FLOAT);
 
-    for (long i = 0; i < TEST_REPEAT_COUNT; i++)
+    for (long i = 0; i < MUL_REPEAT_COUNT; i++)
     {
         reset_matrix(res_matrix);
         multiply(a_matrix, b_matrix, res_matrix);
