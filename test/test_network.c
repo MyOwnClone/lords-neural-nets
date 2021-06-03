@@ -23,19 +23,19 @@ static int test_create_network()
 
     if (network->num_layers != num_layers)
     {
-        res += fail(__func__, "Number of layers do not match");
+        res += fail(__func__,  __LINE__, "Number of layers do not match");
     }
 
     if (network == NULL || network->layers == NULL)
     {
-        res += fail(__func__, "Network is null");
+        res += fail(__func__,  __LINE__, "Network is null");
     }
 
     for (int i = 0; i < num_layers; i++)
     {
         if (network->layers[i] == NULL || network->layers[i]->num_neurons != layers[i])
         {
-            res += fail(__func__, "Network has wrong layers");
+            res += fail(__func__,  __LINE__, "Network has wrong layers");
         }
     }
 
@@ -62,12 +62,12 @@ static int test_predict()
 
     if (is_null(result))
     {
-        res += fail(__func__, "Result matrix should not be null");
+        res += fail(__func__,  __LINE__, "Result matrix should not be null");
     }
 
     if (!is_non_zero(result))
     {
-        res += fail(__func__, "Result matrix should not 0");
+        res += fail(__func__,  __LINE__, "Result matrix should not 0");
     }
 
     free(input);

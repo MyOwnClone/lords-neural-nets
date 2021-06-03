@@ -74,4 +74,8 @@ int delete_matrix(Matrix *a);
 bool is_float_matrix(Matrix *a);
 bool is_double_matrix(Matrix *a);
 
+bool is_equal(Matrix *matrix, int rows, int cols, const double d_mat[rows][cols], const float f_mat[rows][cols]);
+
+#define IS_EQUAL(mat, rows, cols, other_mat) ((is_float_matrix(mat) == true) && (is_equal(mat, rows, cols, NULL, other_mat) == true) || (is_equal(mat, rows, cols, other_mat, NULL)) == true)
+
 #endif /* MATRIX_H */

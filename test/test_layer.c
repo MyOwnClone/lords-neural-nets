@@ -19,32 +19,32 @@ static int test_create_layer()
     //Tests
     if (layer->num_neurons != layer_size)
     {
-        res+=fail(__func__, "Wrong layer size");
+        res+=fail(__func__,  __LINE__, "Wrong layer size");
     }
 
     if (layer->activation != sigmoid)
     {
-        res+=fail(__func__, "Wrong layer activation function");
+        res+=fail(__func__,  __LINE__, "Wrong layer activation function");
     }
 
     if (is_null(layer->weights) || is_null(layer->bias) || is_null(layer->neurons))
     {
-        res+=fail(__func__, "Layer cannot be null");
+        res+=fail(__func__,  __LINE__, "Layer cannot be null");
     }
 
     if (layer->weights->rows != layer_size || layer->weights->cols != input_size)
     {
-        res+=fail(__func__, "Wrong weight matrix dimensions");
+        res+=fail(__func__,  __LINE__, "Wrong weight matrix dimensions");
     }
 
     if (layer->bias->rows != layer_size || layer->bias->cols != 1)
     {
-        res+=fail(__func__, "Wrong bias matrix dimensions");
+        res+=fail(__func__,  __LINE__, "Wrong bias matrix dimensions");
     }
 
     if (layer->neurons->rows != layer_size || layer->neurons->cols != 1)
     {
-        res+=fail(__func__, "Wrong neurons matrix dimensions");
+        res+=fail(__func__,  __LINE__, "Wrong neurons matrix dimensions");
     }
 
     // Test if layer is initialized
@@ -52,7 +52,7 @@ static int test_create_layer()
     {
         print_matrix(layer->weights);
         print_matrix(layer->bias);
-        res+=fail(__func__, "Layer is not properly initialized");
+        res+=fail(__func__,  __LINE__, "Layer is not properly initialized");
     }
 
     // Cleanup
@@ -76,17 +76,17 @@ int test_layer_compute()
 
     if (layer_compute(layer, input) < 0)
     {
-        res+=fail(__func__, "Layer compute failed");
+        res+=fail(__func__,  __LINE__, "Layer compute failed");
     }
 
     if (is_null(layer->neurons_act))
     {
-        res+=fail(__func__, "Layer neurons cannot be null");
+        res+=fail(__func__,  __LINE__, "Layer neurons cannot be null");
     }
 
     if (!is_non_zero(layer->neurons_act))
     {
-        res+=fail(__func__, "Layer neurons should not be zero matrix");
+        res+=fail(__func__,  __LINE__, "Layer neurons should not be zero matrix");
     }
 
         // Cleanup

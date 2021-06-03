@@ -70,7 +70,9 @@ Matrix* create_matrix(int rows, int cols, const double double_mat[][cols], const
                 {
                     if (float_mat != NULL)
                     {
-                        MATRIX_ISET(matrix, row, col, float_mat[row][col]);
+                        float f_value = float_mat[row][col];
+
+                        MATRIX_ISET(matrix, row, col, f_value);
                     }
                     else
                     {
@@ -486,5 +488,38 @@ bool is_float_matrix(Matrix *a)
 bool is_double_matrix(Matrix *a)
 {
     return a->type == D_DOUBLE;
+}
+
+bool is_equal(Matrix *matrix, int rows, int cols, const double d_mat[rows][cols], const float f_mat[rows][cols])
+{
+    if (matrix->rows != rows || matrix->cols != cols)
+    {
+        return false;
+    }
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            if (is_float_matrix(matrix))
+            {
+                float f_value = (float) f_mat[i][j];
+
+                if ((float)MATRIX_IGET(matrix, i, j) != f_value)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if (MATRIX_IGET(matrix, i, j) != d_mat[i][j])
+                {
+                    return false;
+                }
+            }
+        }
+    }
+
+    return true;
 }
 

@@ -4,46 +4,50 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-static bool is_equal(Matrix *matrix, int rows, int cols, const double mat[rows][cols])
+static int test_create_matrix_float()
 {
-    if (matrix->rows != rows || matrix->cols != cols)
+    // Setup
+    int res = 0;
+
+    MatrixDataType type = D_FLOAT;
+
+    int rows = 3;
+    int cols = 3;
+
+    float f_mat[3][3] = {{1, 1, 1}, {2, 2, 2}, {3, 3, 3}};
+
+    Matrix *matrix = create_matrix(rows, cols, NULL, f_mat, type);
+
+    // Test
+    if (is_null(matrix))
     {
-        return false;
+        res+=fail(__func__,  __LINE__, "Matrix is NULL");
     }
 
-    for (int i = 0; i < rows; i++)
+    if (!IS_EQUAL(matrix, rows, cols, f_mat))
     {
-        for (int j = 0; j < cols; j++)
-        {
-            if (MATRIX_IGET(matrix, i, j) != mat[i][j])
-            {
-                return false;
-            }
-        }        
+        res+=fail(__func__,  __LINE__, "Wrong matrix dimensions or values");
     }
 
-    return true;
-}
+    // Cleanup
+    delete_matrix(matrix);
 
-static bool is_equal_float(Matrix *matrix, int rows, int cols, const float mat[rows][cols])
-{
-    if (matrix->rows != rows || matrix->cols != cols)
-    {
-        return false;
+    // Test create empty matrix
+    rows = 0;
+    cols = 0;
+
+    matrix = create_matrix(rows, cols, NULL, NULL, type);
+
+    // Test
+    if (matrix == NULL) {
+        res+=fail(__func__,  __LINE__, "Matrix struct is NULL");
     }
 
-    for (int i = 0; i < rows; i++)
-    {
-        for (int j = 0; j < cols; j++)
-        {
-            if (MATRIX_IGET(matrix, i, j) != mat[i][j])
-            {
-                return false;
-            }
-        }
+    if (matrix->matrix != NULL) {
+        res+=fail(__func__,  __LINE__, "Matrix in matrix struct is not NULL");
     }
 
-    return true;
+    return eval_test_result(__func__, res);
 }
 
 static int test_create_matrix()
@@ -62,12 +66,12 @@ static int test_create_matrix()
     // Test
     if (is_null(matrix))
     {
-        res+=fail(__func__, "Matrix is NULL");
+        res+=fail(__func__, __LINE__, "Matrix is NULL");
     }
 
-    if (!is_equal(matrix, rows, cols, mat))
+    if (!IS_EQUAL(matrix, rows, cols, mat))
     {
-        res+=fail(__func__, "Wrong matrix dimensions or values");
+        res+=fail(__func__,  __LINE__, "Wrong matrix dimensions or values");
     }
 
     // Cleanup
@@ -81,11 +85,11 @@ static int test_create_matrix()
 
     // Test
     if (matrix == NULL) {
-        res+=fail(__func__, "Matrix struct is NULL");
+        res+=fail(__func__,  __LINE__, "Matrix struct is NULL");
     }
 
     if (matrix->matrix != NULL) {
-        res+=fail(__func__, "Matrix in matrix struct is not NULL");
+        res+=fail(__func__,  __LINE__, "Matrix in matrix struct is not NULL");
     }
    
     return eval_test_result(__func__, res);
@@ -101,14 +105,14 @@ static int test_is_null()
     // Test null pointer
     if(!is_null(matrix))
     {
-        res+=fail(__func__, "Matrix should be null");
+        res+=fail(__func__,  __LINE__, "Matrix should be null");
     }
 
     // Test non null matrix
     matrix = create_matrix(1,1,NULL, NULL, D_DOUBLE);
     if(is_null(matrix))
     {
-        res+=fail(__func__, "Matrix should not be null");
+        res+=fail(__func__,  __LINE__, "Matrix should not be null");
 
     }
 
@@ -118,7 +122,7 @@ static int test_is_null()
 
     if(!is_null(matrix))
     {
-        res+=fail(__func__, "Matrix should be null");
+        res+=fail(__func__,  __LINE__, "Matrix should be null");
 
     }
 
@@ -157,10 +161,10 @@ static int test_transpose()
     // Test
     if (is_null(transposed))
     {
-        res+=fail(__func__, "Transposed matrix is NULL\n");
+        res+=fail(__func__,  __LINE__, "Transposed matrix is NULL\n");
     }
 
-    if (!is_equal(transposed, cols, rows, transposed_mat))
+    if (!IS_EQUAL(transposed, cols, rows, transposed_mat))
 
     // Cleanup
 
@@ -194,7 +198,7 @@ static int test_multiply_double()
     int res_wrong_dims = multiply(a_matrix, c_matrix, res_wrong_dims_mat);
     if (res_wrong_dims != -1)
     {
-        res+=fail(__func__, "Mismatched dimension should not be multiplied");
+        res+=fail(__func__,  __LINE__, "Mismatched dimension should not be multiplied");
     }
 
     // Test multiply correct dimensions
@@ -211,12 +215,12 @@ static int test_multiply_double()
 
     if (is_null(res_matrix))
     {
-        res+=fail(__func__, "Matrix should not be null");
+        res+=fail(__func__,  __LINE__, "Matrix should not be null");
     }
 
-    if (!is_equal(res_matrix, res_rows, res_cols, res_mat))
+    if (!IS_EQUAL(res_matrix, res_rows, res_cols, res_mat))
     {
-        res+=fail(__func__, "Wrong matrix dimensions or values");
+        res+=fail(__func__,  __LINE__, "Wrong matrix dimensions or values");
     }
 
     // Cleanup
@@ -253,7 +257,7 @@ static int test_multiply_float()
     int res_wrong_dims = multiply(a_matrix, c_matrix, res_wrong_dims_mat);
     if (res_wrong_dims != -1)
     {
-        res+=fail(__func__, "Mismatched dimension should not be multiplied");
+        res+=fail(__func__,  __LINE__, "Mismatched dimension should not be multiplied");
     }
 
     // Test multiply correct dimensions
@@ -270,12 +274,12 @@ static int test_multiply_float()
 
     if (is_null(res_matrix))
     {
-        res+=fail(__func__, "Matrix should not be null");
+        res+=fail(__func__,  __LINE__, "Matrix should not be null");
     }
 
-    if (!is_equal_float(res_matrix, res_rows, res_cols, res_mat))
+    if (!IS_EQUAL(res_matrix, res_rows, res_cols, res_mat))
     {
-        res+=fail(__func__, "Wrong matrix dimensions or values");
+        res+=fail(__func__,  __LINE__, "Wrong matrix dimensions or values");
     }
 
     // Cleanup
@@ -312,7 +316,7 @@ static int test_multiply_transposed()
     int res_wrong_dims = multiply_transposed(a_matrix, c_matrix, res_wrong_dims_mat);
     if (res_wrong_dims != -1)
     {
-        res+=fail(__func__, "Mismatched dimension should not be multiplied");
+        res+=fail(__func__,  __LINE__, "Mismatched dimension should not be multiplied");
     }
 
     // Test multiply correct dimensions
@@ -329,12 +333,12 @@ static int test_multiply_transposed()
 
     if (is_null(res_matrix))
     {
-        res+=fail(__func__, "Matrix should not be null");
+        res+=fail(__func__,  __LINE__, "Matrix should not be null");
     }
 
-    if (!is_equal(res_matrix, res_rows, res_cols, res_mat))
+    if (!IS_EQUAL(res_matrix, res_rows, res_cols, res_mat))
     {
-        res+=fail(__func__, "Wrong matrix dimensions or values");
+        res+=fail(__func__,  __LINE__, "Wrong matrix dimensions or values");
     }
 
     // Cleanup
@@ -368,7 +372,7 @@ static int test_add()
     int res_wrong_dims = add(a_matrix, c_matrix);
     if (res_wrong_dims != -1)
     {
-        res+=fail(__func__, "Sum of mismatched dimension matrices should not be possible");
+        res+=fail(__func__,  __LINE__, "Sum of mismatched dimension matrices should not be possible");
     }
 
     // Test add correct dimensions
@@ -382,12 +386,12 @@ static int test_add()
 
     if (is_null(a_matrix))
     {
-        res+=fail(__func__, "Matrix should not be null");
+        res+=fail(__func__,  __LINE__, "Matrix should not be null");
     }
 
-    if (!is_equal(a_matrix, rows, cols, res_mat))
+    if (!IS_EQUAL(a_matrix, rows, cols, res_mat))
     {
-        res+=fail(__func__, "Wrong matrix dimensions or values");
+        res+=fail(__func__,  __LINE__, "Wrong matrix dimensions or values");
     }
 
     // Cleanup
@@ -419,7 +423,7 @@ static int test_subtract()
     int res_wrong_dims = subtract(a_matrix, c_matrix);
     if (res_wrong_dims != -1)
     {
-        res+=fail(__func__, "Subtraction of mismatched dimension matrices should not be possible");
+        res+=fail(__func__,  __LINE__, "Subtraction of mismatched dimension matrices should not be possible");
     }
 
     // Test add correct dimensions
@@ -433,12 +437,12 @@ static int test_subtract()
 
     if (is_null(a_matrix))
     {
-        res+=fail(__func__, "Matrix should not be null");
+        res+=fail(__func__,  __LINE__, "Matrix should not be null");
     }
 
-    if (!is_equal(a_matrix, rows, cols, res_mat))
+    if (!IS_EQUAL(a_matrix, rows, cols, res_mat))
     {
-        res+=fail(__func__, "Wrong matrix dimensions or values");
+        res+=fail(__func__,  __LINE__, "Wrong matrix dimensions or values");
     }
 
     // Cleanup
@@ -466,12 +470,12 @@ static int test_scalar_multiply()
     // Test
     if (is_null(a))
     {
-        res+=fail(__func__, "Matrix should not be null");
+        res+=fail(__func__,  __LINE__, "Matrix should not be null");
     }
 
-    if (!is_equal(a, rows, cols, res_mat))
+    if (!IS_EQUAL(a, rows, cols, res_mat))
     {
-        res+=fail(__func__, "Wrong matrix dimensions or values");
+        res+=fail(__func__,  __LINE__, "Wrong matrix dimensions or values");
     }
 
     // Cleanup
@@ -498,12 +502,12 @@ static int test_scalar_add()
     // Test
     if (is_null(a))
     {
-        res+=fail(__func__, "Matrix should not be null");
+        res+=fail(__func__,  __LINE__, "Matrix should not be null");
     }
 
-    if (!is_equal(a, rows, cols, res_mat))
+    if (!IS_EQUAL(a, rows, cols, res_mat))
     {
-        res+=fail(__func__, "Wrong matrix dimensions or values");
+        res+=fail(__func__,  __LINE__, "Wrong matrix dimensions or values");
     }
 
     // Cleanup
@@ -535,12 +539,12 @@ static int test_apply()
 
     if (is_null(a_matrix))
     {
-        res+=fail(__func__, "Matrix should not be null");
+        res+=fail(__func__,  __LINE__, "Matrix should not be null");
     }
 
-    if (!is_equal(a_matrix, rows, cols, res_mat))
+    if (!IS_EQUAL(a_matrix, rows, cols, res_mat))
     {
-        res+=fail(__func__, "Wrong matrix dimensions or values");
+        res+=fail(__func__,  __LINE__, "Wrong matrix dimensions or values");
     }
 
     delete_matrix(a_matrix);
@@ -573,7 +577,7 @@ static int test_hadamard()
     int res_wrong_dims = hadamard(a_matrix, c_matrix, res_wrong_dims_mat);
     if (res_wrong_dims != -1)
     {
-        res+=fail(__func__, "Mismatched dimension should not be multiplied");
+        res+=fail(__func__,  __LINE__, "Mismatched dimension should not be multiplied");
     }
 
     // Test multiply correct dimensions
@@ -590,12 +594,12 @@ static int test_hadamard()
 
     if (is_null(res_matrix))
     {
-        res+=fail(__func__, "Matrix should not be null");
+        res+=fail(__func__,  __LINE__, "Matrix should not be null");
     }
 
-    if (!is_equal(res_matrix, res_rows, res_cols, res_mat))
+    if (!IS_EQUAL(res_matrix, res_rows, res_cols, res_mat))
     {
-        res+=fail(__func__, "Wrong matrix dimensions or values");
+        res+=fail(__func__,  __LINE__, "Wrong matrix dimensions or values");
     }
 
     // Cleanup
@@ -625,7 +629,7 @@ static int test_argmax()
 
     if (arg != 9)
     {
-        res+=fail(__func__, "Wrong argmax result");
+        res+=fail(__func__,  __LINE__, "Wrong argmax result");
     }
 
     int index = 4;
@@ -635,7 +639,7 @@ static int test_argmax()
 
     if (arg != index)
     {
-        res+=fail(__func__, "Wrong argmax result");
+        res+=fail(__func__,  __LINE__, "Wrong argmax result");
     }
 
     // Cleanup
@@ -647,6 +651,7 @@ int test_matrix()
 {
     int res = 0;
     res += test_create_matrix();
+    res += test_create_matrix_float();
     res += test_is_null();
     res += test_transpose();
     res += test_multiply_double();

@@ -4,12 +4,12 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-int fail(const char *test_name, const char *message)
+int fail(const char *test_name, int line, const char *message)
 {
 #ifndef __MINGW64__
     RED_COLOR;
 #endif
-    printf("%s %s\n", test_name, message);
+    printf("%s:%d %s\n", test_name, line, message);
 #ifndef __MINGW64__
     RESET_COLOR;
 #endif

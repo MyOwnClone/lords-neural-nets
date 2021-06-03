@@ -26,19 +26,19 @@ static int test_vectorize()
     {
         if (is_null(a[i]))
         {
-            res += fail(__func__, "Vectorized matrix is null");
+            res += fail(__func__,  __LINE__, "Vectorized matrix is null");
         }
 
         if (a[i]->rows != 15 || a[i]->cols != 1)
         {
-            res += fail(__func__, "Wrong vectorized matrix dimensions");
+            res += fail(__func__,  __LINE__, "Wrong vectorized matrix dimensions");
         }
 
         for (int j = 0; j < 15; j++)
         {
             if ((i == j && a[i]->matrix[j][0] != 1) || (i != j && a[i]->matrix[j][0] != 0))
             {
-                res += fail(__func__, "Wrong vectorized matrix values");
+                res += fail(__func__,  __LINE__, "Wrong vectorized matrix values");
             }            
         }        
     }
@@ -85,7 +85,7 @@ static int test_normalize()
         {
             if (a[0]->matrix[i][j] != 0.25 || a[1]->matrix[i][j] != 0.5 || a[2]->matrix[i][j] != 0.75)
             {
-                res += fail(__func__, "Wrong normalized matrix values");
+                res += fail(__func__,  __LINE__, "Wrong normalized matrix values");
             }
         }        
     }

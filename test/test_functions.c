@@ -19,7 +19,7 @@ static int test_act_sigmoid()
         !is_approx_equal(act_sigmoid(-1), 0.2689414213699951207488) ||
         !is_approx_equal(act_sigmoid(1), 0.7310585786300048792512))
     {
-        res += fail(__func__, "Unexpected sigmoid value");
+        res += fail(__func__,  __LINE__, "Unexpected sigmoid value");
     }
 
     return eval_test_result(__func__, res);
@@ -33,7 +33,7 @@ static int test_act_sigmoid_der()
         !is_approx_equal(act_sigmoid_der(-1), 0.1966119332414818525374) ||
         !is_approx_equal(act_sigmoid_der(1), 0.1966119332414818525374))
     {
-        res += fail(__func__, "Unexpected sigmoid derivation value");
+        res += fail(__func__,  __LINE__, "Unexpected sigmoid derivation value");
     }
 
     return eval_test_result(__func__, res);
@@ -45,7 +45,7 @@ static int test_act_relu()
 
     if (act_relu(-1) != 0 || act_relu(0) != 0 || act_relu(1) != 1 || act_relu(2) != 2)
     {
-        res += fail(__func__, "Unexpected relu value");
+        res += fail(__func__,  __LINE__, "Unexpected relu value");
     }
     return eval_test_result(__func__, res);
 }
@@ -56,7 +56,7 @@ static int test_act_relu_der()
 
     if (act_relu_der(-1) != 0 || act_relu_der(0) != 0 || act_relu_der(1) != 1 || act_relu_der(2) != 1)
     {
-        res += fail(__func__, "Unexpected relu derivation value");
+        res += fail(__func__,  __LINE__, "Unexpected relu derivation value");
     }
     return eval_test_result(__func__, res);
 }
