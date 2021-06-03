@@ -494,7 +494,7 @@ int train_f(
                 // L2 Regularization
                 scalar_multiply(network->layers[j]->weights, 1 - ((learning_rate * reg_lambda)/(float)(dataset->train_size)));
 
-                print_matrix(delta_weights[j]);
+                //print_matrix(delta_weights[j]);
 
                 // Set new weights
                 add(network->layers[j]->weights, delta_weights[j]);
