@@ -135,18 +135,18 @@ void mnist_float()
 
 int main()
 {
-    // TODO: 1 remove _f() functions, use only original functions which select mode of operation based on the input matrix types
     // TODO: 2 check for matrix type mismatch with new method is_type_equal(m1, m2)
+    // TODO/FIXME 3: gradients (delta_weights etc.) seem to be zero in float training mode :-(
 
-    double double_msecs = print_elapsed_time(mnist_float, "mnist float", 1);
-    //double float_msecs = print_elapsed_time(mnist_double, "mnist double", 1);
+    double float_msecs = print_elapsed_time(mnist_float, "mnist float", 1);
+    double double_msecs = print_elapsed_time(mnist_double, "mnist double", 1);
 
-    //printf("float over double speed-up factor: %fx\n", (double_msecs / float_msecs));
+    printf("float over double speed-up factor: %fx\n", (double_msecs / float_msecs));
 
     // mingw 64
     /*
-     *  mnist float: Average time elapsed over 1 runs: 286_297.000000 ms :-( :-(
+     *  mnist float: Average time elapsed over 1 runs: 296_109.000000 ms :-( :-(
      *
-     *  mnist double: Average time elapsed over 1 runs: 183_488.000000 ms
+     *  mnist double: Average time elapsed over 1 runs: 188733.000000 ms
      */
 }

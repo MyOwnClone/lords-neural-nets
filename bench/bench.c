@@ -83,4 +83,14 @@ int main()
     double double_msecs = print_elapsed_time(double_multiply, "double", repeat_count);
 
     printf("float over double speed-up factor: %fx\n", (double_msecs / float_msecs));
+
+    // mingw 64
+    /*
+     *  sizeof(float) == 4
+        sizeof(double) == 8
+        float: Average time elapsed over 10 runs: 26240.200000 ms :-( WHY? FIXME
+        double: Average time elapsed over 10 runs: 24623.700000 ms
+        float over double speed-up factor: 0.938396x :-(
+     *
+     */
 }

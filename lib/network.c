@@ -699,7 +699,7 @@ int train(
                 // Set new weights
                 add(network->layers[j]->weights, delta_weights[j]);
 
-                print_matrix(delta_weights[j]);
+                //print_matrix(delta_weights[j]);
 
                 // printf("Weights Matrix after adjustment\n");
                 // print_matrix(network->layers[j]->weights);
