@@ -26,11 +26,14 @@ typedef struct
 // TODO: benchmark performance float vs double
 // TODO: in memory dataset/loader
 
-double** matrix_d(Matrix* x);
-float** matrix_f(Matrix* x);
+double** matrix_get_d(Matrix* x);
+float** matrix_get_f(Matrix* x);
+
+void matrix_set_d(Matrix* x, double **mat);
+void matrix_set_f(Matrix* x, float **mat);
 
 // Item GET
-#define MATRIX_IGET(x, row, col) (((x)->type == D_FLOAT) ? (float)(matrix_f(x)[row][col]) : (double)(matrix_d(x)[row][col]))
+#define MATRIX_IGET(x, row, col) (((x)->type == D_FLOAT) ? (float)(matrix_get_f(x)[row][col]) : (double)(matrix_get_d(x)[row][col]))
 
 // Item SET
 #define MATRIX_ISET(x, row, col, val) if ((x)->type == D_FLOAT) { \
@@ -77,5 +80,17 @@ bool is_double_matrix(Matrix *a);
 bool is_equal(Matrix *matrix, int rows, int cols, const double d_mat[rows][cols], const float f_mat[rows][cols]);
 
 #define IS_EQUAL(mat, rows, cols, other_mat) ((is_float_matrix(mat) == true) && (is_equal(mat, rows, cols, NULL, other_mat) == true) || (is_equal(mat, rows, cols, other_mat, NULL)) == true)
+
+#define MATRIX_SET(matrix, p_mat) if (is_float_matrix(matrix)) \
+    matrix_set_f(matrix, p_mat);                                \
+else                                                           \
+    matrix_set_d(matrix, p_mat);
+
+#define MATRIX_GET(matrix) (is_float_matrix(matrix) == true) ? matrix_get_f(matrix) : matrix_get_d(matrix)
+
+#define APPLY(matrix, matrix_result, fn) if (is_float_matrix(matrix)) \
+    apply_f(matrix, matrix_result, fn);                                \
+else                                                                  \
+    apply(matrix, matrix_result, fn);
 
 #endif /* MATRIX_H */

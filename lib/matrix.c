@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-double** matrix_d(Matrix* x) { return x->d_matrix; }
-float** matrix_f(Matrix* x) { return x->f_matrix; }
+double** matrix_get_d(Matrix* x) { return x->d_matrix; }
+float** matrix_get_f(Matrix* x) { return x->f_matrix; }
 
 inline void matrix_item_assign(Matrix *x, Matrix *y, int row1, int col1, int row2, int col2 )
 {
@@ -521,5 +521,15 @@ bool is_equal(Matrix *matrix, int rows, int cols, const double d_mat[rows][cols]
     }
 
     return true;
+}
+
+void matrix_set_d(Matrix *x, double **mat)
+{
+    x->d_matrix = mat;
+}
+
+void matrix_set_f(Matrix *x, float **mat)
+{
+    x->f_matrix = mat;
 }
 
