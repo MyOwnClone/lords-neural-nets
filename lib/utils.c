@@ -117,9 +117,7 @@ int vectorize(Matrix **a, int length, int num_classes)
 
     for (int i = 0; i < length; i++)
     {
-        //int index = (int) MATRIX_IGET(a[i], 0, 0);
-
-        int index = (int) a[i]->d_matrix[0][0];
+        int index = (int) MATRIX_IGET(a[i], 0, 0);
 
         if (index >= num_classes)
         {
