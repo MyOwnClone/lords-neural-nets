@@ -52,8 +52,9 @@ int main()
     // mingw 64
 
     /*
-     *  xor float: Average time elapsed over 1 runs: 9582.000000 ms :-(
-     *  xor double: Average time elapsed over 1 runs: 8743.000000 ms
-        float over double speed-up factor: 0.912440x
+     *   when using (x64): -O3 -finline-functions -m64 -funroll-loops -oFast -funsafe-math-optimizations -mfpmath=sse -ffast-math
+     *   muladd float: Average time elapsed over 10000 runs: 0.924400 ms
+     *   muladd double: Average time elapsed over 10000 runs: 0.922900 ms
+     *   float over double speed-up factor: 0.998377x
      */
 }

@@ -1,13 +1,5 @@
 add_executable (matmul_bench matmul_bench.c bench_utils.c)
 
-set(CMAKE_CXX_FLAGS "")
-set(CMAKE_CXX_FLAGS_DEBUG "-g")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -finline-functions -m64 -funroll-loops -oFast")
-
-set(CMAKE_C_FLAGS "")
-set(CMAKE_C_FLAGS_DEBUG "-g")
-set(CMAKE_C_FLAGS_RELEASE "-O3 -finline-functions -m64 -funroll-loops -oFast")
-
 set_property(TARGET matmul_bench PROPERTY C_STANDARD 11)
 target_link_libraries(matmul_bench m lib)
 
