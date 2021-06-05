@@ -29,8 +29,8 @@ int main() {
 
     for (int i = 0; i < 4; i++)
     {
-        inputs[i] = create_matrix(2, 1, inputs_mat[i], NULL, D_DOUBLE);
-        labels[i] = create_matrix(1, 1, labels_mat[i], NULL, D_DOUBLE);
+        inputs[i] = create_d_matrix(2, 1, inputs_mat[i]);
+        labels[i] = create_d_matrix(1, 1, labels_mat[i]);
     }
 
     Monitor monitor[] = {acc, loss};

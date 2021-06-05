@@ -502,14 +502,14 @@ static int test_add_float()
     int rows = 3;
     int cols = 2;
     const float a_mat[3][2] = {{2,1}, {3,2}, {5,3}};
-    Matrix *a_matrix = create_matrix(rows, cols, NULL, a_mat, D_FLOAT);
+    Matrix *a_matrix = create_f_matrix(rows, cols, a_mat);
 
     const float b_mat[3][2] = {{5,0}, {4,3}, {4,1}};
-    Matrix *b_matrix = create_matrix(rows, cols, NULL, b_mat, D_FLOAT);
+    Matrix *b_matrix = create_f_matrix(rows, cols, b_mat);
 
     int c_rows = 4;
     int c_cols = 5;
-    Matrix *c_matrix = create_matrix(c_rows, c_cols, NULL, NULL, D_FLOAT);
+    Matrix *c_matrix = create_f_matrix(c_rows, c_cols, NULL);
 
     // Test add wrong dimensions
     int res_wrong_dims = add(a_matrix, c_matrix);
@@ -553,14 +553,14 @@ static int test_add()
     int rows = 3;
     int cols = 2;
     const double a_mat[3][2] = {{2,1}, {3,2}, {5,3}};
-    Matrix *a_matrix = create_matrix(rows, cols, a_mat, NULL, D_DOUBLE);
+    Matrix *a_matrix = create_d_matrix(rows, cols, a_mat);
 
     const double b_mat[3][2] = {{5,0}, {4,3}, {4,1}};
-    Matrix *b_matrix = create_matrix(rows, cols, b_mat, NULL, D_DOUBLE);
+    Matrix *b_matrix = create_d_matrix(rows, cols, b_mat);
 
     int c_rows = 4;
     int c_cols = 5;
-    Matrix *c_matrix = create_matrix(c_rows, c_cols, NULL, NULL, D_DOUBLE);
+    Matrix *c_matrix = create_d_matrix(c_rows, c_cols, NULL);
 
     // Test add wrong dimensions
     int res_wrong_dims = add(a_matrix, c_matrix);
@@ -604,14 +604,14 @@ static int test_subtract_float()
     int rows = 3;
     int cols = 2;
     const float a_mat[3][2] = {{2,1}, {3,2}, {5,3}};
-    Matrix *a_matrix = create_matrix(rows, cols, NULL, a_mat, D_FLOAT);
+    Matrix *a_matrix = create_f_matrix(rows, cols, a_mat);
 
     const float b_mat[3][2] = {{5,0}, {4,3}, {4,1}};
-    Matrix *b_matrix = create_matrix(rows, cols, NULL, b_mat, D_FLOAT);
+    Matrix *b_matrix = create_f_matrix(rows, cols, b_mat);
 
     int c_rows = 4;
     int c_cols = 5;
-    Matrix *c_matrix = create_matrix(c_rows, c_cols, NULL, NULL, D_FLOAT);
+    Matrix *c_matrix = create_f_matrix(c_rows, c_cols, NULL);
 
     // Test add wrong dimensions
     int res_wrong_dims = subtract(a_matrix, c_matrix);
@@ -876,7 +876,7 @@ static int test_apply()
     int rows = 2;
     int cols = 2;
     const double a_mat[2][2] = {{1,2}, {3,4}};
-    Matrix *a_matrix = create_matrix(rows, cols, a_mat, NULL, D_DOUBLE);
+    Matrix *a_matrix = create_d_matrix(rows, cols, a_mat);
 
     const double res_mat[2][2] = {{1,4}, {9, 16}};
 
@@ -906,19 +906,19 @@ static int test_hadamard_float()
     int a_rows = 3;
     int a_cols = 2;
     const float a_mat[3][2] = {{2,1}, {3,2}, {5,3}};
-    Matrix *a_matrix = create_matrix(a_rows, a_cols, NULL, a_mat, D_FLOAT);
+    Matrix *a_matrix = create_f_matrix(a_rows, a_cols, a_mat);
 
     int b_rows = 3;
     int b_cols = 2;
     const float b_mat[3][2] = {{5,0}, {3,4}, {1,7}};
-    Matrix *b_matrix = create_matrix(b_rows, b_cols, NULL, b_mat, D_FLOAT);
+    Matrix *b_matrix = create_f_matrix(b_rows, b_cols, b_mat);
 
     int c_rows = 4;
     int c_cols = 5;
-    Matrix *c_matrix = create_matrix(c_rows, c_cols, NULL, NULL, D_FLOAT);
+    Matrix *c_matrix = create_f_matrix(c_rows, c_cols, NULL);
 
     // Test multiply wrong dimensions
-    Matrix *res_wrong_dims_mat = create_matrix(a_cols, c_rows, NULL, NULL, D_FLOAT);
+    Matrix *res_wrong_dims_mat = create_f_matrix(a_cols, c_rows, NULL);
     int res_wrong_dims = hadamard(a_matrix, c_matrix, res_wrong_dims_mat);
     if (res_wrong_dims != -1)
     {
@@ -934,7 +934,7 @@ static int test_hadamard_float()
             {5.00, 21.00}
     };
 
-    Matrix *res_matrix = create_matrix(res_rows, res_cols, NULL, NULL, D_FLOAT);
+    Matrix *res_matrix = create_f_matrix(res_rows, res_cols, NULL);
     hadamard(a_matrix, b_matrix, res_matrix);
 
     if (is_null(res_matrix))
@@ -965,19 +965,19 @@ static int test_hadamard()
     int a_rows = 3;
     int a_cols = 2;
     const double a_mat[3][2] = {{2,1}, {3,2}, {5,3}};
-    Matrix *a_matrix = create_matrix(a_rows, a_cols, a_mat, NULL, D_DOUBLE);
+    Matrix *a_matrix = create_d_matrix(a_rows, a_cols, a_mat);
 
     int b_rows = 3;
     int b_cols = 2;
     const double b_mat[3][2] = {{5,0}, {3,4}, {1,7}};
-    Matrix *b_matrix = create_matrix(b_rows, b_cols, b_mat, NULL, D_DOUBLE);
+    Matrix *b_matrix = create_d_matrix(b_rows, b_cols, b_mat);
 
     int c_rows = 4;
     int c_cols = 5;
-    Matrix *c_matrix = create_matrix(c_rows, c_cols, NULL, NULL, D_DOUBLE);
+    Matrix *c_matrix = create_d_matrix(c_rows, c_cols, NULL);
 
     // Test multiply wrong dimensions
-    Matrix *res_wrong_dims_mat = create_matrix(a_cols, c_rows, NULL, NULL, D_DOUBLE);
+    Matrix *res_wrong_dims_mat = create_d_matrix(a_cols, c_rows, NULL);
     int res_wrong_dims = hadamard(a_matrix, c_matrix, res_wrong_dims_mat);
     if (res_wrong_dims != -1)
     {
@@ -993,7 +993,7 @@ static int test_hadamard()
         {5.00, 21.00}
     };
 
-    Matrix *res_matrix = create_matrix(res_rows, res_cols, NULL, NULL, D_DOUBLE);
+    Matrix *res_matrix = create_d_matrix(res_rows, res_cols, NULL);
     hadamard(a_matrix, b_matrix, res_matrix);
 
     if (is_null(res_matrix))
@@ -1026,7 +1026,7 @@ static int test_argmax_float()
         mat[i][0] = (float) i / 10;
     }
 
-    Matrix *a = create_matrix(10, 1, NULL, mat, D_FLOAT);
+    Matrix *a = create_f_matrix(10, 1, mat);
 
     // Tests
     int arg = argmax(a);
@@ -1061,7 +1061,7 @@ static int test_argmax()
         mat[i][0] = (double) i / 10;
     }
 
-    Matrix *a = create_matrix(10, 1, mat, NULL, D_DOUBLE);
+    Matrix *a = create_d_matrix(10, 1, mat);
 
     // Tests
     int arg = argmax(a);

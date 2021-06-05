@@ -267,6 +267,7 @@ int scalar_add(Matrix *a, double x) {
     return 0;
 }
 
+// we need special _f version, because pointers to functions are incompatible between float and double
 int apply_f(Matrix *a, Matrix *result, float (*fn)(float))
 {
     if (is_null(result))
@@ -485,11 +486,6 @@ bool is_float_matrix(Matrix *a)
     return a->type == D_FLOAT;
 }
 
-bool is_double_matrix(Matrix *a)
-{
-    return a->type == D_DOUBLE;
-}
-
 bool is_equal(Matrix *matrix, int rows, int cols, const double d_mat[rows][cols], const float f_mat[rows][cols])
 {
     if (matrix->rows != rows || matrix->cols != cols)
@@ -531,5 +527,15 @@ void matrix_set_d(Matrix *x, double **mat)
 void matrix_set_f(Matrix *x, float **mat)
 {
     x->f_matrix = mat;
+}
+
+Matrix *create_f_matrix(int rows, int cols, const float float_mat[][cols])
+{
+    return create_matrix(rows, cols, NULL, float_mat, D_FLOAT);
+}
+
+Matrix *create_d_matrix(int rows, int cols, const double double_mat[][cols])
+{
+    return create_matrix(rows, cols, double_mat, NULL, D_DOUBLE);
 }
 

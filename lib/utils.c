@@ -104,7 +104,7 @@ Matrix** load_csv(char *filename, int lines, int line_length)
             token = strtok(NULL, ",");
         }
 
-        result[line_idx++] = create_matrix(line_length, 1, mat, NULL, D_DOUBLE);
+        result[line_idx++] = create_d_matrix(line_length, 1, mat);
     }
 
     fclose(fp);
@@ -134,7 +134,7 @@ int vectorize(Matrix **a, int length, int num_classes)
             mat[index][0] = 1;
 
             delete_matrix(a[i]);
-            a[i] = create_matrix(num_classes, 1, NULL, mat, D_FLOAT);
+            a[i] = create_f_matrix(num_classes, 1, mat);
         }
         else {
             double mat[num_classes][1];
@@ -145,7 +145,7 @@ int vectorize(Matrix **a, int length, int num_classes)
             mat[index][0] = 1;
 
             delete_matrix(a[i]);
-            a[i] = create_matrix(num_classes, 1, mat, NULL, D_DOUBLE);
+            a[i] = create_d_matrix(num_classes, 1, mat);
         }
     }
 

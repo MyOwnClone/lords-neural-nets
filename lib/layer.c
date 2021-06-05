@@ -7,7 +7,6 @@
 #include <stdio.h>
 
 static int init_layer(Layer *layer);
-static int init_layer_f(Layer *layer);
 
 Layer* create_layer(int layer_size, int input_size, Activation *activation, MatrixDataType dataType)
 {
@@ -56,17 +55,17 @@ static int init_layer(Layer *layer)
         srand(time(NULL));
         double range = sqrt((double) 6 / (weights->rows + weights->cols));
 
-        for (int i = 0; i < weights->rows; i++)
+        for (int row = 0; row < weights->rows; row++)
         {
-            for (int j = 0; j < weights->cols; j++)
+            for (int col = 0; col < weights->cols; col++)
             {
-                weights->matrix[i][j] = (double) rand() / RAND_MAX * 2 * range - range;
+                MATRIX_ISET(weights, row, col,(double) rand() / RAND_MAX * 2 * range - range);
             }
         }
 
-        for (int i = 0; i < bias->rows; i++)
+        for (int row = 0; row < bias->rows; row++)
         {
-            bias->matrix[i][0] = (double) rand() / RAND_MAX;
+            MATRIX_ISET(bias, row, 0,(double) rand() / RAND_MAX);
         }
     }
 
