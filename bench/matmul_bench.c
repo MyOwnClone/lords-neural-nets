@@ -89,7 +89,7 @@ int main()
     assert(sizeof(float) == 4);
     assert(sizeof(double) == 8);
 
-    long repeat_count = 100;
+    long repeat_count = 10;
 
     double float_msecs = print_elapsed_time(float_multiply, "float", repeat_count);
     double double_msecs = print_elapsed_time(double_multiply, "double", repeat_count);
