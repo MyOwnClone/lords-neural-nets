@@ -4,12 +4,12 @@
 #ifdef __MINGW64__
     #include <sys\timeb.h>
 
-    double print_elapsed_time(fn func, char* desc, long repeat_count)
+    double print_elapsed_time(fn func, char* desc, long long repeat_count)
     {
         struct timeb start, end;
         long diff = 0;
 
-        for (long repeat = 0; repeat < repeat_count; repeat++)
+        for (long long repeat = 0; repeat < repeat_count; repeat++)
         {
             ftime(&start);
 
@@ -28,13 +28,13 @@
 #else
     #include <sys/time.h>
 
-    double print_elapsed_time(fn func, char* desc, long repeat_count)
+    double print_elapsed_time(fn func, char* desc, long long repeat_count)
     {
         struct timeval tval_before, tval_after, tval_result, tval_overall;
 
         timerclear(&tval_overall);
 
-        for (long repeat = 0; repeat < repeat_count; repeat++)
+        for (long long repeat = 0; repeat < repeat_count; repeat++)
         {
             gettimeofday(&tval_before, NULL);
 
