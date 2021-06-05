@@ -65,29 +65,6 @@ Matrix* predict(Network *network, Matrix *input)
     return layer_input;
 }
 
-float accuracy_f(Network *network, Matrix **inputs, Matrix **targets, int input_length)
-{
-    int correct = 0;
-
-    for (int i = 0; i < input_length; i++)
-    {
-        Matrix *prediction = predict(network, inputs[i]);
-        if (targets[i]->cols == 1 && targets[i]->rows == 1)
-        {
-            float pred_value = prediction->matrix[0][0] < 0.5 ? 0 : 1;
-            if (pred_value == targets[i]->matrix[0][0]) correct++;
-        }
-        else
-        {
-            int predicted_class = argmax(prediction);
-            int real_class = argmax(targets[i]);
-            if (predicted_class == real_class) correct++;
-        }
-    }
-
-    return (float) correct/input_length;
-}
-
 double accuracy(Network *network, Matrix **inputs, Matrix **targets, int input_length)
 {
     int correct = 0;
@@ -97,18 +74,20 @@ double accuracy(Network *network, Matrix **inputs, Matrix **targets, int input_l
         Matrix *prediction = predict(network, inputs[i]);
         if (targets[i]->cols == 1 && targets[i]->rows == 1)
         {
-            double pred_value = prediction->matrix[0][0] < 0.5 ? 0 : 1;
-            if (pred_value == targets[i]->matrix[0][0]) correct++;
+            float pred_value = MATRIX_IGET(prediction, 0, 0) < 0.5 ? 0 : 1;
+
+            if (pred_value == MATRIX_IGET(targets[i], 0, 0))
+                correct++;
         }
         else
         {
             int predicted_class = argmax(prediction);
             int real_class = argmax(targets[i]);
             if (predicted_class == real_class) correct++;
-        } 
+        }
     }
 
-    return (double) correct/input_length;    
+    return (double) correct/input_length;
 }
 
 static int init_training(
@@ -522,12 +501,12 @@ int train_f(
             i+=batch_size;
         }
 
-        epoch_accuracy = accuracy_f(network, dataset->val_inputs, dataset->val_labels, dataset->val_size);
+        epoch_accuracy = accuracy(network, dataset->val_inputs, dataset->val_labels, dataset->val_size);
         char acc_buffer[27];
         sprintf(acc_buffer, "Validation accuracy: %.3f", epoch_accuracy);
         logger(INFO, __func__, acc_buffer);
 
-        epoch_accuracy = accuracy_f(network, dataset->train_inputs, dataset->train_labels, dataset->train_size);
+        epoch_accuracy = accuracy(network, dataset->train_inputs, dataset->train_labels, dataset->train_size);
         char acc_train_buffer[27];
         sprintf(acc_train_buffer, "Training accuracy: %.3f", epoch_accuracy);
         logger(INFO, __func__, acc_train_buffer);
