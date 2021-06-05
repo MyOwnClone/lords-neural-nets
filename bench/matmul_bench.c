@@ -5,9 +5,11 @@
 #include <assert.h>
 #include "bench_utils.h"
 
-const long MILLION = 1000l * 1000l;
-const long BILLION = 1000l * MILLION;
-const long long MUL_REPEAT_COUNT = 5000ll * MILLION;
+const long long MILLION = 1000l * 1000l;
+const long long BILLION = 1000l * MILLION;
+const long long MUL_REPEAT_COUNT = 10ll * MILLION;
+
+long long LOG_PERIOD = 1ll * MILLION;
 
 void double_multiply()
 {
@@ -27,10 +29,15 @@ void double_multiply()
 
     Matrix *res_matrix = create_d_matrix(res_rows, res_cols, NULL);
 
-    for (long i = 0; i < MUL_REPEAT_COUNT; i++)
+    for (long long i = 0; i < MUL_REPEAT_COUNT; i++)
     {
         reset_matrix(res_matrix);
         multiply(a_matrix, b_matrix, res_matrix);
+
+        if (i % LOG_PERIOD == 0)
+        {
+            printf("double completed %.2f%\n", 100 * ((float)i /(float) MUL_REPEAT_COUNT));
+        }
     }
 
     // Cleanup
@@ -57,10 +64,15 @@ void float_multiply()
 
     Matrix *res_matrix = create_f_matrix(res_rows, res_cols, NULL);
 
-    for (long i = 0; i < MUL_REPEAT_COUNT; i++)
+    for (long long i = 0; i < MUL_REPEAT_COUNT; i++)
     {
         reset_matrix(res_matrix);
         multiply(a_matrix, b_matrix, res_matrix);
+
+        if (i % LOG_PERIOD == 0)
+        {
+            printf("float completed %.2f%\n", 100 * ((float)i /(float) MUL_REPEAT_COUNT));
+        }
     }
 
     // Cleanup
@@ -77,7 +89,7 @@ int main()
     assert(sizeof(float) == 4);
     assert(sizeof(double) == 8);
 
-    long repeat_count = 1;
+    long repeat_count = 100;
 
     double float_msecs = print_elapsed_time(float_multiply, "float", repeat_count);
     double double_msecs = print_elapsed_time(double_multiply, "double", repeat_count);
