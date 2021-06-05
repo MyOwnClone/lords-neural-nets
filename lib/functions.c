@@ -122,7 +122,7 @@ double cost_cross_entropy(Matrix *prediction, Matrix *target)
     double loss = 0;
     for (int i = 0; i < prediction->rows; i++)
     {
-        loss += -1 * (target->matrix[i][0] * log(prediction->matrix[i][0]) + (1 - target->matrix[i][0]) * log(1 - prediction->matrix[i][0]));
+        loss += -1 * (MATRIX_IGET(target, i, 0) * log(MATRIX_IGET(prediction, i, 0)) + (1 - MATRIX_IGET(target, i, 0)) * log(1 - MATRIX_IGET(prediction, i, 0)));
     }
 
     return loss;
@@ -138,11 +138,7 @@ float cost_cross_entropy_f(Matrix *prediction, Matrix *target)
     float loss = 0;
     for (int row = 0; row < prediction->rows; row++)
     {
-        float prediction_logf = logf((MATRIX_IGET(prediction, row, 0)));
-        float part1 = (-1.0f) * (MATRIX_IGET(target, row, 0) * prediction_logf);
-        float part2 = (1 - MATRIX_IGET(target, row, 0)) * logf(1 - MATRIX_IGET(prediction, row, 0));
-
-        loss += part1 + part2;
+        loss += -1 * (MATRIX_IGET(target, row, 0) * log(MATRIX_IGET(prediction, row, 0)) + (1 - MATRIX_IGET(target, row, 0)) * log(1 - MATRIX_IGET(prediction, row, 0)));
     }
 
     return loss;

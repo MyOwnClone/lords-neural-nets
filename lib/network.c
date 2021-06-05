@@ -6,19 +6,19 @@
 #include <stdio.h>
 #include <limits.h>
 
-Network* create_network(int input_size, int num_layers, int layers[], Activation *activation, MatrixDataType dataType)
+Network *create_network(int input_size, int num_layers, int layers[], Activation *activation, MatrixDataType dataType)
 {
-    Network *network = (Network *) malloc (sizeof (Network));
+    Network *network = (Network *) malloc(sizeof(Network));
     network->num_layers = num_layers;
 
-    network->layers = (Layer **) malloc (sizeof (Layer*) *num_layers);
+    network->layers = (Layer **) malloc(sizeof(Layer *) * num_layers);
     int prev_layer_size = input_size;
     for (int i = 0; i < num_layers; i++)
     {
         network->layers[i] = create_layer(layers[i], prev_layer_size, activation, dataType);
         prev_layer_size = layers[i];
     }
-    
+
     return network;
 }
 
@@ -28,7 +28,7 @@ void print_network(Network *network)
     {
         printf("Layer %d\n", i);
         print_matrix(network->layers[i]->weights);
-    }    
+    }
 }
 
 int delete_network(Network *network)
@@ -45,7 +45,7 @@ int delete_network(Network *network)
     return 0;
 }
 
-Matrix* predict(Network *network, Matrix *input)
+Matrix *predict(Network *network, Matrix *input)
 {
     Matrix *layer_input = input;
 
@@ -61,11 +61,11 @@ Matrix* predict(Network *network, Matrix *input)
         }
         layer_input = layer->neurons_act;
     }
-    
+
     return layer_input;
 }
 
-double accuracy(Network *network, Matrix **inputs, Matrix **targets, int input_length)
+float accuracy_f(Network *network, Matrix **inputs, Matrix **targets, int input_length)
 {
     int correct = 0;
 
@@ -78,8 +78,7 @@ double accuracy(Network *network, Matrix **inputs, Matrix **targets, int input_l
 
             if (pred_value == MATRIX_IGET(targets[i], 0, 0))
                 correct++;
-        }
-        else
+        } else
         {
             int predicted_class = argmax(prediction);
             int real_class = argmax(targets[i]);
@@ -87,18 +86,45 @@ double accuracy(Network *network, Matrix **inputs, Matrix **targets, int input_l
         }
     }
 
-    return (double) correct/input_length;
+    return (float) correct / (float )input_length;
 }
 
+double accuracy(Network *network, Matrix **inputs, Matrix **targets, int input_length)
+{
+    int correct = 0;
+
+    for (int i = 0; i < input_length; i++)
+    {
+        Matrix *prediction = predict(network, inputs[i]);
+        if (targets[i]->cols == 1 && targets[i]->rows == 1)
+        {
+            double pred_value = MATRIX_IGET(prediction, 0, 0) < 0.5 ? 0 : 1;
+
+            if (pred_value == MATRIX_IGET(targets[i], 0, 0))
+                correct++;
+        } else
+        {
+            int predicted_class = argmax(prediction);
+            int real_class = argmax(targets[i]);
+            if (predicted_class == real_class) correct++;
+        }
+    }
+
+    return (double) correct / input_length;
+}
+
+// exp in a name means this is an expression - r-value
+#define ACCURACY_EXP(net, inputs, targets, len) is_float_matrix(*inputs) ? accuracy_f(net, inputs, targets, len) : accuracy(net, inputs, targets, len)
+
 static int init_training(
-    Network *network,
-    Matrix **deltas,
-    Matrix **temp_deltas,
-    Matrix **delta_weights,
-    Matrix **temp_delta_weights,
-    Matrix **transposed_weights,
-    Matrix **delta_bias,
-    Matrix **momentums)
+        Network *network,
+        Matrix **deltas,
+        Matrix **temp_deltas,
+        Matrix **delta_weights,
+        Matrix **temp_delta_weights,
+        Matrix **transposed_weights,
+        Matrix **delta_bias,
+        Matrix **momentums)
 {
     for (int i = 0; i < network->num_layers; i++)
     {
@@ -111,10 +137,10 @@ static int init_training(
         momentums[i] = create_empty_matrix(rows, cols, type);
         temp_delta_weights[i] = create_empty_matrix(rows, cols, type);
 
-        if (i>0)
+        if (i > 0)
         {
-            transposed_weights[i-1] = create_empty_matrix(cols, rows, type);
-            transpose(network->layers[i]->weights, transposed_weights[i-1]);
+            transposed_weights[i - 1] = create_empty_matrix(cols, rows, type);
+            transpose(network->layers[i]->weights, transposed_weights[i - 1]);
         }
 
         int bias_rows = network->layers[i]->bias->rows;
@@ -123,9 +149,9 @@ static int init_training(
         delta_bias[i] = create_empty_matrix(bias_rows, bias_cols, type);
         deltas[i] = create_empty_matrix(bias_rows, bias_cols, type);
 
-        if (i>0)
+        if (i > 0)
         {
-            temp_deltas[i-1] = create_empty_matrix(cols, bias_cols, type);
+            temp_deltas[i - 1] = create_empty_matrix(cols, bias_cols, type);
         }
     }
 
@@ -133,14 +159,14 @@ static int init_training(
 }
 
 static int backpropagate(
-    Network *network,
-    Matrix *input,
-    Matrix **deltas,
-    Matrix **temp_deltas,
-    Matrix **delta_weights,
-    Matrix **temp_delta_weights,
-    Matrix **transposed_weights,
-    Matrix **delta_bias)
+        Network *network,
+        Matrix *input,
+        Matrix **deltas,
+        Matrix **temp_deltas,
+        Matrix **delta_weights,
+        Matrix **temp_delta_weights,
+        Matrix **transposed_weights,
+        Matrix **delta_bias)
 {
     int res;
     Layer *layer;
@@ -153,24 +179,23 @@ static int backpropagate(
         if (l == 0)
         {
             prev_act = input;
-        }
-        else
+        } else
         {
-            prev_act = network->layers[l-1]->neurons_act;
+            prev_act = network->layers[l - 1]->neurons_act;
         }
-        
+
         // Compute new delta
         res = 0;
 
         if (layer->neurons->type == D_FLOAT)
         {
             res += apply_f(layer->neurons, NULL, layer->activation->fn_der_f);
-        }
-        else
+        } else
         {
             res += apply(layer->neurons, NULL, layer->activation->fn_der);
         }
-        res += multiply(transposed_weights[l], deltas[l+1], temp_deltas[l]); // Transposed weights array is 1 shorter than matrix length
+        res += multiply(transposed_weights[l], deltas[l + 1],
+                        temp_deltas[l]); // Transposed weights array is 1 shorter than matrix length
         res += hadamard(temp_deltas[l], layer->neurons, deltas[l]);
         if (res < 0)
         {
@@ -180,7 +205,8 @@ static int backpropagate(
 
         // Compute delta weights
         res = 0;
-        res += multiply_transposed(deltas[l], prev_act, temp_delta_weights[l]); // FIXME:  temp_delta_weights[l] are zero for float!!!
+        res += multiply_transposed(deltas[l], prev_act,
+                                   temp_delta_weights[l]); // FIXME:  temp_delta_weights[l] are zero for float!!!
         res += add(delta_weights[l], temp_delta_weights[l]);
         if (res < 0)
         {
@@ -195,19 +221,19 @@ static int backpropagate(
             logger(EXCEPTION, __func__, "Exception during delta bias calculation");
             return res;
         }
-    }      
+    }
 }
 
 static void cleanup(
-    int network_length,
-    Matrix **deltas,
-    Matrix **temp_deltas,
-    Matrix **delta_weights,
-    Matrix **temp_delta_weights,
-    Matrix **transposed_weights,
-    Matrix **delta_bias)
+        int network_length,
+        Matrix **deltas,
+        Matrix **temp_deltas,
+        Matrix **delta_weights,
+        Matrix **temp_delta_weights,
+        Matrix **transposed_weights,
+        Matrix **delta_bias)
 {
-        // Cleanup
+    // Cleanup
     for (int i = 0; i < network_length; i++)
     {
         delete_matrix(deltas[i]);
@@ -215,7 +241,8 @@ static void cleanup(
         delete_matrix(temp_delta_weights[i]);
         delete_matrix(delta_bias[i]);
 
-        if (i != network_length - 1) {
+        if (i != network_length - 1)
+        {
             delete_matrix(transposed_weights[i]);
             delete_matrix(temp_deltas[i]);
         }
@@ -229,14 +256,14 @@ static void cleanup(
 }
 
 static int reset(
-    Network *network,
-    Matrix **deltas,
-    Matrix **temp_deltas,
-    Matrix **delta_weights,
-    Matrix **temp_delta_weights,
-    Matrix **transposed_weights,
-    Matrix **delta_bias,
-    Matrix **momentums)
+        Network *network,
+        Matrix **deltas,
+        Matrix **temp_deltas,
+        Matrix **delta_weights,
+        Matrix **temp_delta_weights,
+        Matrix **transposed_weights,
+        Matrix **delta_bias,
+        Matrix **momentums)
 {
     int res = 0;
     for (int i = 0; i < network->num_layers; i++)
@@ -247,14 +274,15 @@ static int reset(
         res += reset_matrix(delta_bias[i]);
         res += reset_matrix(momentums[i]);
 
-        if (i != network->num_layers - 1) {
+        if (i != network->num_layers - 1)
+        {
             res += reset_matrix(transposed_weights[i]);
             res += reset_matrix(temp_deltas[i]);
         }
 
         if (i != 0)
         {
-            res += transpose(network->layers[i]->weights, transposed_weights[i-1]);
+            res += transpose(network->layers[i]->weights, transposed_weights[i - 1]);
         }
 
         if (res < 0)
@@ -262,10 +290,12 @@ static int reset(
             logger(EXCEPTION, __func__, "Exception during training temp objects reset");
             return res;
         }
-    }    
+    }
 }
 
-static int get_initial_delta(CostType cost_type, Activation *activation, Matrix *prediction, Matrix *target, Matrix *layer_output, Matrix *delta)
+static int
+get_initial_delta(CostType cost_type, Activation *activation, Matrix *prediction, Matrix *target, Matrix *layer_output,
+                  Matrix *delta)
 {
     int res = 0;
     if (cost_type == MEAN_SQUARED_ERROR)
@@ -284,13 +314,14 @@ static int get_initial_delta(CostType cost_type, Activation *activation, Matrix 
 
     } else if (cost_type == CROSS_ENTROPY)
     {
-        if (activation->type == SIGMOID) {
+        if (activation->type == SIGMOID)
+        {
             res = 0;
             res += reset_matrix(delta);
             res += add(delta, prediction);
             res += subtract(delta, target);
 
-            
+
             if (res < 0)
             {
                 logger(EXCEPTION, __func__, "Exception during output delta calculation");
@@ -300,7 +331,7 @@ static int get_initial_delta(CostType cost_type, Activation *activation, Matrix 
     }
 
     return res;
-    
+
 }
 
 static double get_loss(CostType cost_type, Matrix *prediction, Matrix *target)
@@ -312,20 +343,37 @@ static double get_loss(CostType cost_type, Matrix *prediction, Matrix *target)
         return INT_MAX;
     }
 
-    bool is_float = is_float_matrix(prediction);
-
-    if (is_float)
+    if (cost_type == MEAN_SQUARED_ERROR)
     {
-        if (cost_type == MEAN_SQUARED_ERROR)
-        {
-            return cost_mse(prediction, target);
-        } else if (cost_type == CROSS_ENTROPY)
-        {
-            return cost_cross_entropy(prediction, target);
-        }
+        return cost_mse(prediction, target);
     }
-    
+    else if (cost_type == CROSS_ENTROPY)
+    {
+        return cost_cross_entropy(prediction, target);
+    }
 }
+
+static float get_loss_f(CostType cost_type, Matrix *prediction, Matrix *target)
+{
+    if (prediction->type != target->type)
+    {
+        logger(EXCEPTION, __func__, "Prediction and target matrices are not the same type!!!");
+
+        return (float) INT_MAX;
+    }
+
+    if (cost_type == MEAN_SQUARED_ERROR)
+    {
+        return cost_mse_f(prediction, target);
+    }
+    else if (cost_type == CROSS_ENTROPY)
+    {
+        return cost_cross_entropy_f(prediction, target);
+    }
+}
+
+// exp in a name means this is an expression - r-value
+#define GET_LOSS_EXP(cost_type, pred, target) (is_float_matrix(prediction)) ? get_loss_f(cost_type, pred, target) : get_loss(cost_type, pred, target)
 
 int train_f(
         Network *network,
@@ -334,23 +382,23 @@ int train_f(
         TrainingOptions *training_options)
 {
     // Allocate all the memory
-    Matrix **delta_weights = (Matrix **) malloc (sizeof (Matrix*) * network->num_layers);
-    Matrix **temp_delta_weights = (Matrix **) malloc (sizeof (Matrix*) * network->num_layers);
+    Matrix **delta_weights = (Matrix **) malloc(sizeof(Matrix *) * network->num_layers);
+    Matrix **temp_delta_weights = (Matrix **) malloc(sizeof(Matrix *) * network->num_layers);
 
-    Matrix **momentums = (Matrix **) malloc (sizeof (Matrix *) * network->num_layers);
+    Matrix **momentums = (Matrix **) malloc(sizeof(Matrix *) * network->num_layers);
 
-    Matrix **delta_bias = (Matrix **) malloc (sizeof (Matrix*) * network->num_layers);
+    Matrix **delta_bias = (Matrix **) malloc(sizeof(Matrix *) * network->num_layers);
 
-    Matrix **deltas = (Matrix **) malloc (sizeof (Matrix*) * network->num_layers);
+    Matrix **deltas = (Matrix **) malloc(sizeof(Matrix *) * network->num_layers);
 
-    Matrix **temp_deltas = (Matrix **) malloc (sizeof (Matrix*) * network->num_layers -1);
-    Matrix **transposed_weights = (Matrix **) malloc (sizeof (Matrix*) * network->num_layers - 1);
+    Matrix **temp_deltas = (Matrix **) malloc(sizeof(Matrix *) * network->num_layers - 1);
+    Matrix **transposed_weights = (Matrix **) malloc(sizeof(Matrix *) * network->num_layers - 1);
 
     CostType cost_type = training_options->cost_type;
     int batch_size = training_options->batch_size;
     int epochs = training_options->epochs;
     float learning_rate = (float) training_options->learning_rate;
-    float momentum = (float)  training_options->momentum;
+    float momentum = (float) training_options->momentum;
     float reg_lambda = (float) training_options->regularization_lambda;
 
     init_training(
@@ -367,7 +415,7 @@ int train_f(
     Matrix *prediction;
     Matrix *target;
 
-    int L =  network->num_layers - 1;
+    int L = network->num_layers - 1;
     Layer *last_layer = network->layers[L];
 
     int res = 0;
@@ -384,10 +432,10 @@ int train_f(
         batch_size = dataset->train_size;
     }
 
-    while (epoch < epochs) {
-
-        char buffer[10 + (epoch%10) + (epochs%10)];
-        sprintf(buffer, "Epoch: %d/%d", epoch+1, epochs);
+    while (epoch < epochs)
+    {
+        char buffer[10 + (epoch % 10) + (epochs % 10)];
+        sprintf(buffer, "Epoch: %d/%d", epoch + 1, epochs);
         logger(INFO, __func__, buffer);
 
         epoch_loss = 0;
@@ -399,10 +447,10 @@ int train_f(
             int batch_start = i;
             int batch_end = batch_start + batch_size;
 
-            if (batch_end > dataset->train_size) {
+            if (batch_end > dataset->train_size)
+            {
                 batch_end = dataset->train_size;
             }
-
 
             for (int j = batch_start; j < batch_end; j++)
             {
@@ -415,7 +463,7 @@ int train_f(
                     return -1;
                 }
 
-                epoch_loss += get_loss_f(cost_type, prediction, target);
+                epoch_loss += GET_LOSS_EXP(cost_type, prediction, target);
 
                 // Calculate initial delta
                 get_initial_delta(cost_type, last_layer->activation, prediction, target, last_layer->neurons, deltas[L]);
@@ -451,7 +499,7 @@ int train_f(
             }
 
             // Adjust weights
-            float eta = -1 * (learning_rate/(float)batch_size);
+            float eta = -1 * (learning_rate / (float) batch_size);
             for (int j = 0; j < network->num_layers; j++)
             {
                 // Get momentum
@@ -470,7 +518,8 @@ int train_f(
                 // printf("\n");
 
                 // L2 Regularization
-                scalar_multiply(network->layers[j]->weights, 1 - ((learning_rate * reg_lambda)/(float)(dataset->train_size)));
+                scalar_multiply(network->layers[j]->weights,
+                                1 - ((learning_rate * reg_lambda) / (float) (dataset->train_size)));
 
                 //print_matrix(delta_weights[j]);
 
@@ -497,15 +546,15 @@ int train_f(
                     momentums
             );
 
-            i+=batch_size;
+            i += batch_size;
         }
 
-        epoch_accuracy = accuracy(network, dataset->val_inputs, dataset->val_labels, dataset->val_size);
+        epoch_accuracy = (float) ACCURACY_EXP(network, dataset->val_inputs, dataset->val_labels, dataset->val_size);
         char acc_buffer[27];
         sprintf(acc_buffer, "Validation accuracy: %.3f", epoch_accuracy);
         logger(INFO, __func__, acc_buffer);
 
-        epoch_accuracy = accuracy(network, dataset->train_inputs, dataset->train_labels, dataset->train_size);
+        epoch_accuracy = (float) ACCURACY_EXP(network, dataset->train_inputs, dataset->train_labels, dataset->train_size);
         char acc_train_buffer[27];
         sprintf(acc_train_buffer, "Training accuracy: %.3f", epoch_accuracy);
         logger(INFO, __func__, acc_train_buffer);
@@ -530,23 +579,23 @@ int train_f(
 }
 
 int train(
-    Network *network,
-    Dataset *dataset,
-    Monitor *monitor,
-    TrainingOptions *training_options)
+        Network *network,
+        Dataset *dataset,
+        Monitor *monitor,
+        TrainingOptions *training_options)
 {
     // Allocate all the memory
-    Matrix **delta_weights = (Matrix **) malloc (sizeof (Matrix*) * network->num_layers);
-    Matrix **temp_delta_weights = (Matrix **) malloc (sizeof (Matrix*) * network->num_layers);
+    Matrix **delta_weights = (Matrix **) malloc(sizeof(Matrix *) * network->num_layers);
+    Matrix **temp_delta_weights = (Matrix **) malloc(sizeof(Matrix *) * network->num_layers);
 
-    Matrix **momentums = (Matrix **) malloc (sizeof (Matrix *) * network->num_layers);
+    Matrix **momentums = (Matrix **) malloc(sizeof(Matrix *) * network->num_layers);
 
-    Matrix **delta_bias = (Matrix **) malloc (sizeof (Matrix*) * network->num_layers);
+    Matrix **delta_bias = (Matrix **) malloc(sizeof(Matrix *) * network->num_layers);
 
-    Matrix **deltas = (Matrix **) malloc (sizeof (Matrix*) * network->num_layers);
+    Matrix **deltas = (Matrix **) malloc(sizeof(Matrix *) * network->num_layers);
 
-    Matrix **temp_deltas = (Matrix **) malloc (sizeof (Matrix*) * network->num_layers -1);
-    Matrix **transposed_weights = (Matrix **) malloc (sizeof (Matrix*) * network->num_layers - 1);
+    Matrix **temp_deltas = (Matrix **) malloc(sizeof(Matrix *) * network->num_layers - 1);
+    Matrix **transposed_weights = (Matrix **) malloc(sizeof(Matrix *) * network->num_layers - 1);
 
     CostType cost_type = training_options->cost_type;
     int batch_size = training_options->batch_size;
@@ -556,20 +605,20 @@ int train(
     double reg_lambda = training_options->regularization_lambda;
 
     init_training(
-        network,
-        deltas,
-        temp_deltas,
-        delta_weights,
-        temp_delta_weights,
-        transposed_weights,
-        delta_bias,
-        momentums
+            network,
+            deltas,
+            temp_deltas,
+            delta_weights,
+            temp_delta_weights,
+            transposed_weights,
+            delta_bias,
+            momentums
     );
 
     Matrix *prediction;
     Matrix *target;
 
-    int L =  network->num_layers - 1;
+    int L = network->num_layers - 1;
     Layer *last_layer = network->layers[L];
 
     int res = 0;
@@ -586,10 +635,10 @@ int train(
         batch_size = dataset->train_size;
     }
 
-    while (epoch < epochs) {
-
-        char buffer[10 + (epoch%10) + (epochs%10)];
-        sprintf(buffer, "Epoch: %d/%d", epoch+1, epochs);
+    while (epoch < epochs)
+    {
+        char buffer[10 + (epoch % 10) + (epochs % 10)];
+        sprintf(buffer, "Epoch: %d/%d", epoch + 1, epochs);
         logger(INFO, __func__, buffer);
 
         epoch_loss = 0;
@@ -601,7 +650,8 @@ int train(
             int batch_start = i;
             int batch_end = batch_start + batch_size;
 
-            if (batch_end > dataset->train_size) {
+            if (batch_end > dataset->train_size)
+            {
                 batch_end = dataset->train_size;
             }
 
@@ -617,7 +667,7 @@ int train(
                     return -1;
                 }
 
-                epoch_loss += get_loss(cost_type, prediction, target);
+                epoch_loss += GET_LOSS_EXP(cost_type, prediction, target);
 
                 // Calculate initial delta
                 get_initial_delta(cost_type, last_layer->activation, prediction, target, last_layer->neurons, deltas[L]);
@@ -641,21 +691,21 @@ int train(
                 }
 
                 backpropagate(
-                    network,
-                    dataset->train_inputs[j],
-                    deltas,
-                    temp_deltas,
-                    delta_weights,
-                    temp_delta_weights,
-                    transposed_weights,
-                    delta_bias
+                        network,
+                        dataset->train_inputs[j],
+                        deltas,
+                        temp_deltas,
+                        delta_weights,
+                        temp_delta_weights,
+                        transposed_weights,
+                        delta_bias
                 );
             }
 
             // Adjust weights
-            double eta = -1 * (learning_rate/batch_size);
+            double eta = -1 * (learning_rate / batch_size);
             for (int j = 0; j < network->num_layers; j++)
-            {   
+            {
                 // Get momentum
                 scalar_multiply(momentums[j], momentum);
 
@@ -672,7 +722,7 @@ int train(
                 // printf("\n");
 
                 // L2 Regularization
-                scalar_multiply(network->layers[j]->weights, 1 - ((learning_rate * reg_lambda)/dataset->train_size));
+                scalar_multiply(network->layers[j]->weights, 1 - ((learning_rate * reg_lambda) / dataset->train_size));
 
                 // Set new weights
                 add(network->layers[j]->weights, delta_weights[j]);
@@ -687,27 +737,27 @@ int train(
                 scalar_multiply(delta_bias[j], eta);
                 add(network->layers[j]->bias, delta_bias[j]);
             }
-            
+
             reset(
-                network,
-                deltas,
-                temp_deltas,
-                delta_weights,
-                temp_delta_weights,
-                transposed_weights,
-                delta_bias,
-                momentums
+                    network,
+                    deltas,
+                    temp_deltas,
+                    delta_weights,
+                    temp_delta_weights,
+                    transposed_weights,
+                    delta_bias,
+                    momentums
             );
 
-            i+=batch_size;
+            i += batch_size;
         }
 
-        epoch_accuracy = accuracy(network, dataset->val_inputs, dataset->val_labels, dataset->val_size);
+        epoch_accuracy = ACCURACY_EXP(network, dataset->val_inputs, dataset->val_labels, dataset->val_size);
         char acc_buffer[27];
         sprintf(acc_buffer, "Validation accuracy: %.3f", epoch_accuracy);
         logger(INFO, __func__, acc_buffer);
 
-        epoch_accuracy = accuracy(network, dataset->train_inputs, dataset->train_labels, dataset->train_size);
+        epoch_accuracy = ACCURACY_EXP(network, dataset->train_inputs, dataset->train_labels, dataset->train_size);
         char acc_train_buffer[27];
         sprintf(acc_train_buffer, "Training accuracy: %.3f", epoch_accuracy);
         logger(INFO, __func__, acc_train_buffer);
@@ -716,17 +766,17 @@ int train(
         char loss_buffer[23];
         sprintf(loss_buffer, "Training loss: %.5f", epoch_loss);
         logger(INFO, __func__, loss_buffer);
-        
+
         epoch++;
     }
 
     cleanup(
-        network->num_layers,
-        deltas,
-        temp_deltas,
-        delta_weights,
-        temp_delta_weights,
-        transposed_weights,
-        delta_bias
+            network->num_layers,
+            deltas,
+            temp_deltas,
+            delta_weights,
+            temp_delta_weights,
+            transposed_weights,
+            delta_bias
     );
 }
