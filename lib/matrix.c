@@ -539,3 +539,18 @@ Matrix *create_d_matrix(int rows, int cols, const double double_mat[][cols])
     return create_matrix(rows, cols, double_mat, NULL, D_DOUBLE);
 }
 
+Matrix *create_empty_f_matrix(int rows, int cols)
+{
+    return create_f_matrix(rows, cols, NULL);
+}
+
+Matrix *create_empty_d_matrix(int rows, int cols)
+{
+    return create_d_matrix(rows, cols, NULL);
+}
+
+Matrix *create_empty_matrix(int rows, int cols, MatrixDataType dataType)
+{
+    return create_matrix(rows, cols, NULL,NULL, dataType);
+}
+

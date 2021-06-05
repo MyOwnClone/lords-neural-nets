@@ -59,8 +59,12 @@ void matrix_item_assign(Matrix *x, Matrix *y, int row1, int col1, int row2, int 
 
 Matrix* create_matrix(int rows, int cols, const double double_mat[][cols], const float float_mat[][cols], MatrixDataType dataType);
 
+Matrix* create_empty_matrix(int rows, int cols, MatrixDataType dataType);
+
 Matrix* create_f_matrix(int rows, int cols, const float float_mat[][cols]);
-Matrix *create_d_matrix(int rows, int cols, const double double_mat[][cols]);
+Matrix* create_d_matrix(int rows, int cols, const double double_mat[][cols]);
+Matrix* create_empty_f_matrix(int rows, int cols);
+Matrix* create_empty_d_matrix(int rows, int cols);
 
 void convert_matrix_to_float(Matrix *matrix);
 void print_matrix(Matrix *matrix);
