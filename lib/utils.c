@@ -60,16 +60,27 @@ int delete_dataset(Dataset *dataset)
         return -1;
     }
 
+    bool train_and_val_are_same = false;
+
+    // if train and validation matrices are the same (see line 48) we would have double free() call
+    if (dataset->train_size > 0 && dataset->val_size > 0)
+    {
+        train_and_val_are_same = dataset->train_inputs[0] == dataset->val_inputs[0];
+    }
+
     for (int i = 0; i < dataset->train_size; i++)
     {
         delete_matrix(dataset->train_inputs[i]);
         delete_matrix(dataset->train_labels[i]);
     }
 
-    for (int i = 0; i < dataset->val_size; i++)
+    if (!train_and_val_are_same)
     {
-        delete_matrix(dataset->val_inputs[i]);
-        delete_matrix(dataset->val_labels[i]);
+        for (int i = 0; i < dataset->val_size; i++)
+        {
+            delete_matrix(dataset->val_inputs[i]);
+            delete_matrix(dataset->val_labels[i]);
+        }
     }
 
     free(dataset);
