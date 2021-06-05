@@ -653,14 +653,14 @@ static int test_subtract()
     int rows = 3;
     int cols = 2;
     const double a_mat[3][2] = {{2,1}, {3,2}, {5,3}};
-    Matrix *a_matrix = create_matrix(rows, cols, a_mat, NULL, D_DOUBLE);
+    Matrix *a_matrix = create_d_matrix(rows, cols, a_mat);
 
     const double b_mat[3][2] = {{5,0}, {4,3}, {4,1}};
-    Matrix *b_matrix = create_matrix(rows, cols, b_mat, NULL, D_DOUBLE);
+    Matrix *b_matrix = create_d_matrix(rows, cols, b_mat);
 
     int c_rows = 4;
     int c_cols = 5;
-    Matrix *c_matrix = create_matrix(c_rows, c_cols, NULL, NULL, D_DOUBLE);
+    Matrix *c_matrix = create_d_matrix(c_rows, c_cols, NULL);
 
     // Test add wrong dimensions
     int res_wrong_dims = subtract(a_matrix, c_matrix);
@@ -704,7 +704,7 @@ static int test_scalar_multiply_float()
     int rows = 3;
     int cols = 3;
     const float a_mat[3][3] = {{1,2,3}, {4,5,6}, {7,8,9}};
-    Matrix *a = create_matrix(rows, cols, NULL, a_mat, D_FLOAT);
+    Matrix *a = create_f_matrix(rows, cols, a_mat);
 
     double x = 0.5;
     const float res_mat[3][3] = {{0.5,1,1.5}, {2,2.5,3}, {3.5,4,4.5}};
@@ -735,7 +735,7 @@ static int test_scalar_multiply()
     int rows = 3;
     int cols = 3;
     const double a_mat[3][3] = {{1,2,3}, {4,5,6}, {7,8,9}};
-    Matrix *a = create_matrix(rows, cols, a_mat, NULL, D_DOUBLE);
+    Matrix *a = create_d_matrix(rows, cols, a_mat);
 
     double x = 0.5;
     const double res_mat[3][3] = {{0.5,1,1.5}, {2,2.5,3}, {3.5,4,4.5}};
