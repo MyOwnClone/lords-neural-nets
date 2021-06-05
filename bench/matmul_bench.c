@@ -34,10 +34,10 @@ void double_multiply()
         reset_matrix(res_matrix);
         multiply(a_matrix, b_matrix, res_matrix);
 
-        if (i % LOG_PERIOD == 0)
+        /*if (i % LOG_PERIOD == 0)
         {
             printf("double completed %.2f%\n", 100 * ((float)i /(float) MUL_REPEAT_COUNT));
-        }
+        }*/
     }
 
     // Cleanup
@@ -69,10 +69,10 @@ void float_multiply()
         reset_matrix(res_matrix);
         multiply(a_matrix, b_matrix, res_matrix);
 
-        if (i % LOG_PERIOD == 0)
+        /*if (i % LOG_PERIOD == 0)
         {
             printf("float completed %.2f%\n", 100 * ((float)i /(float) MUL_REPEAT_COUNT));
-        }
+        }*/
     }
 
     // Cleanup
@@ -100,9 +100,15 @@ int main()
     /*
      *  sizeof(float) == 4
         sizeof(double) == 8
-        float: Average time elapsed over 10 runs: 26240.200000 ms :-( WHY? FIXME
-        double: Average time elapsed over 10 runs: 24623.700000 ms
-        float over double speed-up factor: 0.938396x :-(
+        float: Average time elapsed over 10 runs: 532.500000 ms
+        double: Average time elapsed over 10 runs: 449.300000 ms
+        float over double speed-up factor: 0.843756x
      *
+     */
+
+    /*
+     * branching off:
+     * float: Average time elapsed over 10 runs: 349.900000 ms
+     * double: Average time elapsed over 10 runs: 251.400000 ms
      */
 }

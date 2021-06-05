@@ -33,7 +33,7 @@ void matrix_set_d(Matrix* x, double **mat);
 void matrix_set_f(Matrix* x, float **mat);
 
 #define IS_FLOAT(x) ((x)->type == D_FLOAT)
-//#define IS_FLOAT(x) true
+//#define IS_FLOAT(x) false
 
 // Item GET
 #define MATRIX_IGET(x, row, col) (IS_FLOAT(x) ? (float)(matrix_get_f(x)[row][col]) : (double)(matrix_get_d(x)[row][col]))
