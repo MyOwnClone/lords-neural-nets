@@ -5,8 +5,8 @@
 #include <assert.h>
 #include "bench_utils.h"
 
-const long long MILLION = 1000l * 1000l;
-const long long BILLION = 1000l * MILLION;
+const long long MILLION = 1000ll * 1000ll;
+const long long BILLION = 1000ll * MILLION;
 const long long MUL_REPEAT_COUNT = 10ll * MILLION;
 
 long long LOG_PERIOD = 1ll * MILLION;
