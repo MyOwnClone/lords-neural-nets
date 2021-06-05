@@ -53,7 +53,7 @@ Activation* create_sigmoid_activation()
     activation->fn_f = &act_sigmoid_f;
 
     activation->fn_der = &act_sigmoid_der;
-    activation->fn_der_f = &act_sigmoid_der;
+    activation->fn_der_f = &act_sigmoid_der_f;
 
     activation->type = SIGMOID;
 
@@ -90,7 +90,7 @@ double cost_mse(Matrix *prediction, Matrix *target)
     double loss = 0;
     for (int i = 0; i < prediction->rows; i++)
     {
-        loss += pow(prediction->matrix[i][0] - target->matrix[i][0], 2);
+        loss += pow(MATRIX_IGET(prediction, i, 0) - MATRIX_IGET(target, i, 0), 2);
     }
 
     return loss / (2*prediction->rows);    
@@ -120,9 +120,9 @@ double cost_cross_entropy(Matrix *prediction, Matrix *target)
     }
 
     double loss = 0;
-    for (int i = 0; i < prediction->rows; i++)
+    for (int row = 0; row < prediction->rows; row++)
     {
-        loss += -1 * (MATRIX_IGET(target, i, 0) * log(MATRIX_IGET(prediction, i, 0)) + (1 - MATRIX_IGET(target, i, 0)) * log(1 - MATRIX_IGET(prediction, i, 0)));
+        loss += -1 * (MATRIX_IGET(target, row, 0) * log(MATRIX_IGET(prediction, row, 0)) + (1 - MATRIX_IGET(target, row, 0)) * log(1 - MATRIX_IGET(prediction, row, 0)));
     }
 
     return loss;
