@@ -303,27 +303,26 @@ static int get_initial_delta(CostType cost_type, Activation *activation, Matrix 
     
 }
 
-static float get_loss_f(CostType cost_type, Matrix *prediction, Matrix *target)
-{
-    if (cost_type == MEAN_SQUARED_ERROR)
-    {
-        return cost_mse_f(prediction, target);
-    }
-    else if (cost_type == CROSS_ENTROPY)
-    {
-        return cost_cross_entropy_f(prediction, target);
-    }
-
-}
-
 static double get_loss(CostType cost_type, Matrix *prediction, Matrix *target)
 {
-    if (cost_type == MEAN_SQUARED_ERROR)
+    if (prediction->type != target->type)
     {
-        return cost_mse(prediction, target);
-    } else if (cost_type == CROSS_ENTROPY)
+        logger(EXCEPTION, __func__, "Prediction and target matrices are not the same type!!!");
+
+        return INT_MAX;
+    }
+
+    bool is_float = is_float_matrix(prediction);
+
+    if (is_float)
     {
-        return cost_cross_entropy(prediction, target);   
+        if (cost_type == MEAN_SQUARED_ERROR)
+        {
+            return cost_mse(prediction, target);
+        } else if (cost_type == CROSS_ENTROPY)
+        {
+            return cost_cross_entropy(prediction, target);
+        }
     }
     
 }
