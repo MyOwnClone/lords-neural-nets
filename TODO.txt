@@ -1,0 +1,7 @@
+TODO: test multiplication and addition speed double vs float on simplest examples
+TODO: add branches and measure difference for above mentioned test
+TODO: optionally, override the is_float_matrix to #define returning just true, compilation hopefully optimizes branching away
+TODO: disassembly?
+
+FIXME: mnist on float still fails to successfully train
+FIXME 3: gradients (delta_weights etc.) seem to be zero in float training mode :-(

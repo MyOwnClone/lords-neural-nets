@@ -7,7 +7,7 @@
 
 const long MILLION = 1000l * 1000l;
 const long BILLION = 1000l * MILLION;
-const long MUL_REPEAT_COUNT = 500l * MILLION;
+const long long MUL_REPEAT_COUNT = 5000ll * MILLION;
 
 void double_multiply()
 {
@@ -77,7 +77,7 @@ int main()
     assert(sizeof(float) == 4);
     assert(sizeof(double) == 8);
 
-    long repeat_count = 10;
+    long repeat_count = 1;
 
     double float_msecs = print_elapsed_time(float_multiply, "float", repeat_count);
     double double_msecs = print_elapsed_time(double_multiply, "double", repeat_count);
