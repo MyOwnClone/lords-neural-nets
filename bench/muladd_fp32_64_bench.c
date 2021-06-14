@@ -49,12 +49,20 @@ int main()
 
     printf("float over double speed-up factor: %fx\n", (double_msecs / float_msecs));
 
-    // mingw 64
+    // mingw 64 gcc, windows 10, intel i7 ice lake
 
     /*
      *   when using (x64): -O3 -finline-functions -m64 -funroll-loops -oFast -funsafe-math-optimizations -mfpmath=sse -ffast-math
      *   muladd float: Average time elapsed over 10000 runs: 0.924400 ms
      *   muladd double: Average time elapsed over 10000 runs: 0.922900 ms
      *   float over double speed-up factor: 0.998377x
+     */
+
+    /*
+     * macOS + Apple M1 + ARM64 + clang:
+     * muladd float: Average time elapsed over 10000 runs: 0.655000 ms
+     * muladd double: Average time elapsed over 10000 runs: 0.645000 ms
+     * float over double speed-up factor: 0.984733x
+     *
      */
 }
