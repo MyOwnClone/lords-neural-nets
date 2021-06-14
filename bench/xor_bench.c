@@ -113,11 +113,18 @@ int main()
 
     printf("float over double speed-up factor: %fx\n", (double_msecs / float_msecs));
 
-    // mingw 64
-
+    // mingw 64 mingw 64 gcc, windows 10, intel i7 ice lake
     /*
      *  xor float: Average time elapsed over 1 runs: 9582.000000 ms :-(
      *  xor double: Average time elapsed over 1 runs: 8743.000000 ms
         float over double speed-up factor: 0.912440x
+     */
+
+    //
+    /* macOS + Apple M1 + ARM64 + clang: WTF? (probably win version had previously different parameters)
+     *
+     * xor double: Average time elapsed over 1 runs: 14.495000 ms
+     * float over double speed-up factor: 0.776962x
+     *
      */
 }

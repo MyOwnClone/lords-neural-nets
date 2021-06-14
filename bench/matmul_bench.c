@@ -96,7 +96,7 @@ int main()
 
     printf("float over double speed-up factor: %fx\n", (double_msecs / float_msecs));
 
-    // mingw 64
+    // mingw 64 gcc, windows 10, intel i7 ice lake
     /*
      *  sizeof(float) == 4
         sizeof(double) == 8
@@ -106,9 +106,22 @@ int main()
      *
      */
 
+    /* macOS + Apple M1 + ARM64 + clang:
+     * sizeof(float) == 4
+     *   sizeof(double) == 8
+     *   float: Average time elapsed over 10 runs: 475.628000 ms
+     *   double: Average time elapsed over 10 runs: 629.374000 ms
+     *   float over double speed-up factor: 1.323248x
+     */
+
     /*
      * branching off:
+     * mingw 64 gcc, windows 10, intel i7 ice lake
      * float: Average time elapsed over 10 runs: 349.900000 ms
      * double: Average time elapsed over 10 runs: 251.400000 ms
+     *
+     * macOS + Apple M1 + ARM64 + clang:
+     * double: Average time elapsed over 10 runs: 623.303000 ms
+     * float: Average time elapsed over 10 runs: 291.724000 ms
      */
 }
