@@ -113,6 +113,15 @@ int main()
      *   double: Average time elapsed over 10 runs: 629.374000 ms
      *   float over double speed-up factor: 1.323248x
      */
+    /*
+     * macOS + Apple M1 + ARM64 + clang + -mcpu=apple-a14:
+     * sizeof(float) == 4
+     * sizeof(double) == 8
+     * float: Average time elapsed over 10 runs: 467.548000 ms
+     * double: Average time elapsed over 10 runs: 619.646000 ms
+     * float over double speed-up factor: 1.325310x
+     *
+     */
 
     /*
      * branching off:
