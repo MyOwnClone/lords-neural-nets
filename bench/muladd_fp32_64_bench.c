@@ -53,16 +53,18 @@ int main()
 
     /*
      *   when using (x64): -O3 -finline-functions -m64 -funroll-loops -oFast -funsafe-math-optimizations -mfpmath=sse2 -ffast-math -march=rocketlake
-     *   muladd float: Average time elapsed over 10000 runs: 0.924400 ms
-     *   muladd double: Average time elapsed over 10000 runs: 0.922900 ms
-     *   float over double speed-up factor: 0.998377x
+
+        muladd float: Average time elapsed over 100000 runs: 0.987450 ms
+        muladd double: Average time elapsed over 100000 runs: 0.999490 ms
+        float over double speed-up factor: 1.012193x
+
      */
 
     /*
      * macOS + Apple M1 + ARM64 + clang:
-     * muladd float: Average time elapsed over 10000 runs: 0.655000 ms
-     * muladd double: Average time elapsed over 10000 runs: 0.645000 ms
-     * float over double speed-up factor: 0.984733x
-     *
+
+     TODO: rerun this with new repeat_count
+
+
      */
 }
