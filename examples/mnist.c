@@ -6,26 +6,26 @@
 
 int main()
 {
-    int num_train = 60000;
-    int num_test = 10000;
+    int num_train = 60;
+    int num_test = 10;
 
     char *train_inputs_fn = "./resources/mnist_train_vectors.csv";
-    Matrix **train_inputs = load_csv(train_inputs_fn, num_train, 28*28);
+    Matrix **train_inputs = load_csv(train_inputs_fn, num_train, 28*28, D_DOUBLE);
     normalize(train_inputs, num_train, 255);
     logger(INFO, __func__, "Created training dataset");
 
     char *train_labels_fn = "./resources/mnist_train_labels.csv";
-    Matrix **train_labels = load_csv(train_labels_fn, num_train, 1);
+    Matrix **train_labels = load_csv(train_labels_fn, num_train, 1, D_DOUBLE);
     vectorize(train_labels, num_train, 10);
     logger(INFO, __func__, "Created training labels dataset");
  
     char *test_inputs_fn = "./resources/mnist_test_vectors.csv";
-    Matrix **test_inputs = load_csv(test_inputs_fn, num_test, 28*28);
+    Matrix **test_inputs = load_csv(test_inputs_fn, num_test, 28*28, D_DOUBLE);
     normalize(test_inputs, num_test, 255);
     logger(INFO, __func__, "Created test dataset");
 
     char *test_labels_fn = "./resources/mnist_test_labels.csv";
-    Matrix **test_labels = load_csv(test_labels_fn, num_test, 1);
+    Matrix **test_labels = load_csv(test_labels_fn, num_test, 1, D_DOUBLE);
     vectorize(test_labels, num_test, 10);
     logger(INFO, __func__, "Created test labels dataset");
 

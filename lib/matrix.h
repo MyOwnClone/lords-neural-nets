@@ -69,7 +69,8 @@ Matrix* create_d_matrix(int rows, int cols, const double double_mat[][cols]);
 Matrix* create_empty_f_matrix(int rows, int cols);
 Matrix* create_empty_d_matrix(int rows, int cols);
 
-void convert_matrix_to_float(Matrix *matrix);
+void convert_double_matrix_to_float(Matrix *matrix);
+void convert_float_matrix_to_double(Matrix *matrix);
 void print_matrix(Matrix *matrix);
 bool is_null(Matrix *matrix);
 int transpose(Matrix *a, Matrix *result);

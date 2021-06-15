@@ -189,8 +189,13 @@ static int backpropagate(
 
         if (layer->neurons->type == D_FLOAT)
         {
+            //convert_float_matrix_to_double(layer->neurons);
+
             res += apply_f(layer->neurons, NULL, layer->activation->fn_der_f);
-        } else
+
+            //convert_double_matrix_to_float(layer->neurons);
+        }
+        else
         {
             res += apply(layer->neurons, NULL, layer->activation->fn_der);
         }

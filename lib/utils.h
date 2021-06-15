@@ -69,7 +69,7 @@ int delete_training_logging_options(TrainingLoggingOptions *training_logging_opt
 
 void logger(int log_level, const char *function_name, const char *message);
 
-Matrix** load_csv(char *filename, int lines, int line_length);
+Matrix** load_csv(char *filename, int lines, int line_length, MatrixDataType matrixDataType);
 int vectorize(Matrix **a, int length, int num_classes);
 int vectorize_f(Matrix **a, int length, int num_classes);
 int normalize(Matrix **a, int length, int max_num);

@@ -89,7 +89,7 @@ int delete_dataset(Dataset *dataset)
     return 0;
 }
 
-Matrix** load_csv(char *filename, int lines, int line_length)
+Matrix** load_csv(char *filename, int lines, int line_length, MatrixDataType matrixDataType)
 {
     FILE* fp = fopen(filename, "r");
 
@@ -107,15 +107,38 @@ Matrix** load_csv(char *filename, int lines, int line_length)
     int line_idx = 0;
     while(fgets(buffer, buffer_length, fp)) {        
         char *token = strtok(buffer, ",");
-        double mat[line_length][1];
 
-        int i = 0;
-        while( token != NULL ) {
-            mat[i++][0] = strtod(token, NULL);
-            token = strtok(NULL, ",");
+        if (matrixDataType == D_DOUBLE)
+        {
+            double mat[line_length][1];
+
+            int i = 0;
+            while (token != NULL)
+            {
+                mat[i++][0] = strtod(token, NULL);
+                token = strtok(NULL, ",");
+            }
+
+            result[line_idx++] = create_d_matrix(line_length, 1, mat);
+        }
+        else if (matrixDataType == D_FLOAT)
+        {
+            float mat[line_length][1];
+
+            int i = 0;
+            while (token != NULL)
+            {
+                mat[i++][0] = strtof(token, NULL);
+                token = strtok(NULL, ",");
+            }
+
+            result[line_idx++] = create_f_matrix(line_length, 1, mat);
         }
 
-        result[line_idx++] = create_d_matrix(line_length, 1, mat);
+        if (line_idx >= lines)
+        {
+            break;
+        }
     }
 
     fclose(fp);

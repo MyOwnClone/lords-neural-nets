@@ -5,30 +5,30 @@
 #include "bench_utils.h"
 #include <stdio.h>
 
-long EPOCH_COUNT = 5;
+long EPOCH_COUNT = 10;
 
 void mnist_double()
 {
-    int num_train = 60000;
-    int num_test = 10000;
+    int num_train = 6000;//0;
+    int num_test = 1000;//0;
 
     char *train_inputs_fn = "./resources/mnist_train_vectors.csv";
-    Matrix **train_inputs = load_csv(train_inputs_fn, num_train, 28*28);
+    Matrix **train_inputs = load_csv(train_inputs_fn, num_train, 28*28, D_DOUBLE);
     normalize(train_inputs, num_train, 255);
     logger(INFO, __func__, "Created training dataset");
 
     char *train_labels_fn = "./resources/mnist_train_labels.csv";
-    Matrix **train_labels = load_csv(train_labels_fn, num_train, 1);
+    Matrix **train_labels = load_csv(train_labels_fn, num_train, 1, D_DOUBLE);
     vectorize(train_labels, num_train, 10);
     logger(INFO, __func__, "Created training labels dataset");
 
     char *test_inputs_fn = "./resources/mnist_test_vectors.csv";
-    Matrix **test_inputs = load_csv(test_inputs_fn, num_test, 28*28);
+    Matrix **test_inputs = load_csv(test_inputs_fn, num_test, 28*28, D_DOUBLE);
     normalize(test_inputs, num_test, 255);
     logger(INFO, __func__, "Created test dataset");
 
     char *test_labels_fn = "./resources/mnist_test_labels.csv";
-    Matrix **test_labels = load_csv(test_labels_fn, num_test, 1);
+    Matrix **test_labels = load_csv(test_labels_fn, num_test, 1, D_DOUBLE);
     vectorize(test_labels, num_test, 10);
     logger(INFO, __func__, "Created test labels dataset");
 
@@ -64,50 +64,30 @@ void mnist_double()
 
 void mnist_float()
 {
-    int num_train = 60000;//60000;
-    int num_test = 10000;//10000;
+    int num_train = 6000;//60000;
+    int num_test = 1000;//10000;
 
     char *train_inputs_fn = "./resources/mnist_train_vectors.csv";
-    Matrix **train_inputs = load_csv(train_inputs_fn, num_train, 28*28);
-
-    for (int i = 0; i < num_train; i++)
-    {
-        convert_matrix_to_float(train_inputs[i]);
-    }
+    Matrix **train_inputs = load_csv(train_inputs_fn, num_train, 28*28, D_FLOAT);
 
     normalize(train_inputs, num_train, 255);
 
     logger(INFO, __func__, "Created training dataset");
 
     char *train_labels_fn = "./resources/mnist_train_labels.csv";
-    Matrix **train_labels = load_csv(train_labels_fn, num_train, 1);
-
-    for (int i = 0; i < num_train; i++)
-    {
-        convert_matrix_to_float(train_labels[i]);
-    }
+    Matrix **train_labels = load_csv(train_labels_fn, num_train, 1, D_FLOAT);
 
     vectorize(train_labels, num_train, 10);
     logger(INFO, __func__, "Created training labels dataset");
 
     char *test_inputs_fn = "./resources/mnist_test_vectors.csv";
-    Matrix **test_inputs = load_csv(test_inputs_fn, num_test, 28*28);
-
-    for (int i = 0; i < num_test; i++)
-    {
-        convert_matrix_to_float(test_inputs[i]);
-    }
+    Matrix **test_inputs = load_csv(test_inputs_fn, num_test, 28*28, D_FLOAT);
 
     normalize(test_inputs, num_test, 255);
     logger(INFO, __func__, "Created test dataset");
 
     char *test_labels_fn = "./resources/mnist_test_labels.csv";
-    Matrix **test_labels = load_csv(test_labels_fn, num_test, 1);
-
-    for (int i = 0; i < num_test; i++)
-    {
-        convert_matrix_to_float(test_labels[i]);
-    }
+    Matrix **test_labels = load_csv(test_labels_fn, num_test, 1, D_FLOAT);
 
     vectorize(test_labels, num_test, 10);
     logger(INFO, __func__, "Created test labels dataset");
@@ -123,11 +103,11 @@ void mnist_float()
 
     TrainingOptions *training_options = init_training_options();
     training_options->cost_type = cost_type;
-    training_options->epochs = EPOCH_COUNT;
-    training_options->batch_size = 10;   // 10
-    training_options->learning_rate = 0.1;
+    training_options->epochs = 10;
+    training_options->batch_size = 2;   // 10
+    training_options->learning_rate = 0.5;
     training_options->momentum = 0.9;
-    training_options->regularization_lambda = 0.09;
+    training_options->regularization_lambda = 0.9;
 
     TrainingLoggingOptions *training_logging_options = init_training_logging_options();
     training_logging_options->LogEachNThEpoch = 1;
@@ -143,10 +123,11 @@ void mnist_float()
 
 int main()
 {
+    // FIXME: mnist has vanishing gradient problem with float backend
     double float_msecs = print_elapsed_time(mnist_float, "mnist float", 1);
     double double_msecs = print_elapsed_time(mnist_double, "mnist double", 1);
 
-    printf("float over double speed-up factor: %fx\n", (double_msecs / float_msecs));
+    //printf("float over double speed-up factor: %fx\n", (double_msecs / float_msecs));
 
     // mingw 64 gcc, windows 10, intel i7 cometlake
     /*
