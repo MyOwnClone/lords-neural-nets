@@ -56,4 +56,13 @@ int main() {
     delete_dataset(dataset);
     delete_training_options(training_options);
     delete_training_logging_options(training_logging_options);
+
+    /*
+
+    train_f: Epoch: 2000/2000
+    train_f: Validation accuracy: 1.000
+    train_f: Training accuracy: 1.000
+    train_f: Training loss: 0.00786
+
+     */
 }

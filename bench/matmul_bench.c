@@ -96,7 +96,7 @@ int main()
 
     printf("float over double speed-up factor: %fx\n", (double_msecs / float_msecs));
 
-    // mingw 64 gcc, windows 10, intel i7 ice lake
+    // mingw 64 gcc, windows 10, intel i7 cometlake
     /*
      *  sizeof(float) == 4
         sizeof(double) == 8
@@ -125,7 +125,7 @@ int main()
 
     /*
      * branching off:
-     * mingw 64 gcc, windows 10, intel i7 ice lake
+     * mingw 64 gcc, windows 10, intel i7 cometlake
      * float: Average time elapsed over 10 runs: 349.900000 ms
      * double: Average time elapsed over 10 runs: 251.400000 ms
      *

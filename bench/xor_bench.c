@@ -116,16 +116,17 @@ void xor_double()
 
 int main()
 {
-    double float_msecs = print_elapsed_time(xor_float, "xor float", 1000);
-    double double_msecs = print_elapsed_time(xor_double, "xor double", 1000);
+    //xor_float();
+    //xor_float();
+    double float_msecs = print_elapsed_time(xor_float, "xor float", 10000);
+    double double_msecs = print_elapsed_time(xor_double, "xor double", 10000);
 
     printf("float over double speed-up factor: %fx\n", (double_msecs / float_msecs));
 
-    // mingw 64 mingw 64 gcc, windows 10, intel i7 ice lake
-    /*
-        xor float: Average time elapsed over 1000 runs: 3.676000 ms
-        xor double: Average time elapsed over 1000 runs: 3.384000 ms
-        float over double speed-up factor: 0.920566x
+    /* mingw 64 mingw 64 gcc, windows 10, intel i7 cometlake:
+        xor float: Average time elapsed over 10000 runs: 3.823900 ms
+        xor double: Average time elapsed over 10000 runs: 3.393700 ms
+        float over double speed-up factor: 0.887497x
      */
 
     //

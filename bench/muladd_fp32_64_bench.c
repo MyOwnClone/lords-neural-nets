@@ -49,7 +49,7 @@ int main()
 
     printf("float over double speed-up factor: %fx\n", (double_msecs / float_msecs));
 
-    // mingw 64 gcc, windows 10, intel i7 ice lake
+    // mingw 64 gcc, windows 10, intel i7 cometlake
 
     /*
      *   when using (x64): -O3 -finline-functions -m64 -funroll-loops -oFast -funsafe-math-optimizations -mfpmath=sse2 -ffast-math -march=rocketlake

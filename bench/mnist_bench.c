@@ -148,7 +148,7 @@ int main()
 
     printf("float over double speed-up factor: %fx\n", (double_msecs / float_msecs));
 
-    // mingw 64 gcc, windows 10, intel i7 ice lake
+    // mingw 64 gcc, windows 10, intel i7 cometlake
     /*
      *  mnist float: Average time elapsed over 1 runs: 296_109.000000 ms :-( :-(     *
      *  mnist double: Average time elapsed over 1 runs: 188733.000000 ms
