@@ -48,12 +48,16 @@ void xor_float()
     training_options->momentum = 0.9;
     training_options->regularization_lambda = 0.0001;
 
-    train_f(xor_network, dataset, monitor, training_options);
+    TrainingLoggingOptions *training_logging_options = init_training_logging_options();
+    training_logging_options->LogEachNThEpoch = -1; // no logging
+
+    train_f(xor_network, dataset, monitor, training_options, training_logging_options);
 
     delete_network(xor_network);
     delete_activation(act_sigmoid);
     delete_dataset(dataset);
     delete_training_options(training_options);
+    delete_training_logging_options(training_logging_options);
 }
 
 void xor_double()
@@ -98,33 +102,36 @@ void xor_double()
     training_options->momentum = 0.9;
     training_options->regularization_lambda = 0.0001;
 
-    train(xor_network, dataset, monitor, training_options);
+    TrainingLoggingOptions *training_logging_options = init_training_logging_options();
+    training_logging_options->LogEachNThEpoch = -1; // no logging
+
+    train(xor_network, dataset, monitor, training_options, training_logging_options);
 
     delete_network(xor_network);
     delete_activation(act_sigmoid);
     delete_dataset(dataset);
     delete_training_options(training_options);
+    delete_training_logging_options(training_logging_options);
 }
 
 int main()
 {
-    double float_msecs = print_elapsed_time(xor_float, "xor float", 1);
-    double double_msecs = print_elapsed_time(xor_double, "xor double", 1);
+    double float_msecs = print_elapsed_time(xor_float, "xor float", 1000);
+    double double_msecs = print_elapsed_time(xor_double, "xor double", 1000);
 
     printf("float over double speed-up factor: %fx\n", (double_msecs / float_msecs));
 
     // mingw 64 mingw 64 gcc, windows 10, intel i7 ice lake
     /*
-     *  xor float: Average time elapsed over 1 runs: 9582.000000 ms :-(
-     *  xor double: Average time elapsed over 1 runs: 8743.000000 ms
-        float over double speed-up factor: 0.912440x
+        xor float: Average time elapsed over 1000 runs: 3.676000 ms
+        xor double: Average time elapsed over 1000 runs: 3.384000 ms
+        float over double speed-up factor: 0.920566x
      */
 
     //
-    /* macOS + Apple M1 + ARM64 + clang: WTF? (probably win version had previously different parameters)
-     *
-     * xor double: Average time elapsed over 1 runs: 14.495000 ms
-     * float over double speed-up factor: 0.776962x
-     *
+    /* macOS + Apple M1 + ARM64 + clang:
+
+     TODO: measure again
+
      */
 }

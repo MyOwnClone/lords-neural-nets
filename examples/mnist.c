@@ -47,10 +47,14 @@ int main()
     training_options->momentum = 0.9;
     training_options->regularization_lambda = 0.09;
 
-    train(mnist_network, dataset, monitor, training_options);
+    TrainingLoggingOptions *training_logging_options = init_training_logging_options();
+    training_logging_options->LogEachNThEpoch = 1;
+
+    train(mnist_network, dataset, monitor, training_options, training_logging_options);
 
     delete_network(mnist_network);
     delete_dataset(dataset);
     delete_activation(act_sigmoid);
     delete_training_options(training_options);
+    delete_training_logging_options(training_logging_options);
 }

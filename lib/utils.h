@@ -54,8 +54,18 @@ typedef struct
     double regularization_lambda;
 } TrainingOptions;
 
+typedef struct
+{
+    bool LogAccuracy;
+    bool LogLoss;
+    int LogEachNThEpoch;    // -1 means no logging
+} TrainingLoggingOptions;
+
 TrainingOptions* init_training_options();
 int delete_training_options(TrainingOptions *training_options);
+
+TrainingLoggingOptions* init_training_logging_options();
+int delete_training_logging_options(TrainingLoggingOptions *training_logging_options);
 
 void logger(int log_level, const char *function_name, const char *message);
 

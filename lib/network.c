@@ -379,7 +379,8 @@ int train_f(
         Network *network,
         Dataset *dataset,
         Monitor *monitor,
-        TrainingOptions *training_options)
+        TrainingOptions *training_options,
+        TrainingLoggingOptions * training_logging_options)
 {
     // Allocate all the memory
     Matrix **delta_weights = (Matrix **) malloc(sizeof(Matrix *) * network->num_layers);
@@ -434,9 +435,12 @@ int train_f(
 
     while (epoch < epochs)
     {
-        char buffer[10 + (epoch % 10) + (epochs % 10)];
-        sprintf(buffer, "Epoch: %d/%d", epoch + 1, epochs);
-        logger(INFO, __func__, buffer);
+        if (training_logging_options == NULL || (training_logging_options != NULL && training_logging_options->LogEachNThEpoch > 0 && (epoch+1) % training_logging_options->LogEachNThEpoch == 0))
+        {
+            char buffer[10 + (epoch % 10) + (epochs % 10)];
+            sprintf(buffer, "Epoch: %d/%d", epoch + 1, epochs);
+            logger(INFO, __func__, buffer);
+        }
 
         epoch_loss = 0;
 
@@ -549,20 +553,31 @@ int train_f(
             i += batch_size;
         }
 
-        epoch_accuracy = (float) ACCURACY_EXP(network, dataset->val_inputs, dataset->val_labels, dataset->val_size);
-        char acc_buffer[27];
-        sprintf(acc_buffer, "Validation accuracy: %.3f", epoch_accuracy);
-        logger(INFO, __func__, acc_buffer);
+        if (training_logging_options == NULL || (training_logging_options != NULL && training_logging_options->LogEachNThEpoch > 0 && (epoch+1) % training_logging_options->LogEachNThEpoch == 0))
+        {
+            if (training_logging_options == NULL || (training_logging_options != NULL && training_logging_options->LogAccuracy))
+            {
+                epoch_accuracy = (float) ACCURACY_EXP(network, dataset->val_inputs, dataset->val_labels,
+                                                      dataset->val_size);
+                char acc_buffer[27];
+                sprintf(acc_buffer, "Validation accuracy: %.3f", epoch_accuracy);
+                logger(INFO, __func__, acc_buffer);
 
-        epoch_accuracy = (float) ACCURACY_EXP(network, dataset->train_inputs, dataset->train_labels, dataset->train_size);
-        char acc_train_buffer[27];
-        sprintf(acc_train_buffer, "Training accuracy: %.3f", epoch_accuracy);
-        logger(INFO, __func__, acc_train_buffer);
+                epoch_accuracy = (float) ACCURACY_EXP(network, dataset->train_inputs, dataset->train_labels,
+                                                      dataset->train_size);
+                char acc_train_buffer[27];
+                sprintf(acc_train_buffer, "Training accuracy: %.3f", epoch_accuracy);
+                logger(INFO, __func__, acc_train_buffer);
+            }
 
-        float final_epoch_loss = (float) epoch_loss / (float) dataset->train_size;
-        char loss_buffer[1000];
-        sprintf(loss_buffer, "Training loss: %.5f", final_epoch_loss);
-        logger(INFO, __func__, loss_buffer);
+            if (training_logging_options == NULL || (training_logging_options != NULL && training_logging_options->LogLoss))
+            {
+                float final_epoch_loss = (float) epoch_loss / (float) dataset->train_size;
+                char loss_buffer[1000];
+                sprintf(loss_buffer, "Training loss: %.5f", final_epoch_loss);
+                logger(INFO, __func__, loss_buffer);
+            }
+        }
 
         epoch++;
     }
@@ -582,7 +597,8 @@ int train(
         Network *network,
         Dataset *dataset,
         Monitor *monitor,
-        TrainingOptions *training_options)
+        TrainingOptions *training_options,
+        TrainingLoggingOptions * training_logging_options)
 {
     // Allocate all the memory
     Matrix **delta_weights = (Matrix **) malloc(sizeof(Matrix *) * network->num_layers);
@@ -637,9 +653,12 @@ int train(
 
     while (epoch < epochs)
     {
-        char buffer[10 + (epoch % 10) + (epochs % 10)];
-        sprintf(buffer, "Epoch: %d/%d", epoch + 1, epochs);
-        logger(INFO, __func__, buffer);
+        if (training_logging_options == NULL || (training_logging_options != NULL && training_logging_options->LogEachNThEpoch > 0 && (epoch+1) % training_logging_options->LogEachNThEpoch == 0))
+        {
+            char buffer[10 + (epoch % 10) + (epochs % 10)];
+            sprintf(buffer, "Epoch: %d/%d", epoch + 1, epochs);
+            logger(INFO, __func__, buffer);
+        }
 
         epoch_loss = 0;
 
@@ -752,20 +771,31 @@ int train(
             i += batch_size;
         }
 
-        epoch_accuracy = ACCURACY_EXP(network, dataset->val_inputs, dataset->val_labels, dataset->val_size);
-        char acc_buffer[27];
-        sprintf(acc_buffer, "Validation accuracy: %.3f", epoch_accuracy);
-        logger(INFO, __func__, acc_buffer);
+        if (training_logging_options == NULL || (training_logging_options != NULL && training_logging_options->LogEachNThEpoch > 0 && (epoch+1) % training_logging_options->LogEachNThEpoch == 0))
+        {
+            if (training_logging_options == NULL || (training_logging_options != NULL && training_logging_options->LogAccuracy))
+            {
+                epoch_accuracy = ACCURACY_EXP(network, dataset->val_inputs, dataset->val_labels, dataset->val_size);
+                char acc_buffer[27];
+                sprintf(acc_buffer, "Validation accuracy: %.3f", epoch_accuracy);
+                logger(INFO, __func__, acc_buffer);
 
-        epoch_accuracy = ACCURACY_EXP(network, dataset->train_inputs, dataset->train_labels, dataset->train_size);
-        char acc_train_buffer[27];
-        sprintf(acc_train_buffer, "Training accuracy: %.3f", epoch_accuracy);
-        logger(INFO, __func__, acc_train_buffer);
+                epoch_accuracy = ACCURACY_EXP(network, dataset->train_inputs, dataset->train_labels,
+                                              dataset->train_size);
+                char acc_train_buffer[27];
+                sprintf(acc_train_buffer, "Training accuracy: %.3f", epoch_accuracy);
+                logger(INFO, __func__, acc_train_buffer);
+            }
 
-        epoch_loss = (double) epoch_loss / dataset->train_size;
-        char loss_buffer[23];
-        sprintf(loss_buffer, "Training loss: %.5f", epoch_loss);
-        logger(INFO, __func__, loss_buffer);
+
+            if (training_logging_options == NULL || (training_logging_options != NULL && training_logging_options->LogLoss))
+            {
+                epoch_loss = (double) epoch_loss / dataset->train_size;
+                char loss_buffer[23];
+                sprintf(loss_buffer, "Training loss: %.5f", epoch_loss);
+                logger(INFO, __func__, loss_buffer);
+            }
+        }
 
         epoch++;
     }

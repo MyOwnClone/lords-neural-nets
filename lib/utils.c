@@ -198,8 +198,24 @@ TrainingOptions* init_training_options()
     return training_options;
 }
 
+TrainingLoggingOptions* init_training_logging_options()
+{
+    TrainingLoggingOptions *training_logging_options = (TrainingLoggingOptions *) malloc (sizeof (TrainingLoggingOptions));
+    training_logging_options->LogLoss = true;
+    training_logging_options->LogAccuracy = true;
+    training_logging_options->LogEachNThEpoch = 1;
+
+    return training_logging_options;
+}
+
 int delete_training_options(TrainingOptions *training_options)
 {
     free(training_options);
     training_options = NULL;
+}
+
+int delete_training_logging_options(TrainingLoggingOptions *training_logging_options)
+{
+    free(training_logging_options);
+    training_logging_options = NULL;
 }

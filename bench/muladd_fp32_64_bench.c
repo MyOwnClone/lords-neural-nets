@@ -42,7 +42,7 @@ double scalar_muladd_fp64()
 
 int main()
 {
-    long long repeat_count = 1000ll * 10ll;
+    long long repeat_count = 1000ll * 100ll;
 
     double float_msecs = print_elapsed_time(scalar_muladd_fp32, "muladd float", repeat_count);
     double double_msecs = print_elapsed_time(scalar_muladd_fp64, "muladd double", repeat_count);
@@ -52,7 +52,7 @@ int main()
     // mingw 64 gcc, windows 10, intel i7 ice lake
 
     /*
-     *   when using (x64): -O3 -finline-functions -m64 -funroll-loops -oFast -funsafe-math-optimizations -mfpmath=sse -ffast-math
+     *   when using (x64): -O3 -finline-functions -m64 -funroll-loops -oFast -funsafe-math-optimizations -mfpmath=sse2 -ffast-math -march=rocketlake
      *   muladd float: Average time elapsed over 10000 runs: 0.924400 ms
      *   muladd double: Average time elapsed over 10000 runs: 0.922900 ms
      *   float over double speed-up factor: 0.998377x
