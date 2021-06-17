@@ -114,7 +114,7 @@ double accuracy(Network *network, Matrix **inputs, Matrix **targets, int input_l
 }
 
 // exp in a name means this is an expression - r-value
-#define ACCURACY_EXP(net, inputs, targets, len) is_float_matrix(*inputs) ? accuracy_f(net, inputs, targets, len) : accuracy(net, inputs, targets, len)
+#define ACCURACY_EXP(net, inputs, targets, len) is_float_matrix(*(inputs)) ? accuracy_f(net, inputs, targets, len) : accuracy(net, inputs, targets, len)
 
 static int init_training(
         Network *network,
@@ -227,6 +227,8 @@ static int backpropagate(
             return res;
         }
     }
+
+    return 0;
 }
 
 static void cleanup(
@@ -296,6 +298,8 @@ static int reset(
             return res;
         }
     }
+
+    return 0;
 }
 
 static int
@@ -356,6 +360,12 @@ static double get_loss(CostType cost_type, Matrix *prediction, Matrix *target)
     {
         return cost_cross_entropy(prediction, target);
     }
+    else
+    {
+        logger(EXCEPTION, __func__, "Unknown cost_type!");
+
+        return INT_MAX;
+    }
 }
 
 static float get_loss_f(CostType cost_type, Matrix *prediction, Matrix *target)
@@ -375,10 +385,16 @@ static float get_loss_f(CostType cost_type, Matrix *prediction, Matrix *target)
     {
         return cost_cross_entropy_f(prediction, target);
     }
+    else
+    {
+        logger(EXCEPTION, __func__, "Unknown cost_type!");
+
+        return (float)INT_FAST32_MAX;
+    }
 }
 
 // exp in a name means this is an expression - r-value
-#define GET_LOSS_EXP(cost_type, pred, target) (is_float_matrix(prediction)) ? get_loss_f(cost_type, pred, target) : get_loss(cost_type, pred, target)
+#define GET_LOSS_EXP(cost_type, model_prediction, target) (is_float_matrix(model_prediction)) ? get_loss_f(cost_type, model_prediction, target) : get_loss(cost_type, model_prediction, target)
 
 int train_f(
         Network *network,
@@ -440,7 +456,7 @@ int train_f(
 
     while (epoch < epochs)
     {
-        if (training_logging_options == NULL || (training_logging_options != NULL && training_logging_options->LogEachNThEpoch > 0 && (epoch+1) % training_logging_options->LogEachNThEpoch == 0))
+        if (training_logging_options == NULL || (training_logging_options->LogEachNThEpoch > 0 && (epoch + 1) % training_logging_options->LogEachNThEpoch == 0))
         {
             char buffer[10 + (epoch % 10) + (epochs % 10)];
             sprintf(buffer, "Epoch: %d/%d", epoch + 1, epochs);
@@ -558,24 +574,22 @@ int train_f(
             i += batch_size;
         }
 
-        if (training_logging_options == NULL || (training_logging_options != NULL && training_logging_options->LogEachNThEpoch > 0 && (epoch+1) % training_logging_options->LogEachNThEpoch == 0))
+        if (training_logging_options == NULL || (training_logging_options->LogEachNThEpoch > 0 && (epoch + 1) % training_logging_options->LogEachNThEpoch == 0))
         {
-            if (training_logging_options == NULL || (training_logging_options != NULL && training_logging_options->LogAccuracy))
+            if (training_logging_options == NULL || training_logging_options->LogAccuracy)
             {
-                epoch_accuracy = (float) ACCURACY_EXP(network, dataset->val_inputs, dataset->val_labels,
-                                                      dataset->val_size);
+                epoch_accuracy = (float) ACCURACY_EXP(network, dataset->val_inputs, dataset->val_labels,dataset->val_size);
                 char acc_buffer[27];
                 sprintf(acc_buffer, "Validation accuracy: %.3f", epoch_accuracy);
                 logger(INFO, __func__, acc_buffer);
 
-                epoch_accuracy = (float) ACCURACY_EXP(network, dataset->train_inputs, dataset->train_labels,
-                                                      dataset->train_size);
+                epoch_accuracy = (float) ACCURACY_EXP(network, dataset->train_inputs, dataset->train_labels,dataset->train_size);
                 char acc_train_buffer[27];
                 sprintf(acc_train_buffer, "Training accuracy: %.3f", epoch_accuracy);
                 logger(INFO, __func__, acc_train_buffer);
             }
 
-            if (training_logging_options == NULL || (training_logging_options != NULL && training_logging_options->LogLoss))
+            if (training_logging_options == NULL || training_logging_options->LogLoss)
             {
                 float final_epoch_loss = (float) epoch_loss / (float) dataset->train_size;
                 char loss_buffer[1000];
@@ -596,6 +610,8 @@ int train_f(
             transposed_weights,
             delta_bias
     );
+
+    return 0;
 }
 
 int train(
@@ -658,7 +674,7 @@ int train(
 
     while (epoch < epochs)
     {
-        if (training_logging_options == NULL || (training_logging_options != NULL && training_logging_options->LogEachNThEpoch > 0 && (epoch+1) % training_logging_options->LogEachNThEpoch == 0))
+        if (training_logging_options == NULL || (training_logging_options->LogEachNThEpoch > 0 && (epoch + 1) % training_logging_options->LogEachNThEpoch == 0))
         {
             char buffer[10 + (epoch % 10) + (epochs % 10)];
             sprintf(buffer, "Epoch: %d/%d", epoch + 1, epochs);
@@ -776,9 +792,9 @@ int train(
             i += batch_size;
         }
 
-        if (training_logging_options == NULL || (training_logging_options != NULL && training_logging_options->LogEachNThEpoch > 0 && (epoch+1) % training_logging_options->LogEachNThEpoch == 0))
+        if (training_logging_options == NULL || (training_logging_options->LogEachNThEpoch > 0 && (epoch + 1) % training_logging_options->LogEachNThEpoch == 0))
         {
-            if (training_logging_options == NULL || (training_logging_options != NULL && training_logging_options->LogAccuracy))
+            if (training_logging_options == NULL || training_logging_options->LogAccuracy)
             {
                 epoch_accuracy = ACCURACY_EXP(network, dataset->val_inputs, dataset->val_labels, dataset->val_size);
                 char acc_buffer[27];
@@ -793,7 +809,7 @@ int train(
             }
 
 
-            if (training_logging_options == NULL || (training_logging_options != NULL && training_logging_options->LogLoss))
+            if (training_logging_options == NULL || training_logging_options->LogLoss)
             {
                 epoch_loss = (double) epoch_loss / dataset->train_size;
                 char loss_buffer[23];
@@ -814,4 +830,6 @@ int train(
             transposed_weights,
             delta_bias
     );
+
+    return 0;
 }

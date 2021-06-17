@@ -53,7 +53,7 @@
         long average_usecs = (seconds_as_usecs + usecs) / repeat_count;
         double average_msecs = (double)average_usecs / 1000.0f;
 
-        printf("%s: Average time elapsed over %ld runs: %f ms\n", (desc), repeat_count, average_msecs);
+        printf("%s: Average time elapsed over %lld runs: %f ms\n", (desc), repeat_count, average_msecs);
 
         return average_msecs;
     }

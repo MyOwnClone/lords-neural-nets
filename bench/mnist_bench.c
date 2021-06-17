@@ -132,14 +132,14 @@ int main()
     // mingw 64 gcc, windows 10, intel i7 cometlake
     /*
      *  mnist float: Average time elapsed over 1 runs: 296_109.000000 ms :-( :-(     *
-     *  mnist double: Average time elapsed over 1 runs: 188733.000000 ms
+     *  mnist double: Average time elapsed over 1 runs: 188_733.000000 ms
      */
 
     /*
      * macOS + Apple M1 + ARM64 + clang: (but for float it does not converge :-( )
      *
-     * mnist float: Average time elapsed over 1 runs: 232673.735000 ms
-     * mnist double: Average time elapsed over 1 runs: 256663.657000 ms
+     * mnist float: Average time elapsed over 1 runs: 232_673.735000 ms
+     * mnist double: Average time elapsed over 1 runs: 256_663.657000 ms
      * float over double speed-up factor: 1.103105x
      */
 }

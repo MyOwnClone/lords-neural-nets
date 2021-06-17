@@ -235,10 +235,14 @@ int delete_training_options(TrainingOptions *training_options)
 {
     free(training_options);
     training_options = NULL;
+
+    return 0;
 }
 
 int delete_training_logging_options(TrainingLoggingOptions *training_logging_options)
 {
     free(training_logging_options);
     training_logging_options = NULL;
+
+    return 0;
 }
