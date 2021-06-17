@@ -116,8 +116,6 @@ void xor_double()
 
 int main()
 {
-    //xor_float();
-    //xor_float();
     double float_msecs = print_elapsed_time(xor_float, "xor float", 10000);
     double double_msecs = print_elapsed_time(xor_double, "xor double", 10000);
 
@@ -129,10 +127,11 @@ int main()
         float over double speed-up factor: 0.887497x
      */
 
-    //
     /* macOS + Apple M1 + ARM64 + clang:
 
-     TODO: measure again
+     xor float: Average time elapsed over 10000 runs: 1.343000 ms
+     xor double: Average time elapsed over 10000 runs: 1.361000 ms
+     float over double speed-up factor: 1.013403x
 
      */
 }

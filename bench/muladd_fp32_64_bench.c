@@ -63,8 +63,9 @@ int main()
     /*
      * macOS + Apple M1 + ARM64 + clang:
 
-     TODO: rerun this with new repeat_count
-
+     muladd float: Average time elapsed over 100000 runs: 0.653000 ms
+     muladd double: Average time elapsed over 100000 runs: 0.648000 ms
+     float over double speed-up factor: 0.992343x
 
      */
 }
