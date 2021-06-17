@@ -6,6 +6,9 @@
 #include <stdio.h>
 #include "bench_utils.h"
 
+#define DEBUG_MODE
+#undef DEBUG_MODE
+
 void xor_float()
 {
     int layers[] = {2,1};
@@ -49,7 +52,11 @@ void xor_float()
     training_options->regularization_lambda = 0.0001;
 
     TrainingLoggingOptions *training_logging_options = init_training_logging_options();
+#ifdef DEBUG_MODE
+    training_logging_options->LogEachNThEpoch = 1; // no logging
+#else
     training_logging_options->LogEachNThEpoch = -1; // no logging
+#endif
 
     train_f(xor_network, dataset, monitor, training_options, training_logging_options);
 
@@ -103,7 +110,11 @@ void xor_double()
     training_options->regularization_lambda = 0.0001;
 
     TrainingLoggingOptions *training_logging_options = init_training_logging_options();
+#ifdef DEBUG_MODE
+    training_logging_options->LogEachNThEpoch = 1; // no logging
+#else
     training_logging_options->LogEachNThEpoch = -1; // no logging
+#endif
 
     train(xor_network, dataset, monitor, training_options, training_logging_options);
 
@@ -116,8 +127,14 @@ void xor_double()
 
 int main()
 {
-    double float_msecs = print_elapsed_time(xor_float, "xor float", 10000);
-    double double_msecs = print_elapsed_time(xor_double, "xor double", 10000);
+    int repeat_count = 10000;
+
+#ifdef DEBUG_MODE
+    repeat_count = 1;
+#endif
+
+    double float_msecs = print_elapsed_time(xor_float, "xor float", repeat_count);
+    double double_msecs = print_elapsed_time(xor_double, "xor double", repeat_count);
 
     printf("float over double speed-up factor: %fx\n", (double_msecs / float_msecs));
 
@@ -133,6 +150,7 @@ int main()
      xor double: Average time elapsed over 10000 runs: 1.361000 ms
      float over double speed-up factor: 1.013403x
 
+     (turning off -funsafe-math-optimizations does not change the times here)
      */
 
     /*
@@ -148,5 +166,14 @@ int main()
      train: Training loss: 0.35071
      xor double: Average time elapsed over 1 runs: 12.397000 ms
      float over double speed-up factor: 0.876733x
+     */
+
+    /*
+    HOWEVER 2: if I remove the -funsafe-math-optimizations parameter from cmake, double version converges even on M1, float version still NOPE
+    train: Validation accuracy: 1.000
+    train: Training accuracy: 1.000
+    train: Training loss: 0.01189
+    xor double: Average time elapsed over 1 runs: 12.924000 ms
+    float over double speed-up factor: 0.873538x
      */
 }
