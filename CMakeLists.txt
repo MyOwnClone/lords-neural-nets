@@ -14,7 +14,7 @@ set(CMAKE_C_FLAGS_DEBUG "-g")
 
 if(${CMAKE_SYSTEM} MATCHES "Darwin")
     # -mcpu=apple-a14 is like -march on gcc, I guess
-    set(CMAKE_C_FLAGS_RELEASE "-O3 -finline-functions -m64 -funroll-loops -oFast -funsafe-math-optimizations -ffast-math -mcpu=apple-a14")
+    set(CMAKE_C_FLAGS_RELEASE "-O3 -finline-functions -m64 -funroll-loops -oFast -ffast-math -mcpu=apple-a14")
 elseif(${CMAKE_SYSTEM} MATCHES "^?Windows$")
     # SSE2 for Intel, using -march rocketlake for my machine, because it is cometlake, but only rocketlake (predecessor) is supported for now
     set(CMAKE_C_FLAGS_RELEASE "-O3 -finline-functions -m64 -funroll-loops -oFast -funsafe-math-optimizations -mfpmath=sse2 -ffast-math -march=rocketlake")

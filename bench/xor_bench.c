@@ -134,4 +134,19 @@ int main()
      float over double speed-up factor: 1.013403x
 
      */
+
+    /*
+     HOWEVER!!! on M1, both float and double versions do not converge:
+
+     train_f: Validation accuracy: 0.500
+     train_f: Training accuracy: 0.500
+     train_f: Training loss: nan
+     xor float: Average time elapsed over 1 runs: 14.140000 ms
+
+     train: Validation accuracy: 0.500
+     train: Training accuracy: 0.500
+     train: Training loss: 0.35071
+     xor double: Average time elapsed over 1 runs: 12.397000 ms
+     float over double speed-up factor: 0.876733x
+     */
 }
