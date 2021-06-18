@@ -25,7 +25,7 @@
 
         return average_msecs;
     }
-#else
+#else   // unix
     #include <sys/time.h>
 
     double print_elapsed_time(fn func, char* desc, long long repeat_count)
