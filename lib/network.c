@@ -210,8 +210,7 @@ static int backpropagate(
 
         // Compute delta weights
         res = 0;
-        res += multiply_transposed(deltas[l], prev_act,
-                                   temp_delta_weights[l]); // FIXME:  temp_delta_weights[l] are zero for float!!!
+        res += multiply_transposed(deltas[l], prev_act, temp_delta_weights[l]); // FIXME:  temp_delta_weights[l] are zero for float!!!
         res += add(delta_weights[l], temp_delta_weights[l]);
         if (res < 0)
         {

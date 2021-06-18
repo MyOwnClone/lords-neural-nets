@@ -51,14 +51,14 @@ void matrix_item_assign(Matrix *x, Matrix *y, int row1, int col1, int row2, int 
 #define MATRIX_IAPPLY_FN(result, row, col, source, function) MATRIX_ISET(result, row, col, function(MATRIX_IGET(source, row, col)))
 
 // Item ADD
-#define MATRIX_IADD(x, row, col, val) MATRIX_ISET(x, row, col, MATRIX_IGET(x, row, col) + val)
+#define MATRIX_IADD(x, row, col, val) MATRIX_ISET(x, row, col, MATRIX_IGET(x, row, col) + (val))
 
 // Item SUBtract
-#define MATRIX_ISUB(x, row, col, val) MATRIX_ISET(x, row, col, MATRIX_IGET(x, row, col) - val)
+#define MATRIX_ISUB(x, row, col, val) MATRIX_ISET(x, row, col, MATRIX_IGET(x, row, col) - (val))
 
 // Item MULtiply by Scalar
-#define MATRIX_IMULS(x, row, col, val) MATRIX_ISET(x, row, col, MATRIX_IGET(x, row, col) * val)
-#define MATRIX_IADDS(x, row, col, val) MATRIX_ISET(x, row, col, MATRIX_IGET(x, row, col) + val)
+#define MATRIX_IMULS(x, row, col, val) MATRIX_ISET(x, row, col, MATRIX_IGET(x, row, col) * (val))
+#define MATRIX_IADDS(x, row, col, val) MATRIX_ISET(x, row, col, MATRIX_IGET(x, row, col) + (val))
 
 Matrix* create_matrix(int rows, int cols, const double double_mat[][cols], const float float_mat[][cols], MatrixDataType dataType);
 

@@ -3,6 +3,8 @@ DONE: add branches and measure difference for above mentioned test - branches do
 DONE: optionally, override the is_float_matrix to #define returning just true, compilation hopefully optimizes branching away - done, see above
 DONE: proper macOS + Apple M1 ARM64 cmake
 DONE: proper x86-64 vs ARM64 bench
+TODO + FIXME: theory: float backend is causing vanishing gradient problem, maybe activation derivation functions are not friends with fp32 precision? (act_sigmoid_der_f returns zero, while double version is OK)
+    TODO + FIXME: so try verify that theory (act_sigmoid_der_f returning zero all the time for floats) + try other possible activations + their derivations, find ones (reLus?) which work better with float (actually giving non zero values)
 TODO: try to remove -funsafe-math-optimizations on x86 and check whether float converges in MNIST
 TODO: better branching off (matrix.h) support
 TODO: disassembly? DONE for DEBUG binaries

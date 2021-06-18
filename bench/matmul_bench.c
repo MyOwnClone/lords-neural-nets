@@ -1,7 +1,5 @@
 #include <matrix.h>
-#include <stdlib.h>
 #include <stdio.h>
-#include <stdbool.h>
 #include <assert.h>
 #include "bench_utils.h"
 

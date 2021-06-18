@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
-#include <stdio.h>
 
 static int init_layer(Layer *layer);
 
