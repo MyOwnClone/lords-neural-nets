@@ -1,6 +1,5 @@
 #include "../lib/matrix.h"
 #include "test.h"
-#include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
 
@@ -41,7 +40,7 @@ static int test_create_matrix_float()
         res+=fail(__func__,  __LINE__, "Matrix struct is NULL");
     }
 
-    if (matrix->matrix != NULL) {
+    if (matrix && MATRIX_GET(matrix) != NULL) {
         res+=fail(__func__,  __LINE__, "Matrix in matrix struct is not NULL");
     }
 
@@ -346,9 +345,9 @@ static int test_multiply_float()
     int res_rows = 3;
     int res_cols = 3;
     const float res_mat[3][3] = {
-            {14.00, 1.00, 13.00 },
-            {23.00, 2.00, 23.00 },
-            {37.00, 3.00, 36.00 }
+            {14.00f, 1.00f, 13.00f },
+            {23.00f, 2.00f, 23.00f },
+            {37.00f, 3.00f, 36.00f }
     };
 
     Matrix *res_matrix = create_f_matrix(res_rows, res_cols, NULL);
@@ -405,9 +404,9 @@ static int test_multiply_transposed_float()
     int res_rows = 3;
     int res_cols = 3;
     const float res_mat[3][3] = {
-            {14.00, 1.00, 13.00 },
-            {23.00, 2.00, 23.00 },
-            {37.00, 3.00, 36.00 }
+            {14.00f, 1.00f, 13.00f },
+            {23.00f, 2.00f, 23.00f },
+            {37.00f, 3.00f, 36.00f }
     };
 
     Matrix *res_matrix = create_f_matrix(res_rows, res_cols, NULL);
@@ -518,9 +517,9 @@ static int test_add_float()
 
     // Test add correct dimensions
     const float res_mat[3][2] = {
-            {7.00, 1.00 },
-            {7.00, 5.00 },
-            {9.00, 4.00 }
+            {7.00f, 1.00f },
+            {7.00f, 5.00f },
+            {9.00f, 4.00f }
     };
 
     add(a_matrix, b_matrix);
@@ -620,9 +619,9 @@ static int test_subtract_float()
 
     // Test add correct dimensions
     const float res_mat[3][2] = {
-            {-3.00, 1.00 },
-            {-1.00, -1.00 },
-            {1.00, 2.00 }
+            {-3.00f, 1.00f },
+            {-1.00f, -1.00f },
+            {1.00f, 2.00f }
     };
 
     subtract(a_matrix, b_matrix);
@@ -707,7 +706,7 @@ static int test_scalar_multiply_float()
     Matrix *a = create_f_matrix(rows, cols, a_mat);
 
     double x = 0.5;
-    const float res_mat[3][3] = {{0.5,1,1.5}, {2,2.5,3}, {3.5,4,4.5}};
+    const float res_mat[3][3] = {{0.5f, 1, 1.5f}, {2, 2.5f, 3}, {3.5f, 4, 4.5f}};
     scalar_multiply(a, x);
 
     // Test
@@ -769,7 +768,7 @@ static int test_scalar_add_float()
     Matrix *a = create_f_matrix(rows, cols, a_mat);
 
     double x = 10.5;
-    const float res_mat[3][3] = {{11.5,12.5,13.5}, {14.5,15.5,16.5}, {17.5,18.5,19.5}};
+    const float res_mat[3][3] = {{11.5f,12.5f,13.5f}, {14.5f,15.5f,16.5f}, {17.5f,18.5f,19.5f}};
 
     scalar_add(a, x);
 
@@ -927,9 +926,9 @@ static int test_hadamard_float()
     int res_rows = 3;
     int res_cols = 2;
     const float res_mat[3][2] = {
-            {10.00, 0.00},
-            {9.00, 8.00},
-            {5.00, 21.00}
+            {10.00f, 0.00f},
+            {9.00f, 8.00f},
+            {5.00f, 21.00f}
     };
 
     Matrix *res_matrix = create_f_matrix(res_rows, res_cols, NULL);

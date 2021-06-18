@@ -1,14 +1,8 @@
 #include "test.h"
 #include "../lib/network.h"
-#include "../lib/matrix.h"
 #include <stdlib.h>
 #include <stdio.h>
 
-
-static double f(double num)
-{
-    return num;
-}
 
 static int test_create_network_float()
 {

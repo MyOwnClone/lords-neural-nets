@@ -1,8 +1,8 @@
 #include "test.h"
-#include "../lib/matrix.h"
 #include "../lib/utils.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 int fail(const char *test_name, int line, const char *message)
 {
@@ -69,7 +69,16 @@ int main()
     res += test_functions();
     res += test_utils();
 
-    eval_test_result("All tests finished!", res);
+    if (res < 0)
+    {
+        RED_COLOR;
+    }
+
+    printf("%d tests failed!\n", abs(res));
+
+    RESET_COLOR;
+
+    eval_test_result("All tests finished", res);
 
     return res < 0 ? 1 : 0; // different exit code for passing and failing
 }

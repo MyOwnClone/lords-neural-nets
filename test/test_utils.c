@@ -10,7 +10,7 @@ static int test_vectorize_float()
     float mat[15][1][1];
     for (int i = 0; i < 15; i++)
     {
-        mat[i][0][0] = i;
+        mat[i][0][0] = (float) i;
     }
 
     Matrix **a = (Matrix**) malloc (sizeof (Matrix*) * 15);

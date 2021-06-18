@@ -1,9 +1,6 @@
 #include "test.h"
 #include "../lib/layer.h"
-#include "../lib/matrix.h"
 #include "../lib/functions.h"
-#include <stdbool.h>
-#include <stdlib.h>
 
 static int test_create_layer_float()
 {

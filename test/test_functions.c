@@ -5,7 +5,7 @@
 static bool is_approx_equal(double a, double b)
 {
     int a_int = (int) a * 1000000;
-    int b_int = (int) a * 1000000;
+    int b_int = (int) b * 1000000;
 
     return a_int == b_int;
 }
