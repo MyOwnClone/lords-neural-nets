@@ -5,8 +5,6 @@
 #include <math.h>
 #include <time.h>
 
-#define RAND_INIT true
-
 static int init_layer(Layer *layer);
 
 Layer* create_layer(int layer_size, int input_size, Activation *activation, MatrixDataType dataType)
@@ -36,38 +34,22 @@ static int init_layer(Layer *layer)
     if (is_float)
     {
         srand(time(NULL));
-        double range = sqrt((double) 6/ (weights->rows + weights->cols));
+        float range = sqrtf((float) 6/(float)(weights->rows + weights->cols));
 
         for (int row = 0; row < weights->rows; row++)
         {
             for (int col = 0; col < weights->cols; col++)
             {
-                if (RAND_INIT)
-                {
-                    double rand_value = (double) rand() / RAND_MAX * 2 * range - range;
-
-                    MATRIX_ISET(weights, row, col, (float)rand_value);
-                }
-                else
-                {
-                    MATRIX_ISET(weights, row, col, 0);
-                }
+                MATRIX_ISET(weights, row, col, (float) rand() / (float) (RAND_MAX * 2 * range - range));
             }
         }
 
         for (int row = 0; row < bias->rows; row++)
         {
-            if (RAND_INIT)
-            {
-                MATRIX_ISET(bias, row, 0, (float)((double) rand() / (double)RAND_MAX));
-            }
-            else
-            {
-                MATRIX_ISET(bias, row, 0, 0);
-            }
+            MATRIX_ISET(bias, row, 0, (float) rand() / (float)RAND_MAX);
         }
     }
-    else // double
+    else
     {
         srand(time(NULL));
         double range = sqrt((double) 6 / (weights->rows + weights->cols));
@@ -76,15 +58,7 @@ static int init_layer(Layer *layer)
         {
             for (int col = 0; col < weights->cols; col++)
             {
-                if (RAND_INIT)
-                {
-                    double rand_value = (double) rand() / RAND_MAX * 2 * range - range;
-                    MATRIX_ISET(weights, row, col, rand_value);
-                }
-                else
-                {
-                    MATRIX_ISET(weights, row, col, 0);
-                }
+                MATRIX_ISET(weights, row, col,(double) rand() / RAND_MAX * 2 * range - range);
             }
         }
 
