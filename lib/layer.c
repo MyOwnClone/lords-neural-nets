@@ -1,10 +1,9 @@
 #include "layer.h"
+#include "matrix.h"
 #include "functions.h"
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
-
-#define RAND_INIT true
 
 static int init_layer(Layer *layer);
 
@@ -41,27 +40,13 @@ static int init_layer(Layer *layer)
         {
             for (int col = 0; col < weights->cols; col++)
             {
-                if (RAND_INIT)
-                {
-                    MATRIX_ISET(weights, row, col, (float) rand() / (float) (RAND_MAX * 2 * range - range));
-                }
-                else
-                {
-                    MATRIX_ISET(weights, row, col, 0);
-                }
+                MATRIX_ISET(weights, row, col, (float) rand() / (float) (RAND_MAX * 2 * range - range));
             }
         }
 
         for (int row = 0; row < bias->rows; row++)
         {
-            if (RAND_INIT)
-            {
-                MATRIX_ISET(bias, row, 0, (float) rand() / (float)RAND_MAX);
-            }
-            else
-            {
-                MATRIX_ISET(bias, row, 0, 0);
-            }
+            MATRIX_ISET(bias, row, 0, (float) rand() / (float)RAND_MAX);
         }
     }
     else
@@ -73,27 +58,13 @@ static int init_layer(Layer *layer)
         {
             for (int col = 0; col < weights->cols; col++)
             {
-                if (RAND_INIT)
-                {
-                    MATRIX_ISET(weights, row, col, (double) rand() / RAND_MAX * 2 * range - range);
-                }
-                else
-                {
-                    MATRIX_ISET(weights, row, col, 0);
-                }
+                MATRIX_ISET(weights, row, col,(double) rand() / RAND_MAX * 2 * range - range);
             }
         }
 
         for (int row = 0; row < bias->rows; row++)
         {
-            if (RAND_INIT)
-            {
-                MATRIX_ISET(bias, row, 0,(double) rand() / RAND_MAX);
-            }
-            else
-            {
-                MATRIX_ISET(bias, row, 0, 0);
-            }
+            MATRIX_ISET(bias, row, 0,(double) rand() / RAND_MAX);
         }
     }
 
