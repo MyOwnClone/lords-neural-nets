@@ -43,7 +43,7 @@ void xor_float()
 
     TrainingOptions *training_options = init_training_options();
     training_options->cost_type = cost_type;
-    training_options->epochs = 2000;
+    training_options->epochs = 4000;
     training_options->batch_size = 0;
     training_options->learning_rate = 1;
     training_options->momentum = 0.9;
@@ -53,7 +53,7 @@ void xor_float()
 #ifdef DEBUG_MODE
     training_logging_options->LogEachNThEpoch = 1; // no logging
 #else
-    training_logging_options->LogEachNThEpoch = -1; // no logging
+    training_logging_options->LogEachNThEpoch = 1000; // no logging
 #endif
 
     train_f(xor_network, dataset, monitor, training_options, training_logging_options);
@@ -101,7 +101,7 @@ void xor_double()
 
     TrainingOptions *training_options = init_training_options();
     training_options->cost_type = cost_type;
-    training_options->epochs = 2000;
+    training_options->epochs = 4000;
     training_options->batch_size = 0;
     training_options->learning_rate = 1;
     training_options->momentum = 0.9;
@@ -111,7 +111,7 @@ void xor_double()
 #ifdef DEBUG_MODE
     training_logging_options->LogEachNThEpoch = 1; // no logging
 #else
-    training_logging_options->LogEachNThEpoch = -1; // no logging
+    training_logging_options->LogEachNThEpoch = 1000; // no logging
 #endif
 
     train(xor_network, dataset, monitor, training_options, training_logging_options);
@@ -125,7 +125,7 @@ void xor_double()
 
 int main()
 {
-    int repeat_count = 10000;
+    int repeat_count = 1;
 
 #ifdef DEBUG_MODE
     repeat_count = 1;
