@@ -5,6 +5,8 @@
 #include <math.h>
 #include <time.h>
 
+#define RAND_INIT true
+
 static int init_layer(Layer *layer);
 
 Layer* create_layer(int layer_size, int input_size, Activation *activation, MatrixDataType dataType)
