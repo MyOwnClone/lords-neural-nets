@@ -43,7 +43,7 @@ void xor_float()
 
     TrainingOptions *training_options = init_training_options();
     training_options->cost_type = cost_type;
-    training_options->epochs = 4000;
+    training_options->epochs = 20000;
     training_options->batch_size = 0;
     training_options->learning_rate = 1;
     training_options->momentum = 0.9;
@@ -101,7 +101,7 @@ void xor_double()
 
     TrainingOptions *training_options = init_training_options();
     training_options->cost_type = cost_type;
-    training_options->epochs = 4000;
+    training_options->epochs = 20000;
     training_options->batch_size = 0;
     training_options->learning_rate = 1;
     training_options->momentum = 0.9;

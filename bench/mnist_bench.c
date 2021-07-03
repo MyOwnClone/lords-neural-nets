@@ -3,6 +3,7 @@
 #include "../lib/network.h"
 #include "bench_utils.h"
 #include <stdio.h>
+#include <float.h>
 
 long EPOCH_COUNT = 10;
 
@@ -122,11 +123,12 @@ void mnist_float()
 
 int main()
 {
-    // FIXME: mnist has vanishing gradient problem with float backend
+    printf("The minimum value of float = %.10e\n", FLT_MIN);
+
     double float_msecs = print_elapsed_time(mnist_float, "mnist float", 1);
     double double_msecs = print_elapsed_time(mnist_double, "mnist double", 1);
 
-    //printf("float over double speed-up factor: %fx\n", (double_msecs / float_msecs));
+    printf("float over double speed-up factor: %fx\n", (double_msecs / float_msecs));
 
     // mingw 64 gcc, windows 10, intel i7 cometlake
     /*
@@ -140,5 +142,21 @@ int main()
      * mnist float: Average time elapsed over 1 runs: 232_673.735000 ms
      * mnist double: Average time elapsed over 1 runs: 256_663.657000 ms
      * float over double speed-up factor: 1.103105x
+     */
+
+    // mingw 64 gcc, windows 10, intel i7 cometlake
+    /*
+        train_f: Epoch: 10/10
+        train_f: Validation accuracy: 0.974
+        train_f: Training accuracy: 0.983
+        train_f: Training loss: 0.13665
+        mnist float: Average time elapsed over 1 runs: 560426.000000 ms
+
+        train_f: Epoch: 10/10
+        train: Validation accuracy: 0.975
+        train: Training accuracy: 0.985
+        train: Training loss: 0.13158
+        mnist double: Average time elapsed over 1 runs: 359394.000000 ms
+        float over double speed-up factor: 0.641287x
      */
 }
