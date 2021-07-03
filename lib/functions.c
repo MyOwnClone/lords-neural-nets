@@ -1,49 +1,170 @@
 #include <math.h>
 #include <stdlib.h>
 #include "functions.h"
-#include "matrix.h"
+#include <stdio.h>
 
 // Activations and derivatives
 
 double act_sigmoid(double num)
 {
-    return 1 / (1 + exp(-1*num));
+    return 1.0 / (1.0 + exp(-1.0*num));
 }
 
+#if 0
 float act_sigmoid_f(float num)
 {
-    return 1 / (1 + expf(-1*num));
+    return 1.0f / (1.0f + expf(-1.0f*num));
 }
+#else
+float act_sigmoid_f(float num)
+{
+    static long zero_count = 0;
+    static long non_zero_count = 0;
+    const double low_threshold = (double)1e-10;
 
+    float tmp = 1.0f / (1.0f + expf(-1.0f*num));
+
+    if (tmp < low_threshold && num > low_threshold)
+    {
+        zero_count++;
+    }
+    else
+    {
+        non_zero_count++;
+    }
+
+    if (zero_count > 1 && zero_count % 100000 == 0)
+    {
+        printf("act_sigmoid_f zero count: %d, non zero: %d\n", zero_count, non_zero_count);
+    }
+
+    return tmp;
+}
+#endif
+
+#if 0
 double act_sigmoid_der(double num)
 {
-    return exp(-1*num)/pow(1 + exp(-1*num),2);
+    return exp(-1.0*num)/pow(1.0 + exp(-1.0*num),2.0);
 }
+#else
+double act_sigmoid_der(double num)
+{
+    static long zero_count = 0;
+    static long non_zero_count = 0;
+    const double low_threshold = (double)1e-10;
 
+    double tmp = exp(-1.0*num)/pow(1.0 + exp(-1.0*num),2.0);
+
+    if (tmp < low_threshold && num > low_threshold)
+    {
+        zero_count++;
+    }
+    else
+    {
+        non_zero_count++;
+    }
+
+    if (zero_count > 1 && zero_count % 100000 == 0)
+    {
+        printf("act_sigmoid_der zero count: %d, non zero: %d\n", zero_count, non_zero_count);
+    }
+
+    return tmp;
+}
+#endif
+
+#if 0
 float act_sigmoid_der_f(float num)
 {
-    return expf(-1*num)/powf(1 + expf(-1*num),2);
+    return expf(-1.0f*num)/powf(1.0f + expf(-1.0f*num), 2.0f);
 }
+#else
+float act_sigmoid_der_f(float num)
+{
+    static long zero_count = 0;
+    static long non_zero_count = 0;
+    const float low_threshold = (float)1e-10;
+
+    // expf returns 0 starting with expf(-1.0f*104), expf(-1.0f*103) is non zero
+    // so basically expf for large numbers is zero
+    // see: https://www.quora.com/What-are-the-pros-and-the-cons-of-the-sigmoid-activation-function-in-deep-learning
+    // "The gradient for inputs that are far from the origin is near zero, so gradient-based learning is slow for saturated neurons using sigmoid"
+    // but I guess for floats/fp32, this is actually / practically too small value, that backprop is not working
+
+    float tmp = expf(-1.0f*num)/powf(1.0f + expf(-1.0f*num),2.0f);
+
+    /*if(errno == ERANGE)
+    {
+        perror("errno == ERANGE");
+    }*/
+
+    // we check if result is zero but input is non zero
+    if (tmp < low_threshold && num > low_threshold)
+    {
+        zero_count++;
+    }
+    else
+    {
+        non_zero_count++;
+    }
+
+    if (zero_count > 1 && zero_count % 100000 == 0)
+    {
+        printf("act_sigmoid_der_f zero count: %d, non zero: %d\n", zero_count, non_zero_count);
+    }
+
+    return tmp;
+}
+#endif
 
 double act_relu(double num)
 {
-    return fmax(0, num);
+    return fmax(0.0, num);
 }
 
 float act_relu_f(float num)
 {
-    return fmaxf(0, num);
+    return fmaxf(0.0f, num);
 }
 
 double act_relu_der(double num)
 {
-    return num > 0 ? 1 : 0;
+    return num > 0.0 ? 1.0 : 0.0;
 }
 
+#if 0
 float act_relu_der_f(float num)
 {
-    return num > 0 ? 1 : 0;
+    return num > 0.0f ? 1.0f : 0.0f;
 }
+#else
+float act_relu_der_f(float num)
+{
+    static long zero_count = 0;
+    static long non_zero_count = 0;
+    const float low_threshold = (float)1e-10;
+
+    float tmp = num > 0.0f ? 1.0f : 0.0f;
+
+    // we check if result is zero but input is non zero
+    if (tmp < low_threshold && num > low_threshold)
+    {
+        zero_count++;
+    }
+    else
+    {
+        non_zero_count++;
+    }
+
+    if (zero_count > 1 && zero_count % 100000 == 0)
+    {
+        printf("act_relu_der_f zero count: %d, non zero: %d\n", zero_count, non_zero_count);
+    }
+
+    return tmp;
+}
+#endif
 
 Activation* create_sigmoid_activation()
 {
@@ -91,13 +212,13 @@ double cost_mse(Matrix *prediction, Matrix *target)
         return -1;
     }
 
-    double loss = 0;
+    double loss = 0.0;
     for (int i = 0; i < prediction->rows; i++)
     {
-        loss += pow(MATRIX_IGET(prediction, i, 0) - MATRIX_IGET(target, i, 0), 2);
+        loss += pow(MATRIX_IGET(prediction, i, 0) - MATRIX_IGET(target, i, 0), 2.0);
     }
 
-    return loss / (2*prediction->rows);    
+    return loss / (2.0*prediction->rows);
 }
 
 float cost_mse_f(Matrix *prediction, Matrix *target)
@@ -107,10 +228,10 @@ float cost_mse_f(Matrix *prediction, Matrix *target)
         return -1;
     }
 
-    float loss = 0;
+    float loss = 0.0f;
     for (int i = 0; i < prediction->rows; i++)
     {
-        loss += powf(MATRIX_IGET(prediction, i, 0) - MATRIX_IGET(target, i, 0), 2);
+        loss += powf(MATRIX_IGET(prediction, i, 0) - MATRIX_IGET(target, i, 0), 2.0f);
     }
 
     return loss / (2.0f*(float)(prediction->rows));
@@ -123,10 +244,10 @@ double cost_cross_entropy(Matrix *prediction, Matrix *target)
         return -1;
     }
 
-    double loss = 0;
+    double loss = 0.0;
     for (int row = 0; row < prediction->rows; row++)
     {
-        loss += -1 * (MATRIX_IGET(target, row, 0) * log(MATRIX_IGET(prediction, row, 0)) + (1 - MATRIX_IGET(target, row, 0)) * log(1 - MATRIX_IGET(prediction, row, 0)));
+        loss += -1.0 * (MATRIX_IGET(target, row, 0) * log(MATRIX_IGET(prediction, row, 0)) + (1.0 - MATRIX_IGET(target, row, 0)) * log(1.0 - MATRIX_IGET(prediction, row, 0)));
     }
 
     return loss;
@@ -139,10 +260,10 @@ float cost_cross_entropy_f(Matrix *prediction, Matrix *target)
         return -1;
     }
 
-    float loss = 0;
+    float loss = 0.0f;
     for (int row = 0; row < prediction->rows; row++)
     {
-        loss += -1 * (MATRIX_IGET(target, row, 0) * log(MATRIX_IGET(prediction, row, 0)) + (1 - MATRIX_IGET(target, row, 0)) * log(1 - MATRIX_IGET(prediction, row, 0)));
+        loss += -1.0f * (MATRIX_IGET(target, row, 0) * logf(MATRIX_IGET(prediction, row, 0)) + (1.0f - MATRIX_IGET(target, row, 0)) * logf(1.0f - MATRIX_IGET(prediction, row, 0)));
     }
 
     return loss;

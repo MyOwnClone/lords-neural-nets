@@ -23,10 +23,11 @@ int main()
 #endif
 #if 1
 int main() {
-    int layers[] = {2,1};
+    int layer_count = 2;
+    int layers[] = {2, 1};   // 2 neurons in first layer, 1 in second
 
     Activation *act_sigmoid = create_sigmoid_activation();
-    Network *xor_network = create_network(2, 2, layers, act_sigmoid, D_FLOAT);
+    Network *xor_network = create_network(2, layer_count, layers, act_sigmoid, D_FLOAT);
 
     Matrix **inputs = (Matrix**) malloc (sizeof (Matrix*) * 4);
     float inputs_mat[4][2][1] = {

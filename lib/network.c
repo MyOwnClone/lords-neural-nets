@@ -177,7 +177,8 @@ static int backpropagate(
         if (l == 0)
         {
             prev_act = input;
-        } else
+        }
+        else
         {
             prev_act = network->layers[l - 1]->neurons_act;
         }

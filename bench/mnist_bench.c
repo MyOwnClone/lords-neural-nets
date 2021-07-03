@@ -3,13 +3,14 @@
 #include "../lib/network.h"
 #include "bench_utils.h"
 #include <stdio.h>
+#include <float.h>
 
 long EPOCH_COUNT = 10;
 
 void mnist_double()
 {
-    int num_train = 6000;//0;
-    int num_test = 1000;//0;
+    int num_train = 60000;
+    int num_test = 10000;
 
     char *train_inputs_fn = "./resources/mnist_train_vectors.csv";
     Matrix **train_inputs = load_csv(train_inputs_fn, num_train, 28*28, D_DOUBLE);
@@ -63,8 +64,8 @@ void mnist_double()
 
 void mnist_float()
 {
-    int num_train = 6000;//60000;
-    int num_test = 1000;//10000;
+    int num_train = 60000;
+    int num_test = 10000;
 
     char *train_inputs_fn = "./resources/mnist_train_vectors.csv";
     Matrix **train_inputs = load_csv(train_inputs_fn, num_train, 28*28, D_FLOAT);
@@ -94,17 +95,18 @@ void mnist_float()
     Dataset *dataset = create_dataset(num_train, 28*28, 10, num_test, train_inputs, train_labels, test_inputs, test_labels);
     Monitor monitor[] = {acc, loss};
 
-    int layers[] = {100,10};
+    int layer_count = 2;
+    int layers[] = {100,10};    // layer 0: 100 neurons, layer 1: 10 neurons
 
-    Activation *act_sigmoid = create_relu_activation();
+    Activation *act_sigmoid = create_sigmoid_activation();
     CostType cost_type = CROSS_ENTROPY;
-    Network *mnist_network = create_network(28*28, 2, layers, act_sigmoid, D_FLOAT);
+    Network *mnist_network = create_network(28*28, layer_count, layers, act_sigmoid, D_FLOAT);
 
     TrainingOptions *training_options = init_training_options();
     training_options->cost_type = cost_type;
-    training_options->epochs = 10;
+    training_options->epochs = EPOCH_COUNT;
     training_options->batch_size = 10;
-    training_options->learning_rate = 0.5;
+    training_options->learning_rate = 0.1;
     training_options->momentum = 0.9;
     training_options->regularization_lambda = 0.9;
 
@@ -122,6 +124,8 @@ void mnist_float()
 
 int main()
 {
+    printf("The minimum value of float = %.10e\n", FLT_MIN);
+
     // FIXME: mnist has vanishing gradient problem with float backend
     double float_msecs = print_elapsed_time(mnist_float, "mnist float", 1);
     double double_msecs = print_elapsed_time(mnist_double, "mnist double", 1);
