@@ -103,7 +103,7 @@ void mnist_float()
     TrainingOptions *training_options = init_training_options();
     training_options->cost_type = cost_type;
     training_options->epochs = 10;
-    training_options->batch_size = 2;   // 10
+    training_options->batch_size = 10;
     training_options->learning_rate = 0.5;
     training_options->momentum = 0.9;
     training_options->regularization_lambda = 0.9;
