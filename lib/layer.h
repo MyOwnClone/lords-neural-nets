@@ -8,8 +8,8 @@ typedef struct
 {
     Matrix *weights;
     Matrix *bias;
-    Matrix *neurons;
-    Matrix *neurons_act;
+    Matrix *neurons;    // immediate neuron's output, before activation
+    Matrix *neurons_act;    // neuron's activation output
     Activation *activation;
     int num_neurons;
 } Layer;
