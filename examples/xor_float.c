@@ -1,7 +1,6 @@
 #include "../lib/network.h"
 #include "../lib/functions.h"
 #include <stdlib.h>
-#include <stdio.h>
 
 int main() {
     int layers[] = {2,1};
@@ -63,4 +62,14 @@ int main() {
     train_f: Training loss: 0.00786
 
      */
+
+    /*
+     * other run:
+    train_f: Validation accuracy: 0.750
+    train_f: Training accuracy: 0.750
+    train_f: Training loss: 0.69305
+
+     */
+
+    // FIXME: on Intel, it sometimes reaches acc 1 and sometimes acc 0.75
 }

@@ -71,12 +71,16 @@ int main()
 
     if (res < 0)
     {
+#ifndef __MINGW64__
         RED_COLOR;
+#endif
     }
 
     printf("%d tests failed!\n", abs(res));
 
+#ifndef __MINGW64__
     RESET_COLOR;
+#endif
 
     eval_test_result("All tests finished", res);
 

@@ -61,4 +61,8 @@ int main() {
     train: Training accuracy: 1.000
     train: Training loss: 0.00654
      */
+
+    /*
+     * FIXME: on Intel, it sometimes converges to acc 1 and training loss ~0.00654, but sometimes both acc are around 0.5
+     */
 }

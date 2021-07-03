@@ -1,5 +1,4 @@
 #include "layer.h"
-#include "matrix.h"
 #include "functions.h"
 #include <stdlib.h>
 #include <math.h>

@@ -1,7 +1,5 @@
 #include "layer.h"
-#include "matrix.h"
 #include "network.h"
-#include "utils.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <limits.h>
@@ -189,18 +187,14 @@ static int backpropagate(
 
         if (layer->neurons->type == D_FLOAT)
         {
-            //convert_float_matrix_to_double(layer->neurons);
-
             res += apply_f(layer->neurons, NULL, layer->activation->fn_der_f);
-
-            //convert_double_matrix_to_float(layer->neurons);
         }
         else
         {
             res += apply(layer->neurons, NULL, layer->activation->fn_der);
         }
-        res += multiply(transposed_weights[l], deltas[l + 1],
-                        temp_deltas[l]); // Transposed weights array is 1 shorter than matrix length
+
+        res += multiply(transposed_weights[l], deltas[l + 1], temp_deltas[l]); // Transposed weights array is 1 shorter than matrix length
         res += hadamard(temp_deltas[l], layer->neurons, deltas[l]);
         if (res < 0)
         {
@@ -388,7 +382,11 @@ static float get_loss_f(CostType cost_type, Matrix *prediction, Matrix *target)
     {
         logger(EXCEPTION, __func__, "Unknown cost_type!");
 
-        return (float)INT_FAST32_MAX;
+#ifdef WIN32
+        return (float) INT_MAX;
+#else
+        return (float)  INT_FAST32_MAX;
+#endif
     }
 }
 
