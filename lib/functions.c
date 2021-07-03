@@ -65,6 +65,10 @@ Activation* create_relu_activation()
     Activation *activation = (Activation *) malloc ( sizeof (Activation));
     activation->fn = &act_relu;
     activation->fn_der = &act_relu_der;
+
+    activation->fn_f = &act_relu_f;
+    activation->fn_der_f = &act_relu_der_f;
+
     activation->type = RELU;
 
     return activation;

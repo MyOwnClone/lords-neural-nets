@@ -1,11 +1,31 @@
 #include "../lib/network.h"
 #include "../lib/functions.h"
 #include <stdlib.h>
+#include <stdio.h>
 
+#if 0
+int main()
+{
+    printf("floats:\n");
+    for (float f = 0; f < 100; f += 0.1f)
+    {
+        float result = act_sigmoid_der_f(f);
+        printf("%f : %f\n", f, result);
+    }
+
+    printf("doubles:\n");
+    for (double d = 0; d < 100; d += 0.1)
+    {
+        double result = act_sigmoid_der(d);
+        printf("%lf : %lf\n", d, result);
+    }
+}
+#endif
+#if 1
 int main() {
     int layers[] = {2,1};
 
-    Activation *act_sigmoid = create_sigmoid_activation();
+    Activation *act_sigmoid = create_relu_activation();
     Network *xor_network = create_network(2, 2, layers, act_sigmoid, D_FLOAT);
 
     Matrix **inputs = (Matrix**) malloc (sizeof (Matrix*) * 4);
@@ -73,3 +93,5 @@ int main() {
 
     // FIXME: on Intel, it sometimes reaches acc 1 and sometimes acc 0.75
 }
+
+#endif

@@ -36,7 +36,6 @@ typedef struct
 
 Activation* create_sigmoid_activation();
 Activation* create_relu_activation();
-Activation* create_relu_activation_f();
 
 int delete_activation(Activation *activation);
 
