@@ -25,7 +25,7 @@ int main()
 int main() {
     int layers[] = {2,1};
 
-    Activation *act_sigmoid = create_relu_activation();
+    Activation *act_sigmoid = create_sigmoid_activation();
     Network *xor_network = create_network(2, 2, layers, act_sigmoid, D_FLOAT);
 
     Matrix **inputs = (Matrix**) malloc (sizeof (Matrix*) * 4);
