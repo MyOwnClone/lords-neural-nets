@@ -3,12 +3,28 @@ DONE: add branches and measure difference for above mentioned test - branches do
 DONE: optionally, override the is_float_matrix to #define returning just true, compilation hopefully optimizes branching away - done, see above
 DONE: proper macOS + Apple M1 ARM64 cmake
 DONE: proper x86-64 vs ARM64 bench
-TODO + FIXME: theory: float backend is causing vanishing gradient problem, maybe activation derivation functions are not friends with fp32 precision? (act_sigmoid_der_f returns zero, while double version is OK)
-    TODO + FIXME: so try verify that theory (act_sigmoid_der_f returning zero all the time for floats) + try other possible activations + their derivations, find ones (reLus?) which work better with float (actually giving non zero values)
-TODO: try to remove -funsafe-math-optimizations on x86 and check whether float converges in MNIST
+DONE: theory: float backend is causing vanishing gradient problem, maybe activation derivation functions are not friends with fp32 precision? (act_sigmoid_der_f returns zero, while double version is OK)
+    DONE: so try verify that theory (act_sigmoid_der_f returning zero all the time for floats) + try other possible activations + their derivations,
+        find ones (reLus?) which work better with float (actually giving non zero values) + add unit tests for this
+CANCELLED: try to remove -funsafe-math-optimizations on x86 and check whether float converges in MNIST
+DONE: mnist on float still fails to successfully train
+DONE: gradients (delta_weights etc.) seem to be zero in float training mode :-(
+
+FIXME: these unit tests fail (at least on ARM Mac):
+FIXME: test_layer_compute_float:145 Layer neurons should not be zero matrix
+FIXME: test_predict_float:104 Result matrix should not 0
+
 TODO: better branching off (matrix.h) support
 TODO: disassembly? DONE for DEBUG binaries
 TODO: disassembly of release/optimised binaries
 
-FIXME: mnist on float still fails to successfully train
-FIXME 3: gradients (delta_weights etc.) seem to be zero in float training mode :-(
+TODO: add support for visualization of activation values for individial neurons when doing forward/backward pass
+    * maybe just export normalized values to csv
+      * activation values for whole network per one forward pass
+      * weight changes per one backward pass
+    * and than have other CLI tool to convert it to image (python + opencv + numpy + pil)
+        * or python + Tk gui?
+    * vulkan rendering?
+    * JS viewer?
+
+
