@@ -1,5 +1,7 @@
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "Simplify"
+#pragma ide diagnostic ignored "cert-msc50-cpp"
 #include "layer.h"
-#include "matrix.h"
 #include "functions.h"
 #include <stdlib.h>
 #include <math.h>
@@ -133,3 +135,5 @@ int delete_layer(Layer *layer)
     layer = NULL;
     return 0;
 }
+
+#pragma clang diagnostic pop

@@ -145,6 +145,7 @@ Matrix** load_csv(char *filename, int lines, int line_length, MatrixDataType mat
     return result;
 }
 
+// creates one hot encoding?
 int vectorize(Matrix **a, int length, int num_classes)
 {
     bool float_matrix = is_float_matrix(a[0]);

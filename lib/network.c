@@ -4,6 +4,9 @@
 #include <stdio.h>
 #include <limits.h>
 
+/*
+ * seed == -1, function internally uses time(NULL) for seed, seed != -1 -> used as is
+ */
 Network *create_network(int input_size, int num_layers, int layers[], Activation *activation, MatrixDataType dataType, int seed)
 {
     Network *network = (Network *) malloc(sizeof(Network));
