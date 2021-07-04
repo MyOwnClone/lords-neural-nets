@@ -9,7 +9,8 @@ typedef struct
     int num_layers;
 } Network;
 
-Network* create_network(int input_size, int num_layers, int layers[], Activation *activation, MatrixDataType dataType);
+Network *
+create_network(int input_size, int num_layers, int layers[], Activation *activation, MatrixDataType dataType, int seed);
 void print_network(Network *network);
 int delete_network(Network *network);
 Matrix* predict(Network *network, Matrix *input);

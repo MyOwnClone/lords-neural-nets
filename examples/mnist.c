@@ -29,13 +29,13 @@ int main()
 
 
     Dataset *dataset = create_dataset(num_train, 28*28, 10, num_test, train_inputs, train_labels, test_inputs, test_labels);
-    Monitor monitor[] = {acc, loss};
+    Monitor monitor;
 
     int layers[] = {100,10};
 
     Activation *act_sigmoid = create_sigmoid_activation();
     CostType cost_type = CROSS_ENTROPY;
-    Network *mnist_network = create_network(28*28, 2, layers, act_sigmoid, D_DOUBLE);
+    Network *mnist_network = create_network(28 * 28, 2, layers, act_sigmoid, D_DOUBLE, -1);
 
     TrainingOptions *training_options = init_training_options();
     training_options->cost_type = cost_type;
@@ -48,7 +48,7 @@ int main()
     TrainingLoggingOptions *training_logging_options = init_training_logging_options();
     training_logging_options->LogEachNThEpoch = 1;
 
-    train(mnist_network, dataset, monitor, training_options, training_logging_options);
+    train(mnist_network, dataset, &monitor, training_options, training_logging_options);
 
     delete_network(mnist_network);
     delete_dataset(dataset);

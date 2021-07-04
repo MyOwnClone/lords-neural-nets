@@ -11,7 +11,7 @@ static int test_create_layer_float()
     int input_size = 30;
 
     Activation *sigmoid = create_sigmoid_activation();
-    Layer *layer = create_layer(layer_size, input_size, sigmoid, D_FLOAT);
+    Layer *layer = create_layer(layer_size, input_size, sigmoid, D_FLOAT, -1);
 
     //Tests
     if (layer->num_neurons != layer_size)
@@ -67,7 +67,7 @@ static int test_create_layer()
     int input_size = 30;
 
     Activation *sigmoid = create_sigmoid_activation();
-    Layer *layer = create_layer(layer_size, input_size, sigmoid, D_DOUBLE);
+    Layer *layer = create_layer(layer_size, input_size, sigmoid, D_DOUBLE, -1);
 
     //Tests
     if (layer->num_neurons != layer_size)
@@ -122,7 +122,7 @@ int test_layer_compute_float()
     int input_size = 10;
 
     Activation *sigmoid = create_sigmoid_activation();
-    Layer *layer = create_layer(layer_size, input_size, sigmoid, D_FLOAT);
+    Layer *layer = create_layer(layer_size, input_size, sigmoid, D_FLOAT, -1);
 
     float mat[10][1] = {{1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}};
     Matrix *input = create_f_matrix(input_size, 1, mat);
@@ -157,7 +157,7 @@ int test_layer_compute()
     int input_size = 10;
 
     Activation *sigmoid = create_sigmoid_activation();
-    Layer *layer = create_layer(layer_size, input_size, sigmoid, D_DOUBLE);
+    Layer *layer = create_layer(layer_size, input_size, sigmoid, D_DOUBLE, -1);
 
     double mat[10][1] = {{1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}};
     Matrix *input = create_d_matrix(input_size, 1, mat);

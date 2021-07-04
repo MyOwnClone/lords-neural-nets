@@ -7,7 +7,7 @@ int main() {
     int layers[] = {2,1};
 
     Activation *act_sigmoid = create_sigmoid_activation();
-    Network *xor_network = create_network(2, 2, layers, act_sigmoid, D_DOUBLE);
+    Network *xor_network = create_network(2, 2, layers, act_sigmoid, D_DOUBLE, -1);
 
     Matrix **inputs = (Matrix**) malloc (sizeof (Matrix*) * 4);
     double inputs_mat[4][2][1] = {

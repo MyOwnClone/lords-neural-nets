@@ -12,7 +12,7 @@ void xor_float()
     int layers[] = {2,1};
 
     Activation *act_sigmoid = create_sigmoid_activation();
-    Network *xor_network = create_network(2, 2, layers, act_sigmoid, D_FLOAT);
+    Network *xor_network = create_network(2, 2, layers, act_sigmoid, D_FLOAT, -1);
 
     Matrix **inputs = (Matrix**) malloc (sizeof (Matrix*) * 4);
     float inputs_mat[4][2][1] = {
@@ -36,7 +36,7 @@ void xor_float()
         labels[i] = create_f_matrix(1, 1, labels_mat[i]);
     }
 
-    Monitor monitor[] = {acc, loss};
+    Monitor monitor;
     Dataset *dataset = create_dataset(4,2,1,4, inputs, labels, NULL, NULL);
 
     CostType cost_type = CROSS_ENTROPY;
@@ -56,7 +56,7 @@ void xor_float()
     training_logging_options->LogEachNThEpoch = 1000; // no logging
 #endif
 
-    train_f(xor_network, dataset, monitor, training_options, training_logging_options);
+    train_f(xor_network, dataset, &monitor, training_options, training_logging_options);
 
     delete_network(xor_network);
     delete_activation(act_sigmoid);
@@ -70,7 +70,7 @@ void xor_double()
     int layers[] = {2,1};
 
     Activation *act_sigmoid = create_sigmoid_activation();
-    Network *xor_network = create_network(2, 2, layers, act_sigmoid, D_DOUBLE);
+    Network *xor_network = create_network(2, 2, layers, act_sigmoid, D_DOUBLE, -1);
 
     Matrix **inputs = (Matrix**) malloc (sizeof (Matrix*) * 4);
     double inputs_mat[4][2][1] = {
@@ -94,7 +94,7 @@ void xor_double()
         labels[i] = create_d_matrix(1, 1, labels_mat[i]);
     }
 
-    Monitor monitor[] = {acc, loss};
+    Monitor monitor;
     Dataset *dataset = create_dataset(4,2,1,4, inputs, labels, NULL, NULL);
 
     CostType cost_type = CROSS_ENTROPY;
@@ -114,7 +114,7 @@ void xor_double()
     training_logging_options->LogEachNThEpoch = 1000; // no logging
 #endif
 
-    train(xor_network, dataset, monitor, training_options, training_logging_options);
+    train(xor_network, dataset, &monitor, training_options, training_logging_options);
 
     delete_network(xor_network);
     delete_activation(act_sigmoid);

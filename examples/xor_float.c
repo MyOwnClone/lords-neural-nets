@@ -27,7 +27,7 @@ int main() {
     int layers[] = {2, 1};   // 2 neurons in first layer, 1 in second
 
     Activation *act_sigmoid = create_sigmoid_activation();
-    Network *xor_network = create_network(2, layer_count, layers, act_sigmoid, D_FLOAT);
+    Network *xor_network = create_network(2, layer_count, layers, act_sigmoid, D_FLOAT, -1);
 
     Matrix **inputs = (Matrix**) malloc (sizeof (Matrix*) * 4);
     float inputs_mat[4][2][1] = {
@@ -51,7 +51,7 @@ int main() {
         labels[i] = create_f_matrix(1, 1, labels_mat[i]);
     }
 
-    Monitor monitor[] = {acc, loss};
+    Monitor monitor;
     Dataset *dataset = create_dataset(4,2,1,4, inputs, labels, NULL, NULL);
 
     CostType cost_type = CROSS_ENTROPY;
@@ -67,7 +67,7 @@ int main() {
     TrainingLoggingOptions *training_logging_options = init_training_logging_options();
     training_logging_options->LogEachNThEpoch = 1;
 
-    train_f(xor_network, dataset, monitor, training_options, training_logging_options);
+    train_f(xor_network, dataset, &monitor, training_options, training_logging_options);
 
     delete_network(xor_network);
     delete_activation(act_sigmoid);

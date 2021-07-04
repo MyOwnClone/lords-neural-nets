@@ -14,7 +14,7 @@ typedef struct
     int num_neurons;
 } Layer;
 
-Layer* create_layer(int layer_size, int input_size, Activation *activation, MatrixDataType dataType);
+Layer *create_layer(int layer_size, int input_size, Activation *activation, MatrixDataType dataType, int seed);
 int layer_compute(Layer *layer, Matrix *input);
 int delete_layer(Layer *layer);
 

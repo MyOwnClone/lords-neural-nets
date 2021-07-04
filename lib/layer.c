@@ -7,9 +7,9 @@
 
 #define RAND_INIT true
 
-static int init_layer(Layer *layer);
+static int init_layer(Layer *layer, int seed);
 
-Layer* create_layer(int layer_size, int input_size, Activation *activation, MatrixDataType dataType)
+Layer *create_layer(int layer_size, int input_size, Activation *activation, MatrixDataType dataType, int seed)
 {
     Layer *layer = (Layer *) malloc (sizeof (Layer));
 
@@ -21,21 +21,26 @@ Layer* create_layer(int layer_size, int input_size, Activation *activation, Matr
     layer->neurons = create_empty_matrix(layer_size, 1, dataType);
     layer->neurons_act = create_empty_matrix(layer_size, 1, dataType);
 
-    init_layer(layer);
+    init_layer(layer, seed);
 
     return layer;
 }
 
-static int init_layer(Layer *layer)
+static int init_layer(Layer *layer, int seed)
 {
     Matrix *weights = layer->weights;
     Matrix *bias = layer->bias;
 
     bool is_float = is_float_matrix(layer->weights);
 
+    if (seed == -1)
+    {
+        seed = time(NULL);
+    }
+
     if (is_float)
     {
-        srand(time(NULL));
+        srand(seed);
         double range = sqrt((double) 6/ (weights->rows + weights->cols));
 
         for (int row = 0; row < weights->rows; row++)
@@ -69,7 +74,7 @@ static int init_layer(Layer *layer)
     }
     else // double
     {
-        srand(time(NULL));
+        srand(seed);
         double range = sqrt((double) 6 / (weights->rows + weights->cols));
 
         for (int row = 0; row < weights->rows; row++)

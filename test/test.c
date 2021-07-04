@@ -68,6 +68,8 @@ int main()
     res += test_network();
     res += test_functions();
     res += test_utils();
+    res += test_train_xor_float();
+    res += test_train_xor_double();
 
     if (res < 0)
     {

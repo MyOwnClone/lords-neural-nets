@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <limits.h>
 
-Network *create_network(int input_size, int num_layers, int layers[], Activation *activation, MatrixDataType dataType)
+Network *create_network(int input_size, int num_layers, int layers[], Activation *activation, MatrixDataType dataType, int seed)
 {
     Network *network = (Network *) malloc(sizeof(Network));
     network->num_layers = num_layers;
@@ -13,7 +13,7 @@ Network *create_network(int input_size, int num_layers, int layers[], Activation
     int prev_layer_size = input_size;
     for (int i = 0; i < num_layers; i++)
     {
-        network->layers[i] = create_layer(layers[i], prev_layer_size, activation, dataType);
+        network->layers[i] = create_layer(layers[i], prev_layer_size, activation, dataType, seed);
         prev_layer_size = layers[i];
     }
 
@@ -465,6 +465,8 @@ int train_f(
 
         int i = 0;
 
+        float final_epoch_loss = epoch_loss;
+
         while (i < dataset->train_size)
         {
             int batch_start = i;
@@ -589,12 +591,20 @@ int train_f(
 
             if (training_logging_options == NULL || training_logging_options->LogLoss)
             {
-                float final_epoch_loss = (float) epoch_loss / (float) dataset->train_size;
+                final_epoch_loss = (float) epoch_loss / (float) dataset->train_size;
                 char loss_buffer[1000];
                 sprintf(loss_buffer, "Training loss: %.5f", final_epoch_loss);
                 logger(INFO, __func__, loss_buffer);
             }
         }
+        else
+        {
+            epoch_accuracy = (float) ACCURACY_EXP(network, dataset->val_inputs, dataset->val_labels,dataset->val_size);
+            final_epoch_loss = (float) epoch_loss / (float) dataset->train_size;
+        }
+
+        monitor->acc = epoch_accuracy;
+        monitor->loss = final_epoch_loss;
 
         epoch++;
     }
@@ -682,6 +692,8 @@ int train(
         epoch_loss = 0;
 
         int i = 0;
+
+        float final_epoch_loss = epoch_loss;
 
         while (i < dataset->train_size)
         {
@@ -806,7 +818,6 @@ int train(
                 logger(INFO, __func__, acc_train_buffer);
             }
 
-
             if (training_logging_options == NULL || training_logging_options->LogLoss)
             {
                 epoch_loss = (double) epoch_loss / dataset->train_size;
@@ -815,6 +826,14 @@ int train(
                 logger(INFO, __func__, loss_buffer);
             }
         }
+        else
+        {
+            epoch_accuracy = (float) ACCURACY_EXP(network, dataset->val_inputs, dataset->val_labels,dataset->val_size);
+            final_epoch_loss = (float) epoch_loss / (float) dataset->train_size;
+        }
+
+        monitor->acc = epoch_accuracy;
+        monitor->loss = final_epoch_loss;
 
         epoch++;
     }

@@ -10,3 +10,5 @@ int test_layer();
 int test_network();
 int test_functions();
 int test_utils();
+int test_train_xor_float();
+int test_train_xor_double();

@@ -39,9 +39,9 @@ Dataset* create_dataset(
 );
 int delete_dataset(Dataset *dataset);
 
-typedef enum {
-    loss,
-    acc
+typedef struct {
+    double loss;
+    double acc;
 } Monitor;
 
 typedef struct
