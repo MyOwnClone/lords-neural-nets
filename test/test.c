@@ -1,5 +1,4 @@
 #include "test.h"
-#include "../lib/utils.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>

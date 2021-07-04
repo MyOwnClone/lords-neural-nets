@@ -397,7 +397,7 @@ static float get_loss_f(CostType cost_type, Matrix *prediction, Matrix *target)
 int train_f(
         Network *network,
         Dataset *dataset,
-        Metrics *monitor,
+        Metrics *metrics,
         TrainingOptions *training_options,
         TrainingLoggingOptions * training_logging_options)
 {
@@ -533,27 +533,15 @@ int train_f(
                 // Get weights adjustment
                 scalar_multiply(delta_weights[j], eta);
 
-                //print_matrix(momentums[j]);
-
                 // Add momentum
                 add(delta_weights[j], momentums[j]);
-
-                // printf("Weights Matrix before adjustment\n");
-                // print_matrix(network->layers[j]->weights);
-                // printf("\n");
 
                 // L2 Regularization
                 scalar_multiply(network->layers[j]->weights,
                                 1 - ((learning_rate * reg_lambda) / (float) (dataset->train_size)));
 
-                //print_matrix(delta_weights[j]);
-
                 // Set new weights
                 add(network->layers[j]->weights, delta_weights[j]);
-
-                // printf("Weights Matrix after adjustment\n");
-                // print_matrix(network->layers[j]->weights);
-                // printf("\n");
 
                 // Set bias
                 scalar_multiply(delta_bias[j], eta);
@@ -603,8 +591,8 @@ int train_f(
             final_epoch_loss = (float) epoch_loss / (float) dataset->train_size;
         }
 
-        monitor->acc = epoch_accuracy;
-        monitor->loss = final_epoch_loss;
+        metrics->acc = epoch_accuracy;
+        metrics->loss = final_epoch_loss;
 
         epoch++;
     }
@@ -625,7 +613,7 @@ int train_f(
 int train(
         Network *network,
         Dataset *dataset,
-        Metrics *monitor,
+        Metrics *metrics,
         TrainingOptions *training_options,
         TrainingLoggingOptions * training_logging_options)
 {
@@ -765,23 +753,11 @@ int train(
                 // Add momentum
                 add(delta_weights[j], momentums[j]);
 
-                //print_matrix(momentums[j]);
-
-                // printf("Weights Matrix before adjustment\n");
-                // print_matrix(network->layers[j]->weights);
-                // printf("\n");
-
                 // L2 Regularization
                 scalar_multiply(network->layers[j]->weights, 1 - ((learning_rate * reg_lambda) / dataset->train_size));
 
                 // Set new weights
                 add(network->layers[j]->weights, delta_weights[j]);
-
-                //print_matrix(delta_weights[j]);
-
-                // printf("Weights Matrix after adjustment\n");
-                // print_matrix(network->layers[j]->weights);
-                // printf("\n");
 
                 // Set bias
                 scalar_multiply(delta_bias[j], eta);
@@ -832,8 +808,8 @@ int train(
             final_epoch_loss = (float) epoch_loss / (float) dataset->train_size;
         }
 
-        monitor->acc = epoch_accuracy;
-        monitor->loss = final_epoch_loss;
+        metrics->acc = epoch_accuracy;
+        metrics->loss = final_epoch_loss;
 
         epoch++;
     }

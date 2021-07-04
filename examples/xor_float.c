@@ -1,27 +1,7 @@
 #include "../lib/network.h"
 #include "../lib/functions.h"
 #include <stdlib.h>
-#include <stdio.h>
 
-#if 0
-int main()
-{
-    printf("floats:\n");
-    for (float f = 0; f < 100; f += 0.1f)
-    {
-        float result = act_sigmoid_der_f(f);
-        printf("%f : %f\n", f, result);
-    }
-
-    printf("doubles:\n");
-    for (double d = 0; d < 100; d += 0.1)
-    {
-        double result = act_sigmoid_der(d);
-        printf("%lf : %lf\n", d, result);
-    }
-}
-#endif
-#if 1
 int main() {
     int layer_count = 2;
     int layers[] = {2, 1};   // 2 neurons in first layer, 1 in second
@@ -94,5 +74,3 @@ int main() {
 
     // FIXME: on Intel, it sometimes reaches acc 1 and sometimes acc 0.75
 }
-
-#endif

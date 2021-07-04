@@ -34,7 +34,7 @@ void mnist_double()
 
 
     Dataset *dataset = create_dataset(num_train, 28*28, 10, num_test, train_inputs, train_labels, test_inputs, test_labels);
-    Metrics monitor;
+    Metrics metrics;
 
     int layers[] = {100,10};
 
@@ -53,7 +53,7 @@ void mnist_double()
     TrainingLoggingOptions *training_logging_options = init_training_logging_options();
     training_logging_options->LogEachNThEpoch = 1;
 
-    train(mnist_network, dataset, &monitor, training_options, training_logging_options);
+    train(mnist_network, dataset, &metrics, training_options, training_logging_options);
 
     delete_network(mnist_network);
     delete_dataset(dataset);
@@ -93,7 +93,7 @@ void mnist_float()
     logger(INFO, __func__, "Created test labels dataset");
 
     Dataset *dataset = create_dataset(num_train, 28*28, 10, num_test, train_inputs, train_labels, test_inputs, test_labels);
-    Metrics monitor;
+    Metrics metrics;
 
     int layers[] = {100,10};
 
@@ -112,7 +112,7 @@ void mnist_float()
     TrainingLoggingOptions *training_logging_options = init_training_logging_options();
     training_logging_options->LogEachNThEpoch = 1;
 
-    train_f(mnist_network, dataset, &monitor, training_options, training_logging_options);
+    train_f(mnist_network, dataset, &metrics, training_options, training_logging_options);
 
     delete_network(mnist_network);
     delete_dataset(dataset);

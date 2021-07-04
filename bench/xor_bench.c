@@ -4,9 +4,6 @@
 #include <stdio.h>
 #include "bench_utils.h"
 
-#define DEBUG_MODE
-#undef DEBUG_MODE
-
 void xor_float()
 {
     int layers[] = {2,1};
@@ -36,7 +33,7 @@ void xor_float()
         labels[i] = create_f_matrix(1, 1, labels_mat[i]);
     }
 
-    Metrics monitor;
+    Metrics metrics;
     Dataset *dataset = create_dataset(4,2,1,4, inputs, labels, NULL, NULL);
 
     CostType cost_type = CROSS_ENTROPY;
@@ -56,7 +53,7 @@ void xor_float()
     training_logging_options->LogEachNThEpoch = 1000; // no logging
 #endif
 
-    train_f(xor_network, dataset, &monitor, training_options, training_logging_options);
+    train_f(xor_network, dataset, &metrics, training_options, training_logging_options);
 
     delete_network(xor_network);
     delete_activation(act_sigmoid);
@@ -94,7 +91,7 @@ void xor_double()
         labels[i] = create_d_matrix(1, 1, labels_mat[i]);
     }
 
-    Metrics monitor;
+    Metrics metrics;
     Dataset *dataset = create_dataset(4,2,1,4, inputs, labels, NULL, NULL);
 
     CostType cost_type = CROSS_ENTROPY;
@@ -114,7 +111,7 @@ void xor_double()
     training_logging_options->LogEachNThEpoch = 1000; // no logging
 #endif
 
-    train(xor_network, dataset, &monitor, training_options, training_logging_options);
+    train(xor_network, dataset, &metrics, training_options, training_logging_options);
 
     delete_network(xor_network);
     delete_activation(act_sigmoid);
