@@ -29,7 +29,7 @@ int main()
 
 
     Dataset *dataset = create_dataset(num_train, 28*28, 10, num_test, train_inputs, train_labels, test_inputs, test_labels);
-    Monitor monitor;
+    Metrics monitor;
 
     int layers[] = {100,10};
 

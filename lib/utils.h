@@ -42,7 +42,7 @@ int delete_dataset(Dataset *dataset);
 typedef struct {
     double loss;
     double acc;
-} Monitor;
+} Metrics;
 
 typedef struct
 {

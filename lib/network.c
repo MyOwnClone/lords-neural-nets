@@ -397,7 +397,7 @@ static float get_loss_f(CostType cost_type, Matrix *prediction, Matrix *target)
 int train_f(
         Network *network,
         Dataset *dataset,
-        Monitor *monitor,
+        Metrics *monitor,
         TrainingOptions *training_options,
         TrainingLoggingOptions * training_logging_options)
 {
@@ -625,7 +625,7 @@ int train_f(
 int train(
         Network *network,
         Dataset *dataset,
-        Monitor *monitor,
+        Metrics *monitor,
         TrainingOptions *training_options,
         TrainingLoggingOptions * training_logging_options)
 {

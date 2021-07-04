@@ -51,7 +51,7 @@ int main() {
         labels[i] = create_f_matrix(1, 1, labels_mat[i]);
     }
 
-    Monitor monitor;
+    Metrics monitor;
     Dataset *dataset = create_dataset(4,2,1,4, inputs, labels, NULL, NULL);
 
     CostType cost_type = CROSS_ENTROPY;
