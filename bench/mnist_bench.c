@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <float.h>
 
-long EPOCH_COUNT = 10;
+long MNIST_EPOCH_COUNT = 10;
 
 void mnist_double()
 {
@@ -44,7 +44,7 @@ void mnist_double()
 
     TrainingOptions *training_options = init_training_options();
     training_options->cost_type = cost_type;
-    training_options->epochs = EPOCH_COUNT;
+    training_options->epochs = MNIST_EPOCH_COUNT;
     training_options->batch_size = 10;
     training_options->learning_rate = 0.1;
     training_options->momentum = 0.9;
@@ -104,7 +104,7 @@ void mnist_float()
     TrainingOptions *training_options = init_training_options();
     training_options->cost_type = cost_type;
     training_options->epochs = 10;
-    training_options->batch_size = 2;   // 10
+    training_options->batch_size = 10;
     training_options->learning_rate = 0.5;
     training_options->momentum = 0.9;
     training_options->regularization_lambda = 0.9;

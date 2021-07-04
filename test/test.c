@@ -70,6 +70,8 @@ int main()
     res += test_utils();
     res += test_train_xor_float();
     res += test_train_xor_double();
+    res += test_train_mnist_double();
+    res += test_train_mnist_float();
 
     if (res < 0)
     {
