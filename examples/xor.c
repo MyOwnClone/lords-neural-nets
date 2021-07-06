@@ -31,7 +31,7 @@ int main() {
         labels[i] = create_d_matrix(1, 1, labels_mat[i]);
     }
 
-    Metrics monitor[] = {acc, loss};
+    Metrics monitor;
     Dataset *dataset = create_dataset(4, 4, inputs, labels, NULL, NULL);
 
     CostType cost_type = CROSS_ENTROPY;
@@ -47,7 +47,7 @@ int main() {
     TrainingLoggingOptions *training_logging_options = init_training_logging_options();
     training_logging_options->log_each_nth_epoch = 1;
 
-    train(xor_network, dataset, monitor, training_options, training_logging_options);
+    train(xor_network, dataset, &monitor, training_options, training_logging_options);
 
     delete_network(xor_network);
     delete_activation(act_sigmoid);
