@@ -1,7 +1,7 @@
-#include "matrix.h"
-
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
+
+#include "matrix.h"
 
 // Activation functions
 
@@ -17,9 +17,7 @@ float act_relu_der_f(float num);
 typedef enum
 {
     SIGMOID,
-    RELU,
-    SIGMOID_F,
-    RELU_F
+    RELU
 } ActivationType;
 
 
@@ -46,7 +44,6 @@ typedef enum
     MEAN_SQUARED_ERROR,
     CROSS_ENTROPY
 } CostType;
-
 
 double cost_mse(Matrix *prediction, Matrix *target);
 double cost_cross_entropy(Matrix *prediction, Matrix *target);
