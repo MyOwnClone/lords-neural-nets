@@ -4,6 +4,7 @@
 
 #include "matrix.h"
 #include "functions.h"
+#include "dataset.h"
 
 #define RED_COLOR printf("\033[0;31m")
 #define GREEN_COLOR printf("\033[0;32m")
@@ -16,28 +17,6 @@
 #ifndef LOG_LEVEL
 #define LOG_LEVEL 1
 #endif
-
-typedef struct
-{
-    int train_size;
-    Matrix **train_inputs;
-    Matrix **train_labels;
-    int val_size;
-    Matrix **val_inputs;
-    Matrix **val_labels;
-} Dataset;
-
-Dataset* create_dataset(
-    int train_size,
-    int input_size,
-    int output_size,
-    int val_size,
-    Matrix **train_inputs,
-    Matrix **train_labels,
-    Matrix **val_inputs,
-    Matrix **val_labels
-);
-int delete_dataset(Dataset *dataset);
 
 typedef struct {
     double loss;
