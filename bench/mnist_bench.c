@@ -33,7 +33,7 @@ void mnist_double()
     logger(INFO, __func__, "Created test labels dataset");
 
 
-    Dataset *dataset = create_dataset(num_train, 28*28, 10, num_test, train_inputs, train_labels, test_inputs, test_labels);
+    Dataset *dataset = create_dataset(num_train, num_test, train_inputs, train_labels, test_inputs, test_labels);
     Metrics metrics;
 
     int layers[] = {100,10};
@@ -92,7 +92,7 @@ void mnist_float()
     vectorize(test_labels, num_test, 10);
     logger(INFO, __func__, "Created test labels dataset");
 
-    Dataset *dataset = create_dataset(num_train, 28*28, 10, num_test, train_inputs, train_labels, test_inputs, test_labels);
+    Dataset *dataset = create_dataset(num_train, num_test, train_inputs, train_labels, test_inputs, test_labels);
     Metrics metrics;
 
     int layers[] = {100,10};

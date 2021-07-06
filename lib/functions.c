@@ -74,7 +74,7 @@ double act_sigmoid_der(double num)
 }
 #endif
 
-#if 0
+#if 1
 float act_sigmoid_der_f(float num)
 {
     return expf(-1.0f*num)/powf(1.0f + expf(-1.0f*num), 2.0f);
@@ -133,7 +133,7 @@ double act_relu_der(double num)
     return num > 0.0 ? 1.0 : 0.0;
 }
 
-#if 0
+#if 1
 float act_relu_der_f(float num)
 {
     return num > 0.0f ? 1.0f : 0.0f;

@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "dataset.h"
 
-Dataset *create_dataset(int train_size, int input_size, int output_size, int val_size, Matrix **train_inputs, Matrix **train_labels, Matrix **val_inputs, Matrix **val_labels)
+Dataset *create_dataset(int train_size, int val_size, Matrix **train_inputs, Matrix **train_labels, Matrix **val_inputs, Matrix **val_labels)
 {
     Dataset *dataset = (Dataset *) malloc(sizeof(Dataset));
     dataset->train_size = train_size;
@@ -61,4 +61,3 @@ int delete_dataset(Dataset *dataset)
 
     return 0;
 }
-

@@ -38,7 +38,7 @@ int test_train_xor_double()
     }
 
     Metrics monitor;
-    Dataset *dataset = create_dataset(4,2,1,4, inputs, labels, NULL, NULL);
+    Dataset *dataset = create_dataset(4, 4, inputs, labels, NULL, NULL);
 
     CostType cost_type = CROSS_ENTROPY;
 
@@ -101,7 +101,7 @@ int test_train_xor_float()
     }
 
     Metrics monitor;
-    Dataset *dataset = create_dataset(4,2,1,4, inputs, labels, NULL, NULL);
+    Dataset *dataset = create_dataset(4, 4, inputs, labels, NULL, NULL);
 
     CostType cost_type = CROSS_ENTROPY;
 
@@ -159,7 +159,7 @@ int test_train_mnist_double()
     //logger(INFO, __func__, "Created test labels dataset");
 
 
-    Dataset *dataset = create_dataset(num_train, 28*28, 10, num_test, train_inputs, train_labels, test_inputs, test_labels);
+    Dataset *dataset = create_dataset(num_train, num_test, train_inputs, train_labels, test_inputs, test_labels);
     Metrics monitor;
 
     int layers[] = {100,10};
@@ -227,7 +227,7 @@ int test_train_mnist_float()
     vectorize(test_labels, num_test, 10);
     //logger(INFO, __func__, "Created test labels dataset");
 
-    Dataset *dataset = create_dataset(num_train, 28*28, 10, num_test, train_inputs, train_labels, test_inputs, test_labels);
+    Dataset *dataset = create_dataset(num_train, num_test, train_inputs, train_labels, test_inputs, test_labels);
     Metrics monitor;
 
     int layers[] = {100,10};

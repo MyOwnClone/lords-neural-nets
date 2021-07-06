@@ -34,7 +34,7 @@ void xor_float()
     }
 
     Metrics metrics;
-    Dataset *dataset = create_dataset(4,2,1,4, inputs, labels, NULL, NULL);
+    Dataset *dataset = create_dataset(4, 4, inputs, labels, NULL, NULL);
 
     CostType cost_type = CROSS_ENTROPY;
 
@@ -92,7 +92,7 @@ void xor_double()
     }
 
     Metrics metrics;
-    Dataset *dataset = create_dataset(4,2,1,4, inputs, labels, NULL, NULL);
+    Dataset *dataset = create_dataset(4, 4, inputs, labels, NULL, NULL);
 
     CostType cost_type = CROSS_ENTROPY;
 
