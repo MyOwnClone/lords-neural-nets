@@ -50,7 +50,7 @@ void xor_float()
 #ifdef DEBUG_MODE
     training_logging_options->LogEachNThEpoch = 1; // no logging
 #else
-    training_logging_options->LogEachNThEpoch = 1000; // no logging
+    training_logging_options->log_each_nth_epoch = 1000; // no logging
 #endif
 
     train_f(xor_network, dataset, &metrics, training_options, training_logging_options);
@@ -108,7 +108,7 @@ void xor_double()
 #ifdef DEBUG_MODE
     training_logging_options->LogEachNThEpoch = 1; // no logging
 #else
-    training_logging_options->LogEachNThEpoch = 1000; // no logging
+    training_logging_options->log_each_nth_epoch = 1000; // no logging
 #endif
 
     train(xor_network, dataset, &metrics, training_options, training_logging_options);

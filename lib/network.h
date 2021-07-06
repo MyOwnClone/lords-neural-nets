@@ -2,6 +2,7 @@
 #include "matrix.h"
 #include "functions.h"
 #include "utils.h"
+#include "metrics.h"
 
 typedef struct 
 {

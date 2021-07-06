@@ -457,7 +457,7 @@ int train_f(
 
     while (epoch < epochs)
     {
-        if (training_logging_options == NULL || (training_logging_options->LogEachNThEpoch > 0 && (epoch + 1) % training_logging_options->LogEachNThEpoch == 0))
+        if (training_logging_options == NULL || (training_logging_options->log_each_nth_epoch > 0 && (epoch + 1) % training_logging_options->log_each_nth_epoch == 0))
         {
             char buffer[10 + (epoch % 10) + (epochs % 10)];
             sprintf(buffer, "Epoch: %d/%d", epoch + 1, epochs);
@@ -565,9 +565,9 @@ int train_f(
             i += batch_size;
         }
 
-        if (training_logging_options == NULL || (training_logging_options->LogEachNThEpoch > 0 && (epoch + 1) % training_logging_options->LogEachNThEpoch == 0))
+        if (training_logging_options == NULL || (training_logging_options->log_each_nth_epoch > 0 && (epoch + 1) % training_logging_options->log_each_nth_epoch == 0))
         {
-            if (training_logging_options == NULL || training_logging_options->LogAccuracy)
+            if (training_logging_options == NULL || training_logging_options->log_accuracy)
             {
                 epoch_accuracy = (float) ACCURACY_EXP(network, dataset->val_inputs, dataset->val_labels,dataset->val_size);
                 char acc_buffer[27];
@@ -580,7 +580,7 @@ int train_f(
                 logger(INFO, __func__, acc_train_buffer);
             }
 
-            if (training_logging_options == NULL || training_logging_options->LogLoss)
+            if (training_logging_options == NULL || training_logging_options->log_loss)
             {
                 final_epoch_loss = (float) epoch_loss / (float) dataset->train_size;
                 char loss_buffer[1000];
@@ -673,7 +673,7 @@ int train(
 
     while (epoch < epochs)
     {
-        if (training_logging_options == NULL || (training_logging_options->LogEachNThEpoch > 0 && (epoch + 1) % training_logging_options->LogEachNThEpoch == 0))
+        if (training_logging_options == NULL || (training_logging_options->log_each_nth_epoch > 0 && (epoch + 1) % training_logging_options->log_each_nth_epoch == 0))
         {
             char buffer[10 + (epoch % 10) + (epochs % 10)];
             sprintf(buffer, "Epoch: %d/%d", epoch + 1, epochs);
@@ -781,9 +781,9 @@ int train(
             i += batch_size;
         }
 
-        if (training_logging_options == NULL || (training_logging_options->LogEachNThEpoch > 0 && (epoch + 1) % training_logging_options->LogEachNThEpoch == 0))
+        if (training_logging_options == NULL || (training_logging_options->log_each_nth_epoch > 0 && (epoch + 1) % training_logging_options->log_each_nth_epoch == 0))
         {
-            if (training_logging_options == NULL || training_logging_options->LogAccuracy)
+            if (training_logging_options == NULL || training_logging_options->log_accuracy)
             {
                 epoch_accuracy = ACCURACY_EXP(network, dataset->val_inputs, dataset->val_labels, dataset->val_size);
                 char acc_buffer[27];
@@ -797,7 +797,7 @@ int train(
                 logger(INFO, __func__, acc_train_buffer);
             }
 
-            if (training_logging_options == NULL || training_logging_options->LogLoss)
+            if (training_logging_options == NULL || training_logging_options->log_loss)
             {
                 epoch_loss = (double) epoch_loss / dataset->train_size;
                 char loss_buffer[23];

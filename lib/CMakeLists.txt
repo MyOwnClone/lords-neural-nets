@@ -1,4 +1,4 @@
-add_library (lib functions.c layer.c matrix.c network.c utils.c dataset.h dataset.c)
+add_library (lib functions.c layer.c matrix.c network.c utils.c dataset.h dataset.c metrics.h train_opts.h train_log_opts.h)
 set_property(TARGET lib PROPERTY C_STANDARD 11)
 
 target_link_libraries(lib m)

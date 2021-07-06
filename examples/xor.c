@@ -45,7 +45,7 @@ int main() {
     training_options->regularization_lambda = 0.0001;
 
     TrainingLoggingOptions *training_logging_options = init_training_logging_options();
-    training_logging_options->LogEachNThEpoch = 1;
+    training_logging_options->log_each_nth_epoch = 1;
 
     train(xor_network, dataset, monitor, training_options, training_logging_options);
 

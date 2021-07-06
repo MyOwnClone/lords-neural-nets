@@ -51,7 +51,7 @@ int test_train_xor_double()
     training_options->regularization_lambda = 0.0001;
 
     TrainingLoggingOptions *training_logging_options = init_training_logging_options();
-    training_logging_options->LogEachNThEpoch = -1; // no logging
+    training_logging_options->log_each_nth_epoch = -1; // no logging
 
     train(xor_network, dataset, &monitor, training_options, training_logging_options);
 
@@ -114,7 +114,7 @@ int test_train_xor_float()
     training_options->regularization_lambda = 0.0001;
 
     TrainingLoggingOptions *training_logging_options = init_training_logging_options();
-    training_logging_options->LogEachNThEpoch = -1;
+    training_logging_options->log_each_nth_epoch = -1;
 
     train_f(xor_network, dataset, &monitor, training_options, training_logging_options);
 
@@ -180,7 +180,7 @@ int test_train_mnist_double()
     training_options->regularization_lambda = 0.09;
 
     TrainingLoggingOptions *training_logging_options = init_training_logging_options();
-    training_logging_options->LogEachNThEpoch = -1;
+    training_logging_options->log_each_nth_epoch = -1;
 
     train(mnist_network, dataset, &monitor, training_options, training_logging_options);
 
@@ -248,7 +248,7 @@ int test_train_mnist_float()
     training_options->regularization_lambda = 0.9;
 
     TrainingLoggingOptions *training_logging_options = init_training_logging_options();
-    training_logging_options->LogEachNThEpoch = -1;
+    training_logging_options->log_each_nth_epoch = -1;
 
     train_f(mnist_network, dataset, &monitor, training_options, training_logging_options);
 

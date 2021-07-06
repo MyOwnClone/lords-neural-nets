@@ -158,9 +158,9 @@ TrainingOptions* init_training_options()
 TrainingLoggingOptions* init_training_logging_options()
 {
     TrainingLoggingOptions *training_logging_options = (TrainingLoggingOptions *) malloc (sizeof (TrainingLoggingOptions));
-    training_logging_options->LogLoss = true;
-    training_logging_options->LogAccuracy = true;
-    training_logging_options->LogEachNThEpoch = 1;
+    training_logging_options->log_loss = true;
+    training_logging_options->log_accuracy = true;
+    training_logging_options->log_each_nth_epoch = 1;
 
     return training_logging_options;
 }

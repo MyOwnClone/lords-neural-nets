@@ -1,10 +1,11 @@
 #ifndef UTILS_H
-
 #define UTILS_H
 
 #include "matrix.h"
 #include "functions.h"
 #include "dataset.h"
+#include "train_opts.h"
+#include "train_log_opts.h"
 
 #define RED_COLOR printf("\033[0;31m")
 #define GREEN_COLOR printf("\033[0;32m")
@@ -18,28 +19,6 @@
 #define LOG_LEVEL 1
 #endif
 
-typedef struct {
-    double loss;
-    double acc;
-} Metrics;
-
-typedef struct
-{
-    CostType cost_type;
-    int batch_size;
-    int epochs;
-    double learning_rate;
-    double momentum;
-    double regularization_lambda;
-} TrainingOptions;
-
-typedef struct
-{
-    bool LogAccuracy;
-    bool LogLoss;
-    int LogEachNThEpoch;    // -1 means no logging
-} TrainingLoggingOptions;
-
 TrainingOptions* init_training_options();
 int delete_training_options(TrainingOptions *training_options);
 
@@ -50,7 +29,6 @@ void logger(int log_level, const char *function_name, const char *message);
 
 Matrix** load_csv(char *filename, int lines, int line_length, MatrixDataType matrixDataType);
 int vectorize(Matrix **a, int length, int num_classes);
-int vectorize_f(Matrix **a, int length, int num_classes);
 int normalize(Matrix **a, int length, int max_num);
 
 #endif

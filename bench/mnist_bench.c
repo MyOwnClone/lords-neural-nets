@@ -51,7 +51,7 @@ void mnist_double()
     training_options->regularization_lambda = 0.09;
 
     TrainingLoggingOptions *training_logging_options = init_training_logging_options();
-    training_logging_options->LogEachNThEpoch = 1;
+    training_logging_options->log_each_nth_epoch = 1;
 
     train(mnist_network, dataset, &metrics, training_options, training_logging_options);
 
@@ -110,7 +110,7 @@ void mnist_float()
     training_options->regularization_lambda = 0.9;
 
     TrainingLoggingOptions *training_logging_options = init_training_logging_options();
-    training_logging_options->LogEachNThEpoch = 1;
+    training_logging_options->log_each_nth_epoch = 1;
 
     train_f(mnist_network, dataset, &metrics, training_options, training_logging_options);
 
