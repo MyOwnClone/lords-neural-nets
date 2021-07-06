@@ -1,7 +1,8 @@
-#include "../lib/matrix.h"
-#include "test.h"
 #include <stdio.h>
 #include <stdbool.h>
+#include "../lib/matrix.h"
+#include "test.h"
+#include "utils.h"
 
 static int test_create_matrix_float()
 {

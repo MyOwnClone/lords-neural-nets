@@ -1,6 +1,8 @@
 #ifndef NNS_TRAIN_OPTS_H
 #define NNS_TRAIN_OPTS_H
 
+#include "cost.h"
+
 typedef struct
 {
     CostType cost_type;

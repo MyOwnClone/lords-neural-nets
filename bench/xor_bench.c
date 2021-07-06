@@ -1,8 +1,7 @@
-#include "../lib/network.h"
-#include "../lib/functions.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include "bench_utils.h"
+#include "../lib/network.h"
 
 void xor_float()
 {

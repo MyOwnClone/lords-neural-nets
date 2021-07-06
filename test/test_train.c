@@ -1,7 +1,8 @@
-#include <functions.h>
 #include <network.h>
 #include <malloc.h>
 #include "test.h"
+#include "activations.h"
+#include "utils.h"
 
 const int XOR_EPOCH_COUNT = 1 * 1000;
 

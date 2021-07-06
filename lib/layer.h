@@ -2,7 +2,8 @@
 #define LAYER_H
 
 #include "matrix.h"
-#include "functions.h"
+#include "activations.h"
+#include "activations.h"
 
 typedef struct
 {

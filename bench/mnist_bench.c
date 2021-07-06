@@ -1,5 +1,5 @@
 #include "../lib/utils.h"
-#include "../lib/functions.h"
+#include "../lib/activations.h"
 #include "../lib/network.h"
 #include "bench_utils.h"
 #include <stdio.h>

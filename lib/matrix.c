@@ -8,12 +8,7 @@ float** matrix_get_f(Matrix* x) { return x->f_matrix; }
 
 inline void matrix_item_assign(Matrix *x, Matrix *y, int row1, int col1, int row2, int col2 )
 {
-    MATRIX_ISET(x, row1, col1, MATRIX_IGET(y, row2, col2));
-}
-
-inline void matrix_item_assign_direct(Matrix *x, Matrix *y, int col, int row)
-{
-    MATRIX_ISET(x, row, col, MATRIX_IGET(y, row, col))
+    MATRIX_ISET(x, row1, col1, MATRIX_IGET(y, row2, col2))
 }
 
 Matrix* create_matrix(int rows, int cols, const double double_mat[][cols], const float float_mat[][cols], MatrixDataType dataType)
@@ -52,10 +47,10 @@ Matrix* create_matrix(int rows, int cols, const double double_mat[][cols], const
                 {
                     if (double_mat != NULL)
                     {
-                        MATRIX_ISET(matrix, i, j, double_mat[i][j]);
+                        MATRIX_ISET(matrix, i, j, double_mat[i][j])
                     } else
                     {
-                        MATRIX_ISET(matrix, i, j, 0);
+                        MATRIX_ISET(matrix, i, j, 0)
                     }
                 }
             }
@@ -72,11 +67,11 @@ Matrix* create_matrix(int rows, int cols, const double double_mat[][cols], const
                     {
                         float f_value = float_mat[row][col];
 
-                        MATRIX_ISET(matrix, row, col, f_value);
+                        MATRIX_ISET(matrix, row, col, f_value)
                     }
                     else
                     {
-                        MATRIX_ISET(matrix, row, col, 0);
+                        MATRIX_ISET(matrix, row, col, 0)
                     }
                 }
             }
@@ -146,7 +141,7 @@ int multiply(Matrix *a, Matrix *b, Matrix *result)
     {
         for (int col = 0; col < b->cols; col++)
         {
-            MATRIX_ISET(result, row, col, 0);
+            MATRIX_ISET(result, row, col, 0)
 
             for (int k = 0; k < a->cols; k++)
             {
@@ -174,7 +169,7 @@ int multiply_transposed(Matrix *a, Matrix *b_t, Matrix *result)
     {
         for (int j = 0; j < b_t->rows; j++)
         {
-            MATRIX_ISET(result, i, j, 0);
+            MATRIX_ISET(result, i, j, 0)
 
             for (int k = 0; k < a->cols; k++)
             {
@@ -202,7 +197,7 @@ int add(Matrix *a, Matrix *b)
     {
         for (int col = 0; col < a->cols; col++)
         {
-            MATRIX_IADD(a, row, col, MATRIX_IGET(b, row, col));
+            MATRIX_IADD(a, row, col, MATRIX_IGET(b, row, col))
         }        
     }
 
@@ -225,7 +220,7 @@ int subtract(Matrix *a, Matrix *b)
     {
         for (int col = 0; col < a->cols; col++)
         {
-            MATRIX_ISUB(a, row, col, MATRIX_IGET(b, row, col));
+            MATRIX_ISUB(a, row, col, MATRIX_IGET(b, row, col))
         }        
     }
 
@@ -243,7 +238,7 @@ int scalar_multiply(Matrix *a, double x)
     {
         for (int col = 0; col < a->cols; col++)
         {
-            MATRIX_IMULS(a, row, col, x);
+            MATRIX_IMULS(a, row, col, x)
         }        
     }  
 
@@ -260,7 +255,7 @@ int scalar_add(Matrix *a, double x) {
     {
         for (int col = 0; col < a->cols; col++)
         {
-            MATRIX_IADDS(a, row, col, x);
+            MATRIX_IADDS(a, row, col, x)
         }        
     }
 
@@ -293,7 +288,7 @@ int apply_f(Matrix *a, Matrix *result, float (*fn)(float))
     {
         for (int col = 0; col < a->cols; col++)
         {
-            MATRIX_IAPPLY_FN(result, row, col, a, fn);
+            MATRIX_IAPPLY_FN(result, row, col, a, fn)
         }
     }
 
@@ -325,7 +320,7 @@ int apply(Matrix *a, Matrix *result, double (*fn)(double))
     {
         for (int j = 0; j < a->cols; j++)
         {
-            MATRIX_IAPPLY_FN(result, i, j, a, fn);
+            MATRIX_IAPPLY_FN(result, i, j, a, fn)
         }        
     }
 
@@ -348,7 +343,7 @@ int hadamard(Matrix *a, Matrix *b, Matrix *result)
     {
         for (int col = 0; col < a->cols; col++)
         {
-            MATRIX_ISET(result, row, col, MATRIX_IGET(a, row, col) * MATRIX_IGET(b, row, col) );
+            MATRIX_ISET(result, row, col, MATRIX_IGET(a, row, col) * MATRIX_IGET(b, row, col) )
         }        
     }
 
@@ -398,7 +393,7 @@ int reset_matrix(Matrix *a)
     {
         for (int col = 0; col < a->cols; col++)
         {
-            MATRIX_ISET(a, row, col, 0);
+            MATRIX_ISET(a, row, col, 0)
         }        
     }
 
@@ -440,77 +435,6 @@ int delete_matrix(Matrix *a)
     a = NULL;
     
     return 0;
-}
-
-void convert_float_matrix_to_double(Matrix *matrix)
-{
-    if (!is_float_matrix(matrix))
-    {
-        return;
-    }
-
-    int rows = matrix->rows;
-    int cols = matrix->cols;
-
-    if (rows > 0 && cols > 0) {
-        matrix->d_matrix = (double**) malloc (sizeof (float*) *rows);
-        for (int row = 0; row < rows; row++)
-        {
-            matrix->d_matrix[row] = (double*) malloc (sizeof (float) *cols);
-            for (int col = 0; col < cols; col++)
-            {
-                matrix->d_matrix[row][col] = (double) matrix->f_matrix[row][col];
-            }
-        }
-    }
-
-    if (matrix->f_matrix != NULL)
-    {
-        free(matrix->f_matrix);
-
-        matrix->f_matrix = NULL;
-    }
-
-    matrix->type = D_DOUBLE;
-}
-
-void convert_double_matrix_to_float(Matrix *matrix)
-{
-    if (is_float_matrix(matrix))
-    {
-        return;
-    }
-
-    int rows = matrix->rows;
-    int cols = matrix->cols;
-
-    if (rows > 0 && cols > 0) {
-        matrix->f_matrix = (float**) malloc (sizeof (float*) *rows);
-        for (int row = 0; row < rows; row++)
-        {
-            matrix->f_matrix[row] = (float*) malloc (sizeof (float) *cols);
-            for (int col = 0; col < cols; col++)
-            {
-                matrix->f_matrix[row][col] = (float) matrix->d_matrix[row][col];
-            }
-        }
-    }
-
-    if (matrix->d_matrix != NULL)
-    {
-        free(matrix->d_matrix);
-
-        matrix->d_matrix = NULL;
-    }
-
-    if (matrix->matrix != NULL)
-    {
-        free(matrix->matrix);
-
-        matrix->matrix = NULL;
-    }
-
-    matrix->type = D_FLOAT;
 }
 
 bool is_float_matrix(Matrix *a)
@@ -569,16 +493,6 @@ Matrix *create_f_matrix(int rows, int cols, const float float_mat[][cols])
 Matrix *create_d_matrix(int rows, int cols, const double double_mat[][cols])
 {
     return create_matrix(rows, cols, double_mat, NULL, D_DOUBLE);
-}
-
-Matrix *create_empty_f_matrix(int rows, int cols)
-{
-    return create_f_matrix(rows, cols, NULL);
-}
-
-Matrix *create_empty_d_matrix(int rows, int cols)
-{
-    return create_d_matrix(rows, cols, NULL);
 }
 
 Matrix *create_empty_matrix(int rows, int cols, MatrixDataType dataType)

@@ -1,10 +1,7 @@
-#ifndef FUNCTIONS_H
-#define FUNCTIONS_H
-
-#include "matrix.h"
+#ifndef NNS_ACTIVATIONS_H
+#define NNS_ACTIVATIONS_H
 
 // Activation functions
-
 double act_sigmoid(double num);
 double act_sigmoid_der(double num);
 double act_relu(double num);
@@ -19,7 +16,6 @@ typedef enum
     SIGMOID,
     RELU
 } ActivationType;
-
 
 typedef struct
 {
@@ -37,18 +33,4 @@ Activation* create_relu_activation();
 
 int delete_activation(Activation *activation);
 
-// Cost functions
-
-typedef enum
-{
-    MEAN_SQUARED_ERROR,
-    CROSS_ENTROPY
-} CostType;
-
-double cost_mse(Matrix *prediction, Matrix *target);
-double cost_cross_entropy(Matrix *prediction, Matrix *target);
-
-float cost_mse_f(Matrix *prediction, Matrix *target);
-float cost_cross_entropy_f(Matrix *prediction, Matrix *target);
-
-#endif /* FUNCTIONS_H */
+#endif //NNS_ACTIVATIONS_H

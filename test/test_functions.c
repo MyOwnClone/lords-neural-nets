@@ -1,6 +1,7 @@
-#include "test.h"
-#include "../lib/functions.h"
 #include <stdbool.h>
+#include "test.h"
+#include "utils.h"
+#include "../lib/activations.h"
 
 static bool is_approx_equal(double a, double b)
 {

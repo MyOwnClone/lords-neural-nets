@@ -1,8 +1,7 @@
-#include "test.h"
-#include "utils.h"
-#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "test.h"
+#include "utils.h"
 
 int main()
 {

@@ -1,7 +1,7 @@
+#include <stdlib.h>
 #include "test.h"
 #include "../lib/network.h"
-#include <stdlib.h>
-#include <stdio.h>
+#include "utils.h"
 
 
 static int test_create_network_float()

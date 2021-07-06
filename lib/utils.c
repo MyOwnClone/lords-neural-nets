@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "utils.h"
-#include "matrix.h"
 
 void logger(int log_level, const char *function_name, const char *message)
 {

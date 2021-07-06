@@ -1,6 +1,7 @@
 #include "../lib/matrix.h"
 #include "../lib/utils.h"
 #include "test.h"
+#include "utils.h"
 
 static int test_vectorize_float()
 {

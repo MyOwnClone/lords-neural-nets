@@ -1,6 +1,6 @@
 #include "layer.h"
 #include "matrix.h"
-#include "functions.h"
+#include "activations.h"
 #include "utils.h"
 #include "metrics.h"
 

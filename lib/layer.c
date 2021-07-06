@@ -1,11 +1,10 @@
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "Simplify"
 #pragma ide diagnostic ignored "cert-msc50-cpp"
-#include "layer.h"
-#include "functions.h"
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
+#include "layer.h"
 
 #define RAND_INIT true
 

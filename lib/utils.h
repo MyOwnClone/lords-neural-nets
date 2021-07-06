@@ -2,7 +2,6 @@
 #define UTILS_H
 
 #include "matrix.h"
-#include "functions.h"
 #include "dataset.h"
 #include "train_opts.h"
 #include "train_log_opts.h"

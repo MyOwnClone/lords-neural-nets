@@ -1,6 +1,7 @@
 #include "test.h"
 #include "../lib/layer.h"
-#include "../lib/functions.h"
+#include "../lib/activations.h"
+#include "utils.h"
 
 static int test_create_layer_float()
 {
