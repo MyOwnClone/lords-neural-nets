@@ -357,11 +357,11 @@ static double get_loss(CostType cost_type, Matrix *prediction, Matrix *target)
 
     if (cost_type == MEAN_SQUARED_ERROR)
     {
-        return cost_mse(prediction, target);
+        return cost_mse_d(prediction, target);
     }
     else if (cost_type == CROSS_ENTROPY)
     {
-        return cost_cross_entropy(prediction, target);
+        return cost_cross_entropy_d(prediction, target);
     }
     else
     {

@@ -25,9 +25,9 @@ static void delete_train_data(Activation *act_sigmoid, Network *xor_network, Dat
     delete_training_logging_options(training_logging_options);
 }
 
-static void set_training_options(CostType cost_type, TrainingOptions *training_options)
+static void set_training_options(TrainingOptions *training_options)
 {
-    training_options->cost_type = cost_type;
+    training_options->cost_type = CROSS_ENTROPY;
     training_options->epochs = XOR_EPOCH_COUNT;
     training_options->batch_size = XOR_BATCH_SIZE;
     training_options->learning_rate = XOR_LEARNING_RATE;
@@ -65,10 +65,8 @@ void xor_float()
     Metrics metrics;
     Dataset *dataset = create_dataset(XOR_COMBINATION_COUNT, XOR_COMBINATION_COUNT, inputs, labels, NULL, NULL);
 
-    CostType cost_type = CROSS_ENTROPY;
-
     TrainingOptions *training_options = init_training_options();
-    set_training_options(cost_type, training_options);
+    set_training_options(training_options);
 
     TrainingLoggingOptions *training_logging_options = init_training_logging_options();
 #ifdef DEBUG_MODE
@@ -118,10 +116,8 @@ void xor_double()
     Metrics metrics;
     Dataset *dataset = create_dataset(XOR_COMBINATION_COUNT, XOR_COMBINATION_COUNT, inputs, labels, NULL, NULL);
 
-    CostType cost_type = CROSS_ENTROPY;
-
     TrainingOptions *training_options = init_training_options();
-    set_training_options(cost_type, training_options);
+    set_training_options(training_options);
 
     TrainingLoggingOptions *training_logging_options = init_training_logging_options();
 #ifdef DEBUG_MODE

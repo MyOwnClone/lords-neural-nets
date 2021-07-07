@@ -22,9 +22,9 @@ const int MNIST_CHAR_COUNT = 10;    // 10 possible digits 0-9
 
 static int mnist_neurons_per_layer[] = {100, MNIST_CHAR_COUNT};
 
-static void set_mnist_training_options(CostType cost_type, TrainingOptions *training_options, float reg_lambda)
+static void set_mnist_training_options(TrainingOptions *training_options, float reg_lambda)
 {
-    training_options->cost_type = cost_type;
+    training_options->cost_type = 1;
     training_options->epochs = MNIST_EPOCH_COUNT;
     training_options->batch_size = MNIST_BATCH_SIZE;
     training_options->learning_rate = MNIST_LEARNING_RATE;
@@ -70,7 +70,6 @@ int test_train_mnist_double()
     Metrics monitor;
 
     Activation *act_sigmoid = create_sigmoid_activation();
-    CostType cost_type = CROSS_ENTROPY;
 
     int seed = 1;
     // FIXME: when using other seed, test may fail, training may diverge and not reach tested condition
@@ -79,7 +78,7 @@ int test_train_mnist_double()
     TrainingOptions *training_options = init_training_options();
 
     float reg_lambda = MNIST_DOUBLE_REG_LAMBDA;  // yeah, this is different from float version. Why? Dunno :-(
-    set_mnist_training_options(cost_type, training_options, reg_lambda);
+    set_mnist_training_options(training_options, reg_lambda);
 
     train(mnist_network, dataset, &monitor, training_options, NULL);
 
@@ -136,14 +135,13 @@ int test_train_mnist_float()
     Metrics monitor;
 
     Activation *act_sigmoid = create_sigmoid_activation();
-    CostType cost_type = CROSS_ENTROPY;
 
     // FIXME: when using other seed, test may fail, training may diverge and not reach tested condition
     int seed = 1;
     Network *mnist_network = create_network(MNIST_CHAR_RES * MNIST_CHAR_RES, 2, mnist_neurons_per_layer, act_sigmoid, D_FLOAT, seed);
 
     TrainingOptions *training_options = init_training_options();
-    set_mnist_training_options(cost_type, training_options, MNIST_FLOAT_REG_LAMBDA);
+    set_mnist_training_options(training_options, MNIST_FLOAT_REG_LAMBDA);
 
     train(mnist_network, dataset, &monitor, training_options, NULL);
 

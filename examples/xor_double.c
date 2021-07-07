@@ -42,10 +42,8 @@ int main() {
     Metrics monitor;
     Dataset *dataset = create_dataset(XOR_COMBINATION_COUNT, XOR_COMBINATION_COUNT, inputs, labels, NULL, NULL);
 
-    CostType cost_type = CROSS_ENTROPY;
-
     TrainingOptions *training_options = init_training_options();
-    training_options->cost_type = cost_type;
+    training_options->cost_type = CROSS_ENTROPY;
     training_options->epochs = XOR_EPOCH_COUNT;
     training_options->batch_size = XOR_BATCH_SIZE;
     training_options->learning_rate = XOR_LEARNING_RATE;

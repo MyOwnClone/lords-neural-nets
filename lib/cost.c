@@ -3,7 +3,7 @@
 
 // Cost functions
 
-double cost_mse(Matrix *prediction, Matrix *target)
+double cost_mse_d(Matrix *prediction, Matrix *target)
 {
     if (prediction->cols != 1 || target->cols != 1 || prediction->rows != target->rows)
     {
@@ -35,7 +35,7 @@ float cost_mse_f(Matrix *prediction, Matrix *target)
     return loss / (2.0f*(float)(prediction->rows));
 }
 
-double cost_cross_entropy(Matrix *prediction, Matrix *target)
+double cost_cross_entropy_d(Matrix *prediction, Matrix *target)
 {
     if (prediction->cols != 1 || target->cols != 1 || prediction->rows != target->rows)
     {
