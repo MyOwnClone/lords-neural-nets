@@ -11,3 +11,5 @@ xor float: Average time elapsed over 10000 runs: 48.076500 ms
 xor double: Average time elapsed over 10000 runs: 44.416100 ms
 
 float over double speed-up factor: 0.923863x
+
+TODO: ARM M1 Mac

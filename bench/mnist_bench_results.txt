@@ -6,6 +6,10 @@ results:
 
 sizeof(float) == 4
 sizeof(double) == 8
+
 mnist float: Average time elapsed over 10 runs: 37876.800000 ms
 mnist double: Average time elapsed over 10 runs: 26698.200000 ms
+
 float over double speed-up factor: 0.704869x
+
+TODO: ARM M1 Mac
