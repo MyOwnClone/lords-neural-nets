@@ -18,7 +18,7 @@ const float XOR_REG_LAMBDA =  0.0001f;
 #define BINARY_OPERAND_COUNT 2
 #define XOR_COMBINATION_COUNT (2 * 2)
 
-static int xor_neurons_per_layer[] = {2, 1};
+static int xor_neurons_per_layer[] = {BINARY_OPERAND_COUNT, 1};
 
 static void set_xor_training_options(const CostType *cost_type, TrainingOptions *training_options)
 {
