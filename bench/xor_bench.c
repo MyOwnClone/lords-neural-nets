@@ -158,43 +158,4 @@ int main()
     double double_msecs = print_elapsed_time(xor_double, "xor double", repeat_count);
 
     printf("float over double speed-up factor: %fx\n", (double_msecs / float_msecs));
-
-    /* mingw 64 mingw 64 gcc, windows 10, intel i7 cometlake:
-        xor float: Average time elapsed over 10000 runs: 3.823900 ms
-        xor double: Average time elapsed over 10000 runs: 3.393700 ms
-        float over double speed-up factor: 0.887497x
-     */
-
-    /* macOS + Apple M1 + ARM64 + clang:
-
-     xor float: Average time elapsed over 10000 runs: 1.343000 ms
-     xor double: Average time elapsed over 10000 runs: 1.361000 ms
-     float over double speed-up factor: 1.013403x
-
-     (turning off -funsafe-math-optimizations does not change the times here)
-     */
-
-    /*
-     HOWEVER!!! on M1, both float and double versions do not converge:
-
-     train_f: Validation accuracy: 0.500
-     train_f: Training accuracy: 0.500
-     train_f: Training loss: nan
-     xor float: Average time elapsed over 1 runs: 14.140000 ms
-
-     train: Validation accuracy: 0.500
-     train: Training accuracy: 0.500
-     train: Training loss: 0.35071
-     xor double: Average time elapsed over 1 runs: 12.397000 ms
-     float over double speed-up factor: 0.876733x
-     */
-
-    /*
-    HOWEVER 2: if I remove the -funsafe-math-optimizations parameter from cmake, double version converges even on M1, float version still NOPE
-    train: Validation accuracy: 1.000
-    train: Training accuracy: 1.000
-    train: Training loss: 0.01189
-    xor double: Average time elapsed over 1 runs: 12.924000 ms
-    float over double speed-up factor: 0.873538x
-     */
 }

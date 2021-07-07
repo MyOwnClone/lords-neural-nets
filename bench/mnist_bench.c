@@ -47,23 +47,34 @@ void mnist_double()
     char *train_inputs_fn = "./resources/mnist_train_vectors.csv";
     Matrix **train_inputs = load_csv(train_inputs_fn, num_train, MNIST_CHAR_RES*MNIST_CHAR_RES, D_DOUBLE);
     normalize(train_inputs, num_train, 255);
+
+#ifdef DEBUG_MODE
     logger(LOG_INFO, __func__, "Created training dataset");
+#endif
 
     char *train_labels_fn = "./resources/mnist_train_labels.csv";
     Matrix **train_labels = load_csv(train_labels_fn, num_train, 1, D_DOUBLE);
     vectorize(train_labels, num_train, MNIST_CHAR_COUNT);
+
+#ifdef DEBUG_MODE
     logger(LOG_INFO, __func__, "Created training labels dataset");
+#endif
 
     char *test_inputs_fn = "./resources/mnist_test_vectors.csv";
     Matrix **test_inputs = load_csv(test_inputs_fn, num_test, MNIST_CHAR_RES*MNIST_CHAR_RES, D_DOUBLE);
     normalize(test_inputs, num_test, 255);
+
+#ifdef DEBUG_MODE
     logger(LOG_INFO, __func__, "Created test dataset");
+#endif
 
     char *test_labels_fn = "./resources/mnist_test_labels.csv";
     Matrix **test_labels = load_csv(test_labels_fn, num_test, 1, D_DOUBLE);
     vectorize(test_labels, num_test, MNIST_CHAR_COUNT);
-    logger(LOG_INFO, __func__, "Created test labels dataset");
 
+#ifdef DEBUG_MODE
+    logger(LOG_INFO, __func__, "Created test labels dataset");
+#endif
 
     Dataset *dataset = create_dataset(num_train, num_test, train_inputs, train_labels, test_inputs, test_labels);
     Metrics metrics;
@@ -103,25 +114,33 @@ void mnist_float()
 
     normalize(train_inputs, num_train, 255);
 
+#ifdef DEBUG_MODE
     logger(LOG_INFO, __func__, "Created training dataset");
+#endif
 
     char *train_labels_fn = "./resources/mnist_train_labels.csv";
     Matrix **train_labels = load_csv(train_labels_fn, num_train, 1, D_FLOAT);
 
     vectorize(train_labels, num_train, MNIST_CHAR_COUNT);
+#ifdef DEBUG_MODE
     logger(LOG_INFO, __func__, "Created training labels dataset");
+#endif
 
     char *test_inputs_fn = "./resources/mnist_test_vectors.csv";
     Matrix **test_inputs = load_csv(test_inputs_fn, num_test, 28*28, D_FLOAT);
 
     normalize(test_inputs, num_test, 255);
+#ifdef DEBUG_MODE
     logger(LOG_INFO, __func__, "Created test dataset");
+#endif
 
     char *test_labels_fn = "./resources/mnist_test_labels.csv";
     Matrix **test_labels = load_csv(test_labels_fn, num_test, 1, D_FLOAT);
 
     vectorize(test_labels, num_test, MNIST_CHAR_COUNT);
+#ifdef DEBUG_MODE
     logger(LOG_INFO, __func__, "Created test labels dataset");
+#endif
 
     Dataset *dataset = create_dataset(num_train, num_test, train_inputs, train_labels, test_inputs, test_labels);
     Metrics metrics;
@@ -165,34 +184,4 @@ int main()
     double double_msecs = print_elapsed_time(mnist_double, "mnist double", repeat_count);
 
     printf("float over double speed-up factor: %fx\n", (double_msecs / float_msecs));
-
-    // mingw 64 gcc, windows 10, intel i7 cometlake
-    /*
-     *  mnist float: Average time elapsed over 1 runs: 296_109.000000 ms :-( :-(     *
-     *  mnist double: Average time elapsed over 1 runs: 188_733.000000 ms
-     */
-
-    /*
-     * macOS + Apple M1 + ARM64 + clang: (but for float it does not converge :-( )
-     *
-     * mnist float: Average time elapsed over 1 runs: 232_673.735000 ms
-     * mnist double: Average time elapsed over 1 runs: 256_663.657000 ms
-     * float over double speed-up factor: 1.103105x
-     */
-
-    // mingw 64 gcc, windows 10, intel i7 cometlake
-    /*
-        train_f: Epoch: 10/10
-        train_f: Validation accuracy: 0.974
-        train_f: Training accuracy: 0.983
-        train_f: Training loss: 0.13665
-        mnist float: Average time elapsed over 1 runs: 560426.000000 ms
-
-        train_f: Epoch: 10/10
-        train: Validation accuracy: 0.975
-        train: Training accuracy: 0.985
-        train: Training loss: 0.13158
-        mnist double: Average time elapsed over 1 runs: 359394.000000 ms
-        float over double speed-up factor: 0.641287x
-     */
 }
