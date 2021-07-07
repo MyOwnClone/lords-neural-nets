@@ -546,10 +546,13 @@ int train_f(
                 scalar_multiply(network->layers[j]->weights, 1 - ((learning_rate * reg_lambda) / (float) (dataset->train_size)));
 
                 // Set new weights
+                // TODO: call OnWeightUpdate(layer, index, delta)
                 add(network->layers[j]->weights, delta_weights[j]);
 
                 // Set bias
                 scalar_multiply(delta_bias[j], eta);
+
+                // TODO: call OnBiasUpdate(layer, index, delta)
                 add(network->layers[j]->bias, delta_bias[j]);
             }
 
@@ -752,11 +755,15 @@ int train_d(Network *network, Dataset *dataset, Metrics *metrics, TrainingOption
                 // L2 Regularization
                 scalar_multiply(network->layers[j]->weights, 1 - ((learning_rate * reg_lambda) / dataset->train_size));
 
+                // TODO: call OnWeightUpdate(layer, index, delta)
+
                 // Set new weights
                 add(network->layers[j]->weights, delta_weights[j]);
 
                 // Set bias
                 scalar_multiply(delta_bias[j], eta);
+
+                // TODO: call OnBiasUpdate(layer, index, delta)
                 add(network->layers[j]->bias, delta_bias[j]);
             }
 

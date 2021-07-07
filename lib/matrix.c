@@ -263,7 +263,7 @@ int scalar_add(Matrix *a, double x) {
 }
 
 // we need special _f version, because pointers to functions are incompatible between float and double
-int apply_f(Matrix *a, Matrix *result, float (*fn)(float))
+int apply_f(Matrix *a, Matrix *result, float (*fn)(float))  // TODO: add layer index param
 {
     if (is_null(result))
     {
@@ -289,13 +289,15 @@ int apply_f(Matrix *a, Matrix *result, float (*fn)(float))
         for (int col = 0; col < a->cols; col++)
         {
             MATRIX_IAPPLY_FN(result, row, col, a, fn)
+
+            // TODO: call OnNeuronActivation(layer, row, col, value) or OnNeuronBackprop(layer, row, col, value)
         }
     }
 
     return 0;
 }
 
-int apply_d(Matrix *a, Matrix *result, double (*fn)(double))
+int apply_d(Matrix *a, Matrix *result, double (*fn)(double))    // TODO: add layer index param
 {
     if (is_null(result))
     {
@@ -321,6 +323,8 @@ int apply_d(Matrix *a, Matrix *result, double (*fn)(double))
         for (int j = 0; j < a->cols; j++)
         {
             MATRIX_IAPPLY_FN(result, i, j, a, fn)
+
+            // TODO: call OnNeuronActivation(layer, row, col, value) or OnNeuronBackprop(layer, row, col, value)
         }        
     }
 
