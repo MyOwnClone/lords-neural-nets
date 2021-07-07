@@ -4,12 +4,10 @@
 #include "bench_utils.h"
 #include "../lib/network.h"
 
-static int xor_neurons_per_layer[] = {2, 1};
-
 #define BINARY_OPERAND_COUNT 2
 #define XOR_COMBINATION_COUNT (2 * 2)
 
-// TODO: refactor
+static int xor_neurons_per_layer[] = {BINARY_OPERAND_COUNT, 1};
 
 static const int XOR_EPOCH_COUNT = 20000;   // totally overkill
 static const int XOR_BATCH_SIZE = 0;

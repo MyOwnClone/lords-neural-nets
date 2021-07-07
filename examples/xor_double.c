@@ -14,31 +14,29 @@ static const double XOR_MOMENTUM = 0.9;
 static const double XOR_REG_LAMBDA = 0.0001;
 
 int main() {
-    int layer_count = 2;
-
     Activation *act_sigmoid = create_sigmoid_activation();
-    Network *xor_network = create_network(BINARY_OPERAND_COUNT, layer_count, xor_neurons_per_layer, act_sigmoid, D_FLOAT, -1);
+    Network *xor_network = create_network(BINARY_OPERAND_COUNT, 2, xor_neurons_per_layer, act_sigmoid, D_DOUBLE, -1);
 
     Matrix **inputs = (Matrix**) malloc (sizeof (Matrix*) * XOR_COMBINATION_COUNT);
-    float inputs_mat[XOR_COMBINATION_COUNT][BINARY_OPERAND_COUNT][1] = {
-            {{1}, {1}},
-            {{1}, {0}},
-            {{0}, {1}},
-            {{0}, {0}}
+    double inputs_mat[XOR_COMBINATION_COUNT][BINARY_OPERAND_COUNT][1] = {
+        {{1}, {1}},
+        {{1}, {0}},
+        {{0}, {1}},
+        {{0}, {0}}
     };
 
     Matrix **labels = (Matrix**) malloc (sizeof (Matrix*) * XOR_COMBINATION_COUNT);
-    float labels_mat[XOR_COMBINATION_COUNT][1][1] = {
-            {{0}},
-            {{1}},
-            {{1}},
-            {{0}}
+    double labels_mat[XOR_COMBINATION_COUNT][1][1] = {
+        {{0}},
+        {{1}},
+        {{1}},
+        {{0}}
     };
 
     for (int i = 0; i < XOR_COMBINATION_COUNT; i++)
     {
-        inputs[i] = create_matrix_f(BINARY_OPERAND_COUNT, 1, inputs_mat[i]);
-        labels[i] = create_matrix_f(1, 1, labels_mat[i]);
+        inputs[i] = create_matrix_d(BINARY_OPERAND_COUNT, 1, inputs_mat[i]);
+        labels[i] = create_matrix_d(1, 1, labels_mat[i]);
     }
 
     Metrics monitor;
@@ -57,7 +55,7 @@ int main() {
     TrainingLoggingOptions *training_logging_options = init_training_logging_options();
     training_logging_options->log_each_nth_epoch = 1;
 
-    train_f(xor_network, dataset, &monitor, training_options, training_logging_options);
+    train_d(xor_network, dataset, &monitor, training_options, training_logging_options);
 
     delete_network(xor_network);
     delete_activation(act_sigmoid);
