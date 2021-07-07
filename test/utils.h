@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "../lib/activations.h"
 #include "../lib/network.h"
-#include "matrix.h"
+#include "../lib/matrix.h"
 
 int fail(const char *test_name, int line, const char *message);
 int eval_test_result(const char *test_name, int result);

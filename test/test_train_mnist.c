@@ -1,11 +1,10 @@
-#include <network.h>
+#include "../lib/network.h"
 
 #ifdef DEBUG_MODE
     #include <stdio.h>
 #endif
 
 #include "test.h"
-#include "activations.h"
 #include "utils.h"
 
 const int MNIST_NUM_TRAIN = 6000;

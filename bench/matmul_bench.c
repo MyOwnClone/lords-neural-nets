@@ -1,7 +1,7 @@
-#include <matrix.h>
 #include <stdio.h>
 #include <assert.h>
 #include "bench_utils.h"
+#include "../lib/matrix.h"
 
 const long long MILLION = 1000ll * 1000ll;
 const long long BILLION = 1000ll * MILLION;

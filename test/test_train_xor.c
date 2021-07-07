@@ -1,4 +1,4 @@
-#include <network.h>
+#include "../lib/network.h"
 #include <malloc.h>
 
 #ifdef DEBUG_MODE
@@ -6,7 +6,6 @@
 #endif
 
 #include "test.h"
-#include "activations.h"
 #include "utils.h"
 
 const int XOR_EPOCH_COUNT = 1 * 1000;
