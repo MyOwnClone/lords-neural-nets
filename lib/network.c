@@ -78,8 +78,11 @@ float accuracy_f(Network *network, Matrix **inputs, Matrix **targets, int input_
             float pred_value = MATRIX_IGET(prediction, 0, 0) < 0.5 ? 0 : 1;
 
             if (pred_value == MATRIX_IGET(targets[i], 0, 0))
+            {
                 correct++;
-        } else
+            }
+        }
+        else
         {
             int predicted_class = argmax(prediction);
             int real_class = argmax(targets[i]);
@@ -90,7 +93,7 @@ float accuracy_f(Network *network, Matrix **inputs, Matrix **targets, int input_
     return (float) correct / (float )input_length;
 }
 
-double accuracy(Network *network, Matrix **inputs, Matrix **targets, int input_length)
+double accuracy_d(Network *network, Matrix **inputs, Matrix **targets, int input_length)
 {
     int correct = 0;
 
@@ -102,8 +105,11 @@ double accuracy(Network *network, Matrix **inputs, Matrix **targets, int input_l
             double pred_value = MATRIX_IGET(prediction, 0, 0) < 0.5 ? 0 : 1;
 
             if (pred_value == MATRIX_IGET(targets[i], 0, 0))
+            {
                 correct++;
-        } else
+            }
+        }
+        else
         {
             int predicted_class = argmax(prediction);
             int real_class = argmax(targets[i]);
@@ -115,7 +121,7 @@ double accuracy(Network *network, Matrix **inputs, Matrix **targets, int input_l
 }
 
 // exp in a name means this is an expression - r-value
-#define ACCURACY_EXP(net, inputs, targets, len) is_float_matrix(*(inputs)) ? accuracy_f(net, inputs, targets, len) : accuracy(net, inputs, targets, len)
+#define ACCURACY_EXP(net, inputs, targets, len) is_float_matrix(*(inputs)) ? accuracy_f(net, inputs, targets, len) : accuracy_d(net, inputs, targets, len)
 
 static int init_training(
         Network *network,
@@ -208,7 +214,7 @@ static int backpropagate(
 
         // Compute delta weights
         res = 0;
-        res += multiply_transposed(deltas[l], prev_act, temp_delta_weights[l]); // FIXME:  temp_delta_weights[l] are zero for float!!!
+        res += multiply_transposed(deltas[l], prev_act, temp_delta_weights[l]);
         res += add(delta_weights[l], temp_delta_weights[l]);
         if (res < 0)
         {
@@ -445,10 +451,7 @@ int train_f(
     int epoch = 0;
 
     float epoch_accuracy;
-    float prev_epoch_loss = (float) INT_MAX;
     float epoch_loss;
-
-    int grace = 10;
 
     if (batch_size == 0)
     {
@@ -540,8 +543,7 @@ int train_f(
                 add(delta_weights[j], momentums[j]);
 
                 // L2 Regularization
-                scalar_multiply(network->layers[j]->weights,
-                                1 - ((learning_rate * reg_lambda) / (float) (dataset->train_size)));
+                scalar_multiply(network->layers[j]->weights, 1 - ((learning_rate * reg_lambda) / (float) (dataset->train_size)));
 
                 // Set new weights
                 add(network->layers[j]->weights, delta_weights[j]);
@@ -571,12 +573,12 @@ int train_f(
             {
                 epoch_accuracy = (float) ACCURACY_EXP(network, dataset->val_inputs, dataset->val_labels,dataset->val_size);
                 char acc_buffer[27];
-                sprintf(acc_buffer, "Validation accuracy: %.3f", epoch_accuracy);
+                sprintf(acc_buffer, "Validation accuracy_d: %.3f", epoch_accuracy);
                 logger(INFO, __func__, acc_buffer);
 
                 epoch_accuracy = (float) ACCURACY_EXP(network, dataset->train_inputs, dataset->train_labels,dataset->train_size);
                 char acc_train_buffer[27];
-                sprintf(acc_train_buffer, "Training accuracy: %.3f", epoch_accuracy);
+                sprintf(acc_train_buffer, "Training accuracy_d: %.3f", epoch_accuracy);
                 logger(INFO, __func__, acc_train_buffer);
             }
 
@@ -613,12 +615,7 @@ int train_f(
     return 0;
 }
 
-int train(
-        Network *network,
-        Dataset *dataset,
-        Metrics *metrics,
-        TrainingOptions *training_options,
-        TrainingLoggingOptions * training_logging_options)
+int train(Network *network, Dataset *dataset, Metrics *metrics, TrainingOptions *training_options, TrainingLoggingOptions * training_logging_options)
 {
     // Allocate all the memory
     Matrix **delta_weights = (Matrix **) malloc(sizeof(Matrix *) * network->num_layers);
@@ -661,10 +658,7 @@ int train(
     int epoch = 0;
 
     double epoch_accuracy;
-    double prev_epoch_loss = (double) INT_MAX;
     double epoch_loss;
-
-    int grace = 10;
 
     if (batch_size == 0)
     {
@@ -684,7 +678,7 @@ int train(
 
         int i = 0;
 
-        float final_epoch_loss = epoch_loss;
+        double final_epoch_loss = epoch_loss;
 
         while (i < dataset->train_size)
         {
@@ -695,7 +689,6 @@ int train(
             {
                 batch_end = dataset->train_size;
             }
-
 
             for (int j = batch_start; j < batch_end; j++)
             {
@@ -787,13 +780,13 @@ int train(
             {
                 epoch_accuracy = ACCURACY_EXP(network, dataset->val_inputs, dataset->val_labels, dataset->val_size);
                 char acc_buffer[27];
-                sprintf(acc_buffer, "Validation accuracy: %.3f", epoch_accuracy);
+                sprintf(acc_buffer, "Validation accuracy_d: %.3f", epoch_accuracy);
                 logger(INFO, __func__, acc_buffer);
 
                 epoch_accuracy = ACCURACY_EXP(network, dataset->train_inputs, dataset->train_labels,
                                               dataset->train_size);
                 char acc_train_buffer[27];
-                sprintf(acc_train_buffer, "Training accuracy: %.3f", epoch_accuracy);
+                sprintf(acc_train_buffer, "Training accuracy_d: %.3f", epoch_accuracy);
                 logger(INFO, __func__, acc_train_buffer);
             }
 
@@ -807,7 +800,7 @@ int train(
         }
         else
         {
-            epoch_accuracy = (float) ACCURACY_EXP(network, dataset->val_inputs, dataset->val_labels,dataset->val_size);
+            epoch_accuracy = (float) ACCURACY_EXP(network, dataset->val_inputs, dataset->val_labels, dataset->val_size);
             final_epoch_loss = (float) epoch_loss / (float) dataset->train_size;
         }
 

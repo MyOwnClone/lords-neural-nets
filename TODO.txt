@@ -27,4 +27,7 @@ TODO: add support for visualization of activation values for individial neurons 
     * vulkan rendering?
     * JS viewer?
 
+IDEAS:
+* hyperparameter search? NAS?
+
 

@@ -14,6 +14,7 @@ Network *create_network(int input_size, int num_layers, int layers[], Activation
 void print_network(Network *network);
 int delete_network(Network *network);
 Matrix* predict(Network *network, Matrix *input);
-double accuracy(Network *network, Matrix **inputs, Matrix **targets, int input_length);
+double accuracy_d(Network *network, Matrix **inputs, Matrix **targets, int input_length);
+float accuracy_f(Network *network, Matrix **inputs, Matrix **targets, int input_length);
 int train(Network *network, Dataset *dataset, Metrics *metrics, TrainingOptions *TrainingOptions, TrainingLoggingOptions * training_logging_options);
 int train_f(Network *network, Dataset *dataset, Metrics *metrics, TrainingOptions *TrainingOptions, TrainingLoggingOptions * training_logging_options);
