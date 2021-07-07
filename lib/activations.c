@@ -10,7 +10,7 @@ double act_sigmoid(double num)
     return 1.0 / (1.0 + exp(-1.0*num));
 }
 
-#if 0
+#if 1
 float act_sigmoid_f(float num)
 {
     return 1.0f / (1.0f + expf(-1.0f*num));
@@ -42,7 +42,7 @@ float act_sigmoid_f(float num)
 }
 #endif
 
-#if 0
+#if 1
 double act_sigmoid_der(double num)
 {
     return exp(-1.0*num)/pow(1.0 + exp(-1.0*num),2.0);

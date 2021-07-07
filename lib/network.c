@@ -201,7 +201,7 @@ static int backpropagate(
         }
         else
         {
-            res += apply(layer->neurons, NULL, layer->activation->fn_der);
+            res += apply_d(layer->neurons, NULL, layer->activation->fn_der);
         }
 
         res += multiply(transposed_weights[l], deltas[l + 1], temp_deltas[l]); // Transposed weights array is 1 shorter than matrix length
@@ -315,7 +315,7 @@ get_initial_delta(CostType cost_type, Activation *activation, Matrix *prediction
 
         res = 0;
         res += subtract(prediction, target);
-        res += apply(layer_output, NULL, activation->fn_der);
+        res += apply_d(layer_output, NULL, activation->fn_der); // TODO: distinction between float and double is missing
         res += hadamard(prediction, layer_output, delta);
         if (res < 0)
         {
@@ -615,7 +615,7 @@ int train_f(
     return 0;
 }
 
-int train(Network *network, Dataset *dataset, Metrics *metrics, TrainingOptions *training_options, TrainingLoggingOptions * training_logging_options)
+int train_d(Network *network, Dataset *dataset, Metrics *metrics, TrainingOptions *training_options, TrainingLoggingOptions * training_logging_options)
 {
     // Allocate all the memory
     Matrix **delta_weights = (Matrix **) malloc(sizeof(Matrix *) * network->num_layers);

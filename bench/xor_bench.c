@@ -110,7 +110,7 @@ void xor_double()
     training_logging_options->log_each_nth_epoch = 1000; // no logging
 #endif
 
-    train(xor_network, dataset, &metrics, training_options, training_logging_options);
+    train_d(xor_network, dataset, &metrics, training_options, training_logging_options);
 
     delete_network(xor_network);
     delete_activation(act_sigmoid);

@@ -295,7 +295,7 @@ int apply_f(Matrix *a, Matrix *result, float (*fn)(float))
     return 0;
 }
 
-int apply(Matrix *a, Matrix *result, double (*fn)(double))
+int apply_d(Matrix *a, Matrix *result, double (*fn)(double))
 {
     if (is_null(result))
     {

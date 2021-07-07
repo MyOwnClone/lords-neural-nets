@@ -113,7 +113,7 @@ int layer_compute(Layer *layer, Matrix *input)
         apply_f(layer->neurons, layer->neurons_act, layer->activation->fn_f);
     }
     else {
-        apply(layer->neurons, layer->neurons_act, layer->activation->fn);
+        apply_d(layer->neurons, layer->neurons_act, layer->activation->fn);
     }
 
     return 0;

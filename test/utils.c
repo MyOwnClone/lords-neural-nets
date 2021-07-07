@@ -1,8 +1,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "utils.h"
-#include "../lib/activations.h"
-#include "../lib/network.h"
 
 int fail(const char *test_name, int line, const char *message)
 {
@@ -60,7 +58,7 @@ bool is_non_zero(Matrix *matrix)
     return false;
 }
 
-void delete_test_data(Activation *act_sigmoid, Network *xor_network, Dataset *dataset, TrainingOptions *training_options, TrainingLoggingOptions *training_logging_options)
+void delete_train_test_data(Activation *act_sigmoid, Network *xor_network, Dataset *dataset, TrainingOptions *training_options, TrainingLoggingOptions *training_logging_options)
 {
     delete_network(xor_network);
     delete_activation(act_sigmoid);

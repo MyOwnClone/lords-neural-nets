@@ -53,7 +53,7 @@ void mnist_double()
     TrainingLoggingOptions *training_logging_options = init_training_logging_options();
     training_logging_options->log_each_nth_epoch = 1;
 
-    train(mnist_network, dataset, &metrics, training_options, training_logging_options);
+    train_d(mnist_network, dataset, &metrics, training_options, training_logging_options);
 
     delete_network(mnist_network);
     delete_dataset(dataset);

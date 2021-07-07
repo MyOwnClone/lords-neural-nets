@@ -1,5 +1,4 @@
 #include <network.h>
-#include <malloc.h>
 
 #ifdef DEBUG
     #include <stdio.h>
@@ -75,9 +74,9 @@ int test_train_mnist_double()
     TrainingLoggingOptions *training_logging_options = init_training_logging_options();
     training_logging_options->log_each_nth_epoch = -1;
 
-    train(mnist_network, dataset, &monitor, training_options, training_logging_options);
+    train_d(mnist_network, dataset, &monitor, training_options, training_logging_options);
 
-    delete_test_data(act_sigmoid, mnist_network, dataset, training_options, training_logging_options);
+    delete_train_test_data(act_sigmoid, mnist_network, dataset, training_options, training_logging_options);
 
     int res = (monitor.loss < 0.1 && monitor.acc > 0.9) ? 0 : -1;
 
@@ -136,7 +135,7 @@ int test_train_mnist_float()
 
     train_f(mnist_network, dataset, &monitor, training_options, training_logging_options);
 
-    delete_test_data(act_sigmoid, mnist_network, dataset, training_options, training_logging_options);
+    delete_train_test_data(act_sigmoid, mnist_network, dataset, training_options, training_logging_options);
 
     int res = (monitor.loss < 0.2 && monitor.acc > 0.9) ? 0 : -1;
 

@@ -47,7 +47,7 @@ int main() {
     TrainingLoggingOptions *training_logging_options = init_training_logging_options();
     training_logging_options->log_each_nth_epoch = 1;
 
-    train(xor_network, dataset, &monitor, training_options, training_logging_options);
+    train_d(xor_network, dataset, &monitor, training_options, training_logging_options);
 
     delete_network(xor_network);
     delete_activation(act_sigmoid);

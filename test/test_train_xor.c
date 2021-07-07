@@ -68,9 +68,9 @@ int test_train_xor_double()
     TrainingLoggingOptions *training_logging_options = init_training_logging_options();
     training_logging_options->log_each_nth_epoch = -1; // no logging
 
-    train(xor_network, dataset, &monitor, training_options, training_logging_options);
+    train_d(xor_network, dataset, &monitor, training_options, training_logging_options);
 
-    delete_test_data(act_sigmoid, xor_network, dataset, training_options, training_logging_options);
+    delete_train_test_data(act_sigmoid, xor_network, dataset, training_options, training_logging_options);
 
     int res = (monitor.loss < 0.1 && monitor.acc > 0.9) ? 0 : -1;
 
@@ -124,7 +124,7 @@ int test_train_xor_float()
 
     train_f(xor_network, dataset, &monitor, training_options, training_logging_options);
 
-    delete_test_data(act_sigmoid, xor_network, dataset, training_options, training_logging_options);
+    delete_train_test_data(act_sigmoid, xor_network, dataset, training_options, training_logging_options);
 
     int res = (monitor.loss < 0.1 && monitor.acc > 0.9) ? 0 : -1;
 

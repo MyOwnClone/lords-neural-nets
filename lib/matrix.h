@@ -75,7 +75,7 @@ int add(Matrix *a, Matrix *b);
 int subtract(Matrix *a, Matrix *b);
 int scalar_multiply(Matrix *matrix, double a);
 int scalar_add(Matrix *matrix, double a);
-int apply(Matrix *a, Matrix *result, double (*fn)(double));
+int apply_d(Matrix *a, Matrix *result, double (*fn)(double));
 int apply_f(Matrix *a, Matrix *result, float (*fn)(float));
 int hadamard(Matrix *a, Matrix *b, Matrix *result);
 int argmax(Matrix *a);
@@ -97,6 +97,6 @@ else                                                           \
 #define APPLY(matrix, matrix_result, fn) if (is_float_matrix(matrix)) \
     apply_f(matrix, matrix_result, fn);                                \
 else                                                                  \
-    apply(matrix, matrix_result, fn);
+    apply_d(matrix, matrix_result, fn);
 
 #endif /* MATRIX_H */
