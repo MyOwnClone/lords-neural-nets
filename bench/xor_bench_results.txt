@@ -1,0 +1,13 @@
+compiler: mingw gcc
+OS: windows 10
+CPU: Intel® Core™ i7-10700KF (cometlake), Intel® SSE4.1, Intel® SSE4.2, Intel® AVX2
+compiler flags: -O3 -finline-functions -m64 -funroll-loops -oFast -funsafe-math-optimizations -mfpmath=sse2 -ffast-math -march=rocketlake
+results:
+
+sizeof(float) == 4
+sizeof(double) == 8
+
+xor float: Average time elapsed over 10000 runs: 48.076500 ms
+xor double: Average time elapsed over 10000 runs: 44.416100 ms
+
+float over double speed-up factor: 0.923863x

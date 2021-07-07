@@ -7,7 +7,7 @@
 /*
  * seed == -1, function internally uses time(NULL) for seed, seed != -1 -> used as is
  */
-Network *create_network(int input_size, int num_layers, int layers[], Activation *activation, MatrixDataType dataType, int seed)
+Network *create_network(int input_size, int num_layers, int neurons_per_layer[], Activation *activation, MatrixDataType dataType, int seed)
 {
     Network *network = (Network *) malloc(sizeof(Network));
     network->num_layers = num_layers;
@@ -16,8 +16,8 @@ Network *create_network(int input_size, int num_layers, int layers[], Activation
     int prev_layer_size = input_size;
     for (int i = 0; i < num_layers; i++)
     {
-        network->layers[i] = create_layer(layers[i], prev_layer_size, activation, dataType, seed);
-        prev_layer_size = layers[i];
+        network->layers[i] = create_layer(neurons_per_layer[i], prev_layer_size, activation, dataType, seed);
+        prev_layer_size = neurons_per_layer[i];
     }
 
     return network;

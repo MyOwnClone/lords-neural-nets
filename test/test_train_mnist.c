@@ -11,8 +11,6 @@
 const int MNIST_NUM_TRAIN = 6000;
 const int MNIST_NUM_TEST = 1000;
 
-static int mnist_neurons_per_layer[] = {100, 10};
-
 const long MNIST_EPOCH_COUNT = 10;
 const int MNIST_BATCH_SIZE = 10;
 const float MNIST_LEARNING_RATE = 0.5f;
@@ -20,8 +18,11 @@ const float MNIST_MOMENTUM = 0.9f;
 const float MNIST_FLOAT_REG_LAMBDA = 0.9f;
 const float MNIST_DOUBLE_REG_LAMBDA = 0.09f;
 const int MNIST_CHAR_RES = 28;
+const int MNIST_CHAR_COUNT = 10;    // 10 possible digits 0-9
 
-void set_mnist_training_options(CostType cost_type, TrainingOptions *training_options, float reg_lambda)
+static int mnist_neurons_per_layer[] = {100, MNIST_CHAR_COUNT};
+
+static void set_mnist_training_options(CostType cost_type, TrainingOptions *training_options, float reg_lambda)
 {
     training_options->cost_type = cost_type;
     training_options->epochs = MNIST_EPOCH_COUNT;
@@ -45,7 +46,7 @@ int test_train_mnist_double()
 
     char *train_labels_fn = "./resources/mnist_train_labels.csv";
     Matrix **train_labels = load_csv(train_labels_fn, num_train, 1, D_DOUBLE);
-    vectorize(train_labels, num_train, 10);
+    vectorize(train_labels, num_train, MNIST_CHAR_COUNT);
 #if DEBUG_MODE
     logger(INFO, __func__, "Created training labels dataset");
 #endif
@@ -59,7 +60,7 @@ int test_train_mnist_double()
 
     char *test_labels_fn = "./resources/mnist_test_labels.csv";
     Matrix **test_labels = load_csv(test_labels_fn, num_test, 1, D_DOUBLE);
-    vectorize(test_labels, num_test, 10);
+    vectorize(test_labels, num_test, MNIST_CHAR_COUNT);
 #if DEBUG_MODE
     logger(INFO, __func__, "Created test labels dataset");
 #endif
@@ -110,7 +111,7 @@ int test_train_mnist_float()
     char *train_labels_fn = "./resources/mnist_train_labels.csv";
     Matrix **train_labels = load_csv(train_labels_fn, num_train, 1, D_FLOAT);
 
-    vectorize(train_labels, num_train, 10);
+    vectorize(train_labels, num_train, MNIST_CHAR_COUNT);
 #if DEBUG_MODE
     logger(INFO, __func__, "Created training labels dataset");
 #endif
@@ -126,7 +127,7 @@ int test_train_mnist_float()
     char *test_labels_fn = "./resources/mnist_test_labels.csv";
     Matrix **test_labels = load_csv(test_labels_fn, num_test, 1, D_FLOAT);
 
-    vectorize(test_labels, num_test, 10);
+    vectorize(test_labels, num_test, MNIST_CHAR_COUNT);
 #if DEBUG_MODE
     logger(INFO, __func__, "Created test labels dataset");
 #endif

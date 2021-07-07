@@ -11,14 +11,14 @@ static int xor_neurons_per_layer[] = {2, 1};
 
 // TODO: refactor
 
-static const int XOR_EPOCH_COUNT = 20000;
+static const int XOR_EPOCH_COUNT = 20000;   // totally overkill
 static const int XOR_BATCH_SIZE = 0;
 static const float XOR_LEARNING_RATE = 1;
 static const double XOR_MOMENTUM = 0.9;
 
 static const double XOR_REG_LAMBDA = 0.0001;
 
-void delete_train_data(Activation *act_sigmoid, Network *xor_network, Dataset *dataset, TrainingOptions *training_options, TrainingLoggingOptions *training_logging_options)
+static void delete_train_data(Activation *act_sigmoid, Network *xor_network, Dataset *dataset, TrainingOptions *training_options, TrainingLoggingOptions *training_logging_options)
 {
     delete_network(xor_network);
     delete_activation(act_sigmoid);
@@ -27,7 +27,7 @@ void delete_train_data(Activation *act_sigmoid, Network *xor_network, Dataset *d
     delete_training_logging_options(training_logging_options);
 }
 
-void set_training_options(CostType cost_type, TrainingOptions *training_options)
+static void set_training_options(CostType cost_type, TrainingOptions *training_options)
 {
     training_options->cost_type = cost_type;
     training_options->epochs = XOR_EPOCH_COUNT;
@@ -145,11 +145,14 @@ void xor_double()
 
 int main()
 {
-    int repeat_count = 1;
+    int repeat_count = 10000;
 
 #ifdef DEBUG_MODE
     repeat_count = 1;
 #endif
+
+    printf("sizeof(float) == %ld\n", sizeof(float) );
+    printf("sizeof(double) == %ld\n", sizeof(double) );
 
     double float_msecs = print_elapsed_time(xor_float, "xor float", repeat_count);
     double double_msecs = print_elapsed_time(xor_double, "xor double", repeat_count);
