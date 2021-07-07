@@ -1,3 +1,6 @@
+#ifndef NN_H
+#define NN_H
+
 #include "layer.h"
 #include "matrix.h"
 #include "activations.h"
@@ -18,3 +21,5 @@ double accuracy_d(Network *network, Matrix **inputs, Matrix **targets, int input
 float accuracy_f(Network *network, Matrix **inputs, Matrix **targets, int input_length);
 int train(Network *network, Dataset *dataset, Metrics *metrics, TrainingOptions *TrainingOptions, TrainingLoggingOptions * training_logging_options);
 int train_f(Network *network, Dataset *dataset, Metrics *metrics, TrainingOptions *TrainingOptions, TrainingLoggingOptions * training_logging_options);
+
+#endif
