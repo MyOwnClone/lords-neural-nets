@@ -80,12 +80,9 @@ int test_train_mnist_double()
     float reg_lambda = MNIST_DOUBLE_REG_LAMBDA;  // yeah, this is different from float version. Why? Dunno :-(
     set_mnist_training_options(cost_type, training_options, reg_lambda);
 
-    TrainingLoggingOptions *training_logging_options = init_training_logging_options();
-    training_logging_options->log_each_nth_epoch = -1;
+    train_d(mnist_network, dataset, &monitor, training_options, NULL);
 
-    train_d(mnist_network, dataset, &monitor, training_options, training_logging_options);
-
-    delete_train_test_data(act_sigmoid, mnist_network, dataset, training_options, training_logging_options);
+    delete_train_test_data(act_sigmoid, mnist_network, dataset, training_options, NULL);
 
     int res = (monitor.loss < 0.1 && monitor.acc > 0.9) ? 0 : -1;
 
@@ -147,12 +144,9 @@ int test_train_mnist_float()
     TrainingOptions *training_options = init_training_options();
     set_mnist_training_options(cost_type, training_options, MNIST_FLOAT_REG_LAMBDA);
 
-    TrainingLoggingOptions *training_logging_options = init_training_logging_options();
-    training_logging_options->log_each_nth_epoch = -1;
+    train_f(mnist_network, dataset, &monitor, training_options, NULL);
 
-    train_f(mnist_network, dataset, &monitor, training_options, training_logging_options);
-
-    delete_train_test_data(act_sigmoid, mnist_network, dataset, training_options, training_logging_options);
+    delete_train_test_data(act_sigmoid, mnist_network, dataset, training_options, NULL);
 
     int res = (monitor.loss < 0.2 && monitor.acc > 0.9) ? 0 : -1;
 

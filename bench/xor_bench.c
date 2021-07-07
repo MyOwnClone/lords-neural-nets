@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
 #include "bench_utils.h"
 #include "../lib/network.h"
 
@@ -73,12 +74,18 @@ void xor_float()
 
     TrainingLoggingOptions *training_logging_options = init_training_logging_options();
 #ifdef DEBUG_MODE
-    training_logging_options->LogEachNThEpoch = 1; // no logging
+    training_logging_options->LogEachNThEpoch = 1;
 #else
-    training_logging_options->log_each_nth_epoch = 1000; // no logging
+    training_logging_options->log_each_nth_epoch = NO_LOGGING;
 #endif
 
     train_f(xor_network, dataset, &metrics, training_options, training_logging_options);
+
+#ifdef DEBUG_MODE
+    printf("acc %f, loss: %f\n", metrics.acc, metrics.loss);
+#endif
+
+    assert(metrics.acc >= 0.9 && metrics.loss < 0.1);
 
     delete_train_data(act_sigmoid, xor_network, dataset, training_options, training_logging_options);
 }
@@ -120,12 +127,18 @@ void xor_double()
 
     TrainingLoggingOptions *training_logging_options = init_training_logging_options();
 #ifdef DEBUG_MODE
-    training_logging_options->LogEachNThEpoch = 1; // no logging
+    training_logging_options->LogEachNThEpoch = 1;
 #else
-    training_logging_options->log_each_nth_epoch = 1000; // no logging
+    training_logging_options->log_each_nth_epoch = NO_LOGGING;
 #endif
 
     train_d(xor_network, dataset, &metrics, training_options, training_logging_options);
+
+#ifdef DEBUG_MODE
+    printf("acc %f, loss: %f\n", metrics.acc, metrics.loss);
+#endif
+
+    assert(metrics.acc >= 0.9 && metrics.loss < 0.1);
 
     delete_train_data(act_sigmoid, xor_network, dataset, training_options, training_logging_options);
 }

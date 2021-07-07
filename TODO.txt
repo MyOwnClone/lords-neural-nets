@@ -28,6 +28,7 @@ TODO: add support for visualization of activation values for individial neurons 
     * JS viewer?
 
 IDEAS:
+* graph visualisation with graphviz?
 * hyperparameter search? NAS?
 
 

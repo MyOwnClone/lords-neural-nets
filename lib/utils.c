@@ -174,6 +174,11 @@ int delete_training_options(TrainingOptions *training_options)
 
 int delete_training_logging_options(TrainingLoggingOptions *training_logging_options)
 {
+    if (!training_logging_options)
+    {
+        return 0;
+    }
+
     free(training_logging_options);
     training_logging_options = NULL;
 
