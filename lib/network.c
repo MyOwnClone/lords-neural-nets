@@ -58,7 +58,7 @@ Matrix *predict(Network *network, Matrix *input)
         int res = layer_compute(layer, layer_input);
         if (res < 0)
         {
-            logger(EXCEPTION, __func__, "Exception during prediction");
+            logger(LOG_EXCEPTION, __func__, "Exception during prediction");
         }
         layer_input = layer->neurons_act;
     }
@@ -208,7 +208,7 @@ static int backpropagate(
         res += hadamard(temp_deltas[l], layer->neurons, deltas[l]);
         if (res < 0)
         {
-            logger(EXCEPTION, __func__, "Exception during delta calculation");
+            logger(LOG_EXCEPTION, __func__, "Exception during delta calculation");
             return res;
         }
 
@@ -218,7 +218,7 @@ static int backpropagate(
         res += add(delta_weights[l], temp_delta_weights[l]);
         if (res < 0)
         {
-            logger(EXCEPTION, __func__, "Exception during delta weights calculation");
+            logger(LOG_EXCEPTION, __func__, "Exception during delta weights calculation");
             return res;
         }
 
@@ -226,7 +226,7 @@ static int backpropagate(
         res = add(delta_bias[l], deltas[l]);
         if (res < 0)
         {
-            logger(EXCEPTION, __func__, "Exception during delta bias calculation");
+            logger(LOG_EXCEPTION, __func__, "Exception during delta bias calculation");
             return res;
         }
     }
@@ -297,7 +297,7 @@ static int reset(
 
         if (res < 0)
         {
-            logger(EXCEPTION, __func__, "Exception during training temp objects reset");
+            logger(LOG_EXCEPTION, __func__, "Exception during training temp objects reset");
             return res;
         }
     }
@@ -319,7 +319,7 @@ get_initial_delta(CostType cost_type, Activation *activation, Matrix *prediction
         res += hadamard(prediction, layer_output, delta);
         if (res < 0)
         {
-            logger(EXCEPTION, __func__, "Exception during output delta calculation");
+            logger(LOG_EXCEPTION, __func__, "Exception during output delta calculation");
             return res;
         }
 
@@ -336,7 +336,7 @@ get_initial_delta(CostType cost_type, Activation *activation, Matrix *prediction
 
             if (res < 0)
             {
-                logger(EXCEPTION, __func__, "Exception during output delta calculation");
+                logger(LOG_EXCEPTION, __func__, "Exception during output delta calculation");
                 return res;
             }
         }
@@ -350,7 +350,7 @@ static double get_loss(CostType cost_type, Matrix *prediction, Matrix *target)
 {
     if (prediction->type != target->type)
     {
-        logger(EXCEPTION, __func__, "Prediction and target matrices are not the same type!!!");
+        logger(LOG_EXCEPTION, __func__, "Prediction and target matrices are not the same type!!!");
 
         return INT_MAX;
     }
@@ -365,7 +365,7 @@ static double get_loss(CostType cost_type, Matrix *prediction, Matrix *target)
     }
     else
     {
-        logger(EXCEPTION, __func__, "Unknown cost_type!");
+        logger(LOG_EXCEPTION, __func__, "Unknown cost_type!");
 
         return INT_MAX;
     }
@@ -375,7 +375,7 @@ static float get_loss_f(CostType cost_type, Matrix *prediction, Matrix *target)
 {
     if (prediction->type != target->type)
     {
-        logger(EXCEPTION, __func__, "Prediction and target matrices are not the same type!!!");
+        logger(LOG_EXCEPTION, __func__, "Prediction and target matrices are not the same type!!!");
 
         return (float) INT_MAX;
     }
@@ -390,7 +390,7 @@ static float get_loss_f(CostType cost_type, Matrix *prediction, Matrix *target)
     }
     else
     {
-        logger(EXCEPTION, __func__, "Unknown cost_type!");
+        logger(LOG_EXCEPTION, __func__, "Unknown cost_type!");
 
 #ifdef WIN32
         return (float) INT_MAX;
@@ -464,7 +464,7 @@ int train_f(
         {
             char buffer[10 + (epoch % 10) + (epochs % 10)];
             sprintf(buffer, "Epoch: %d/%d", epoch + 1, epochs);
-            logger(INFO, __func__, buffer);
+            logger(LOG_INFO, __func__, buffer);
         }
 
         epoch_loss = 0;
@@ -490,7 +490,7 @@ int train_f(
 
                 if (prediction == NULL)
                 {
-                    logger(EXCEPTION, __func__, "Exception during prediction");
+                    logger(LOG_EXCEPTION, __func__, "Exception during prediction");
                     return -1;
                 }
 
@@ -505,7 +505,7 @@ int train_f(
                 res += add(delta_weights[L], temp_delta_weights[L]);
                 if (res < 0)
                 {
-                    logger(EXCEPTION, __func__, "Exception during output delta weights calculation");
+                    logger(LOG_EXCEPTION, __func__, "Exception during output delta weights calculation");
                     return res;
                 }
 
@@ -513,7 +513,7 @@ int train_f(
                 res = add(delta_bias[L], deltas[L]);
                 if (res < 0)
                 {
-                    logger(EXCEPTION, __func__, "Exception during output delta bias calculation");
+                    logger(LOG_EXCEPTION, __func__, "Exception during output delta bias calculation");
                     return res;
                 }
 
@@ -574,12 +574,12 @@ int train_f(
                 epoch_accuracy = (float) ACCURACY_EXP(network, dataset->val_inputs, dataset->val_labels,dataset->val_size);
                 char acc_buffer[27];
                 sprintf(acc_buffer, "Validation accuracy_d: %.3f", epoch_accuracy);
-                logger(INFO, __func__, acc_buffer);
+                logger(LOG_INFO, __func__, acc_buffer);
 
                 epoch_accuracy = (float) ACCURACY_EXP(network, dataset->train_inputs, dataset->train_labels,dataset->train_size);
                 char acc_train_buffer[27];
                 sprintf(acc_train_buffer, "Training accuracy_d: %.3f", epoch_accuracy);
-                logger(INFO, __func__, acc_train_buffer);
+                logger(LOG_INFO, __func__, acc_train_buffer);
             }
 
             if (training_logging_options == NULL || training_logging_options->log_loss)
@@ -587,7 +587,7 @@ int train_f(
                 final_epoch_loss = (float) epoch_loss / (float) dataset->train_size;
                 char loss_buffer[1000];
                 sprintf(loss_buffer, "Training loss: %.5f", final_epoch_loss);
-                logger(INFO, __func__, loss_buffer);
+                logger(LOG_INFO, __func__, loss_buffer);
             }
         }
         else
@@ -671,7 +671,7 @@ int train(Network *network, Dataset *dataset, Metrics *metrics, TrainingOptions 
         {
             char buffer[10 + (epoch % 10) + (epochs % 10)];
             sprintf(buffer, "Epoch: %d/%d", epoch + 1, epochs);
-            logger(INFO, __func__, buffer);
+            logger(LOG_INFO, __func__, buffer);
         }
 
         epoch_loss = 0;
@@ -697,7 +697,7 @@ int train(Network *network, Dataset *dataset, Metrics *metrics, TrainingOptions 
 
                 if (prediction == NULL)
                 {
-                    logger(EXCEPTION, __func__, "Exception during prediction");
+                    logger(LOG_EXCEPTION, __func__, "Exception during prediction");
                     return -1;
                 }
 
@@ -712,7 +712,7 @@ int train(Network *network, Dataset *dataset, Metrics *metrics, TrainingOptions 
                 res += add(delta_weights[L], temp_delta_weights[L]);
                 if (res < 0)
                 {
-                    logger(EXCEPTION, __func__, "Exception during output delta weights calculation");
+                    logger(LOG_EXCEPTION, __func__, "Exception during output delta weights calculation");
                     return res;
                 }
 
@@ -720,7 +720,7 @@ int train(Network *network, Dataset *dataset, Metrics *metrics, TrainingOptions 
                 res = add(delta_bias[L], deltas[L]);
                 if (res < 0)
                 {
-                    logger(EXCEPTION, __func__, "Exception during output delta bias calculation");
+                    logger(LOG_EXCEPTION, __func__, "Exception during output delta bias calculation");
                     return res;
                 }
 
@@ -781,13 +781,13 @@ int train(Network *network, Dataset *dataset, Metrics *metrics, TrainingOptions 
                 epoch_accuracy = ACCURACY_EXP(network, dataset->val_inputs, dataset->val_labels, dataset->val_size);
                 char acc_buffer[27];
                 sprintf(acc_buffer, "Validation accuracy_d: %.3f", epoch_accuracy);
-                logger(INFO, __func__, acc_buffer);
+                logger(LOG_INFO, __func__, acc_buffer);
 
                 epoch_accuracy = ACCURACY_EXP(network, dataset->train_inputs, dataset->train_labels,
                                               dataset->train_size);
                 char acc_train_buffer[27];
                 sprintf(acc_train_buffer, "Training accuracy_d: %.3f", epoch_accuracy);
-                logger(INFO, __func__, acc_train_buffer);
+                logger(LOG_INFO, __func__, acc_train_buffer);
             }
 
             if (training_logging_options == NULL || training_logging_options->log_loss)
@@ -795,7 +795,7 @@ int train(Network *network, Dataset *dataset, Metrics *metrics, TrainingOptions 
                 epoch_loss = (double) epoch_loss / dataset->train_size;
                 char loss_buffer[23];
                 sprintf(loss_buffer, "Training loss: %.5f", epoch_loss);
-                logger(INFO, __func__, loss_buffer);
+                logger(LOG_INFO, __func__, loss_buffer);
             }
         }
         else

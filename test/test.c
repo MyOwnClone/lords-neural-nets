@@ -6,13 +6,16 @@
 int main()
 {
     int res = 0;
+    
     res += test_matrix();
     res += test_layer();
     res += test_network();
     res += test_functions();
     res += test_utils();
+
     res += test_train_xor_float();
     res += test_train_xor_double();
+
     res += test_train_mnist_double();
     res += test_train_mnist_float();
 

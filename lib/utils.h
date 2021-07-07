@@ -10,9 +10,9 @@
 #define GREEN_COLOR printf("\033[0;32m")
 #define RESET_COLOR printf("\033[0m" )
 
-#define DEBUG 0
-#define INFO 1
-#define EXCEPTION 2
+#define LOG_DEBUG 0
+#define LOG_INFO 1
+#define LOG_EXCEPTION 2
 
 #ifndef LOG_LEVEL
 #define LOG_LEVEL 1

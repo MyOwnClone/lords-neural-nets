@@ -7,7 +7,7 @@ void logger(int log_level, const char *function_name, const char *message)
 {
     if (log_level >= LOG_LEVEL)
     {
-        if (log_level == EXCEPTION)
+        if (log_level == LOG_EXCEPTION)
         {
 #ifndef __MINGW64__
             RED_COLOR;
@@ -27,7 +27,7 @@ Matrix** load_csv(char *filename, int lines, int line_length, MatrixDataType mat
 
     if (!fp) 
     {
-        logger(EXCEPTION, __func__, "Failed to open csv file");
+        logger(LOG_EXCEPTION, __func__, "Failed to open csv file");
         return NULL;
     }
 
