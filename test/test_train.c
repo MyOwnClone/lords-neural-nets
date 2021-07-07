@@ -31,7 +31,7 @@ const float MNIST_DOUBLE_REG_LAMBDA = 0.09f;
 
 //TODO: refactor
 
-static void delete_xor_test_data(Activation *act_sigmoid, Network *xor_network, Dataset *dataset, TrainingOptions *training_options, TrainingLoggingOptions *training_logging_options)
+static void delete_test_data(Activation *act_sigmoid, Network *xor_network, Dataset *dataset, TrainingOptions *training_options, TrainingLoggingOptions *training_logging_options)
 {
     delete_network(xor_network);
     delete_activation(act_sigmoid);
@@ -93,7 +93,7 @@ int test_train_xor_double()
 
     train(xor_network, dataset, &monitor, training_options, training_logging_options);
 
-    delete_xor_test_data(act_sigmoid, xor_network, dataset, training_options, training_logging_options);
+    delete_test_data(act_sigmoid, xor_network, dataset, training_options, training_logging_options);
 
     int res = (monitor.loss < 0.1 && monitor.acc > 0.9) ? 0 : -1;
 
@@ -147,7 +147,7 @@ int test_train_xor_float()
 
     train_f(xor_network, dataset, &monitor, training_options, training_logging_options);
 
-    delete_xor_test_data(act_sigmoid, xor_network, dataset, training_options, training_logging_options);
+    delete_test_data(act_sigmoid, xor_network, dataset, training_options, training_logging_options);
 
     int res = (monitor.loss < 0.1 && monitor.acc > 0.9) ? 0 : -1;
 
@@ -156,6 +156,16 @@ int test_train_xor_float()
 #endif
 
     return eval_test_result(__func__, res);
+}
+
+void set_mnist_training_options(CostType cost_type, TrainingOptions *training_options, float reg_lambda)
+{
+    training_options->cost_type = cost_type;
+    training_options->epochs = MNIST_EPOCH_COUNT;
+    training_options->batch_size = MNIST_BATCH_SIZE;
+    training_options->learning_rate = MNIST_LEARNING_RATE;
+    training_options->momentum = MNIST_MOMENTUM;
+    training_options->regularization_lambda = reg_lambda;
 }
 
 int test_train_mnist_double()
@@ -195,25 +205,16 @@ int test_train_mnist_double()
     Network *mnist_network = create_network(28 * 28, 2, mnist_layers, act_sigmoid, D_DOUBLE, seed);
 
     TrainingOptions *training_options = init_training_options();
-    training_options->cost_type = cost_type;
-    training_options->epochs = MNIST_EPOCH_COUNT;
-    training_options->batch_size = MNIST_BATCH_SIZE;
-    training_options->learning_rate = MNIST_LEARNING_RATE;
-    training_options->momentum = MNIST_MOMENTUM;
-    training_options->regularization_lambda = MNIST_DOUBLE_REG_LAMBDA;  // yeah, this is different from float version. Why? Dunno :-(
+
+    float reg_lambda = MNIST_DOUBLE_REG_LAMBDA;  // yeah, this is different from float version. Why? Dunno :-(
+    set_mnist_training_options(cost_type, training_options, reg_lambda);
 
     TrainingLoggingOptions *training_logging_options = init_training_logging_options();
     training_logging_options->log_each_nth_epoch = -1;
 
     train(mnist_network, dataset, &monitor, training_options, training_logging_options);
 
-    delete_xor_test_data(act_sigmoid, mnist_network, dataset, training_options, training_logging_options);
-
-    /*delete_network(mnist_network);
-    delete_dataset(dataset);
-    delete_activation(act_sigmoid);
-    delete_training_options(training_options);
-    delete_training_logging_options(training_logging_options);*/
+    delete_test_data(act_sigmoid, mnist_network, dataset, training_options, training_logging_options);
 
     int res = (monitor.loss < 0.1 && monitor.acc > 0.9) ? 0 : -1;
 
@@ -265,25 +266,14 @@ int test_train_mnist_float()
     Network *mnist_network = create_network(28 * 28, 2, mnist_layers, act_sigmoid, D_FLOAT, seed);
 
     TrainingOptions *training_options = init_training_options();
-    training_options->cost_type = cost_type;
-    training_options->epochs = MNIST_EPOCH_COUNT;
-    training_options->batch_size = MNIST_BATCH_SIZE;
-    training_options->learning_rate = MNIST_LEARNING_RATE;
-    training_options->momentum = MNIST_MOMENTUM;
-    training_options->regularization_lambda = MNIST_FLOAT_REG_LAMBDA;
+    set_mnist_training_options(cost_type, training_options, MNIST_FLOAT_REG_LAMBDA);
 
     TrainingLoggingOptions *training_logging_options = init_training_logging_options();
     training_logging_options->log_each_nth_epoch = -1;
 
     train_f(mnist_network, dataset, &monitor, training_options, training_logging_options);
 
-    delete_xor_test_data(act_sigmoid, mnist_network, dataset, training_options, training_logging_options);
-
-    /*delete_network(mnist_network);
-    delete_dataset(dataset);
-    delete_activation(act_sigmoid);
-    delete_training_options(training_options);
-    delete_training_logging_options(training_logging_options);*/
+    delete_test_data(act_sigmoid, mnist_network, dataset, training_options, training_logging_options);
 
     int res = (monitor.loss < 0.2 && monitor.acc > 0.9) ? 0 : -1;
 
