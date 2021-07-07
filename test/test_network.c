@@ -84,7 +84,7 @@ static int test_predict_float()
     Network *network = create_network(input_size, num_layers, layers, sigmoid, D_FLOAT, -1);
 
     float input_mat[10][1] =  {{1},{1},{1},{1},{1},{1},{1},{1},{1},{1}};
-    Matrix *input = create_f_matrix(10, 1, input_mat);
+    Matrix *input = create_matrix_f(10, 1, input_mat);
 
     Matrix *result = predict(network, input);
 
@@ -116,7 +116,7 @@ static int test_predict()
     Network *network = create_network(input_size, num_layers, layers, sigmoid, D_DOUBLE, -1);
 
     double input_mat[10][1] =  {{1},{1},{1},{1},{1},{1},{1},{1},{1},{1}};
-    Matrix *input = create_d_matrix(10, 1, input_mat);
+    Matrix *input = create_matrix_d(10, 1, input_mat);
 
     Matrix *result = predict(network, input);
 

@@ -63,8 +63,8 @@ Matrix* create_matrix(int rows, int cols, const double double_mat[][cols], const
 
 Matrix* create_empty_matrix(int rows, int cols, MatrixDataType dataType);
 
-Matrix* create_f_matrix(int rows, int cols, const float float_mat[][cols]);
-Matrix* create_d_matrix(int rows, int cols, const double double_mat[][cols]);
+Matrix* create_matrix_f(int rows, int cols, const float **float_mat);
+Matrix* create_matrix_d(int rows, int cols, const double **double_mat);
 
 void print_matrix(Matrix *matrix);
 bool is_null(Matrix *matrix);

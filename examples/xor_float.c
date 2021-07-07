@@ -27,8 +27,8 @@ int main() {
 
     for (int i = 0; i < 4; i++)
     {
-        inputs[i] = create_f_matrix(2, 1, inputs_mat[i]);
-        labels[i] = create_f_matrix(1, 1, labels_mat[i]);
+        inputs[i] = create_matrix_f(2, 1, inputs_mat[i]);
+        labels[i] = create_matrix_f(1, 1, labels_mat[i]);
     }
 
     Metrics monitor;

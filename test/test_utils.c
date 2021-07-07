@@ -16,7 +16,7 @@ static int test_vectorize_float()
     Matrix **a = (Matrix**) malloc (sizeof (Matrix*) * 15);
     for (int i = 0; i < 15; i++)
     {
-        a[i] = create_f_matrix(1,1,mat[i]);
+        a[i] = create_matrix_f(1, 1, mat[i]);
     }
 
     vectorize(a, 15, 15);
@@ -66,7 +66,7 @@ static int test_vectorize()
     Matrix **a = (Matrix**) malloc (sizeof (Matrix*) * 15);
     for (int i = 0; i < 15; i++)
     {
-        a[i] = create_d_matrix(1,1,mat[i]);
+        a[i] = create_matrix_d(1, 1, mat[i]);
     }
 
     vectorize(a, 15, 15);
@@ -123,7 +123,7 @@ static int test_normalize_float()
 
     for (int i = 0; i < 3; i++)
     {
-        a[i] = create_f_matrix(3,3, mat[i]);
+        a[i] = create_matrix_f(3, 3, mat[i]);
     }
 
     normalize(a, 3, 4);
@@ -170,7 +170,7 @@ static int test_normalize()
 
     for (int i = 0; i < 3; i++)
     {
-        a[i] = create_d_matrix(3,3, mat[i]);
+        a[i] = create_matrix_d(3, 3, mat[i]);
     }
 
     normalize(a, 3, 4);

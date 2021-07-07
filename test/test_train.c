@@ -76,8 +76,8 @@ int test_train_xor_double()
 
     for (int i = 0; i < 4; i++)
     {
-        inputs[i] = create_d_matrix(2, 1, inputs_mat[i]);
-        labels[i] = create_d_matrix(1, 1, labels_mat[i]);
+        inputs[i] = create_matrix_d(2, 1, inputs_mat[i]);
+        labels[i] = create_matrix_d(1, 1, labels_mat[i]);
     }
 
     Metrics monitor;
@@ -130,8 +130,8 @@ int test_train_xor_float()
 
     for (int i = 0; i < 4; i++)
     {
-        inputs[i] = create_f_matrix(2, 1, inputs_mat[i]);
-        labels[i] = create_f_matrix(1, 1, labels_mat[i]);
+        inputs[i] = create_matrix_f(2, 1, inputs_mat[i]);
+        labels[i] = create_matrix_f(1, 1, labels_mat[i]);
     }
 
     Metrics monitor;
