@@ -77,7 +77,7 @@ void xor_float()
     training_logging_options->log_each_nth_epoch = NO_LOGGING;
 #endif
 
-    train_f(xor_network, dataset, &metrics, training_options, training_logging_options);
+    train(xor_network, dataset, &metrics, training_options, training_logging_options);
 
 #ifdef DEBUG_MODE
     printf("acc %f, loss: %f\n", metrics.acc, metrics.loss);
@@ -130,7 +130,7 @@ void xor_double()
     training_logging_options->log_each_nth_epoch = NO_LOGGING;
 #endif
 
-    train_d(xor_network, dataset, &metrics, training_options, training_logging_options);
+    train(xor_network, dataset, &metrics, training_options, training_logging_options);
 
 #ifdef DEBUG_MODE
     printf("acc %f, loss: %f\n", metrics.acc, metrics.loss);

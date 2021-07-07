@@ -93,7 +93,7 @@ void mnist_double()
     training_logging_options->log_each_nth_epoch = NO_LOGGING;
 #endif
 
-    train_d(mnist_network, dataset, &metrics, training_options, training_logging_options);
+    train(mnist_network, dataset, &metrics, training_options, training_logging_options);
 
 #ifdef DEBUG_MODE
     printf("acc %f, loss: %f\n", metrics.acc, metrics.loss);
@@ -158,7 +158,7 @@ void mnist_float()
     training_logging_options->log_each_nth_epoch = NO_LOGGING;
 #endif
 
-    train_f(mnist_network, dataset, &metrics, training_options, training_logging_options);
+    train(mnist_network, dataset, &metrics, training_options, training_logging_options);
 
 #ifdef DEBUG_MODE
     printf("acc %f, loss: %f\n", metrics.acc, metrics.loss);

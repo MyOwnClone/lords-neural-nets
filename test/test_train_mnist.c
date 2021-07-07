@@ -81,7 +81,7 @@ int test_train_mnist_double()
     float reg_lambda = MNIST_DOUBLE_REG_LAMBDA;  // yeah, this is different from float version. Why? Dunno :-(
     set_mnist_training_options(cost_type, training_options, reg_lambda);
 
-    train_d(mnist_network, dataset, &monitor, training_options, NULL);
+    train(mnist_network, dataset, &monitor, training_options, NULL);
 
     delete_train_test_data(act_sigmoid, mnist_network, dataset, training_options, NULL);
 
@@ -145,7 +145,7 @@ int test_train_mnist_float()
     TrainingOptions *training_options = init_training_options();
     set_mnist_training_options(cost_type, training_options, MNIST_FLOAT_REG_LAMBDA);
 
-    train_f(mnist_network, dataset, &monitor, training_options, NULL);
+    train(mnist_network, dataset, &monitor, training_options, NULL);
 
     delete_train_test_data(act_sigmoid, mnist_network, dataset, training_options, NULL);
 
