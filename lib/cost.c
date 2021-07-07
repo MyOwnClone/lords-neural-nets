@@ -1,8 +1,6 @@
 #include <math.h>
 #include "matrix.h"
 
-// Cost functions
-
 double cost_mse_d(Matrix *prediction, Matrix *target)
 {
     if (prediction->cols != 1 || target->cols != 1 || prediction->rows != target->rows)

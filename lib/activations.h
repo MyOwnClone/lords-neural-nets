@@ -2,10 +2,11 @@
 #define NNS_ACTIVATIONS_H
 
 // Activation functions
-double act_sigmoid(double num);
-double act_sigmoid_der(double num);
-double act_relu(double num);
-double act_relu_der(double num);
+double act_sigmoid_d(double num);
+double act_sigmoid_der_d(double num);
+double act_relu_d(double num);
+double act_relu_der_d(double num);
+
 float act_sigmoid_f(float num);
 float act_sigmoid_der_f(float num);
 float act_relu_f(float num);

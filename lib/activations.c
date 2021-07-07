@@ -5,7 +5,7 @@
 
 // Activations and derivatives
 
-double act_sigmoid(double num)
+double act_sigmoid_d(double num)
 {
     return 1.0 / (1.0 + exp(-1.0*num));
 }
@@ -43,12 +43,12 @@ float act_sigmoid_f(float num)
 #endif
 
 #if 1
-double act_sigmoid_der(double num)
+double act_sigmoid_der_d(double num)
 {
     return exp(-1.0*num)/pow(1.0 + exp(-1.0*num),2.0);
 }
 #else
-double act_sigmoid_der(double num)
+double act_sigmoid_der_d(double num)
 {
     static long zero_count = 0;
     static long non_zero_count = 0;
@@ -118,7 +118,7 @@ float act_sigmoid_der_f(float num)
 }
 #endif
 
-double act_relu(double num)
+double act_relu_d(double num)
 {
     return fmax(0.0, num);
 }
@@ -128,7 +128,7 @@ float act_relu_f(float num)
     return fmaxf(0.0f, num);
 }
 
-double act_relu_der(double num)
+double act_relu_der_d(double num)
 {
     return num > 0.0 ? 1.0 : 0.0;
 }
@@ -170,10 +170,10 @@ Activation* create_sigmoid_activation()
 {
     Activation *activation = (Activation *) malloc ( sizeof (Activation));
 
-    activation->fn = &act_sigmoid;
+    activation->fn = &act_sigmoid_d;
     activation->fn_f = &act_sigmoid_f;
 
-    activation->fn_der = &act_sigmoid_der;
+    activation->fn_der = &act_sigmoid_der_d;
     activation->fn_der_f = &act_sigmoid_der_f;
 
     activation->type = SIGMOID;
@@ -184,8 +184,8 @@ Activation* create_sigmoid_activation()
 Activation* create_relu_activation()
 {
     Activation *activation = (Activation *) malloc ( sizeof (Activation));
-    activation->fn = &act_relu;
-    activation->fn_der = &act_relu_der;
+    activation->fn = &act_relu_d;
+    activation->fn_der = &act_relu_der_d;
 
     activation->fn_f = &act_relu_f;
     activation->fn_der_f = &act_relu_der_f;
