@@ -1,7 +1,7 @@
 #include <network.h>
 #include <malloc.h>
 
-#ifdef DEBUG
+#ifdef DEBUG_MODE
     #include <stdio.h>
 #endif
 
@@ -15,7 +15,10 @@ const float XOR_LEARNING_RATE = 1.0f;
 const float XOR_MOMENTUM = 0.9f;
 const float XOR_REG_LAMBDA =  0.0001f;
 
-static int xor_layers[] = {2, 1};
+#define BINARY_OPERAND_COUNT 2
+#define XOR_COMBINATION_COUNT (2 * 2)
+
+static int xor_neurons_per_layer[] = {2, 1};
 
 static void set_xor_training_options(const CostType *cost_type, TrainingOptions *training_options)
 {
@@ -33,32 +36,32 @@ int test_train_xor_double()
 
     // FIXME: when using other seed, test may fail, training may diverge and not reach tested condition
     const int seed = 1;
-    Network *xor_network = create_network(2, 2, xor_layers, act_sigmoid, D_DOUBLE, seed);
+    Network *xor_network = create_network(BINARY_OPERAND_COUNT, 2, xor_neurons_per_layer, act_sigmoid, D_DOUBLE, seed);
 
-    Matrix **inputs = (Matrix**) malloc (sizeof (Matrix*) * 4);
-    double inputs_mat[4][2][1] = {
+    Matrix **inputs = (Matrix**) malloc (sizeof (Matrix*) * XOR_COMBINATION_COUNT);
+    double inputs_mat[XOR_COMBINATION_COUNT][BINARY_OPERAND_COUNT][1] = {
             {{1}, {1}},
             {{1}, {0}},
             {{0}, {1}},
             {{0}, {0}}
     };
 
-    Matrix **labels = (Matrix**) malloc (sizeof (Matrix*) * 4);
-    double labels_mat[4][1][1] = {
+    Matrix **labels = (Matrix**) malloc (sizeof (Matrix*) * XOR_COMBINATION_COUNT);
+    double labels_mat[XOR_COMBINATION_COUNT][1][1] = {
             {{0}},
             {{1}},
             {{1}},
             {{0}}
     };
 
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < XOR_COMBINATION_COUNT; i++)
     {
-        inputs[i] = create_matrix_d(2, 1, inputs_mat[i]);
+        inputs[i] = create_matrix_d(BINARY_OPERAND_COUNT, 1, inputs_mat[i]);
         labels[i] = create_matrix_d(1, 1, labels_mat[i]);
     }
 
     Metrics monitor;
-    Dataset *dataset = create_dataset(4, 4, inputs, labels, NULL, NULL);
+    Dataset *dataset = create_dataset(XOR_COMBINATION_COUNT, XOR_COMBINATION_COUNT, inputs, labels, NULL, NULL);
 
     CostType cost_type = CROSS_ENTROPY;
 
@@ -74,7 +77,7 @@ int test_train_xor_double()
 
     int res = (monitor.loss < 0.1 && monitor.acc > 0.9) ? 0 : -1;
 
-#if 0
+#ifdef DEBUG_MODE
     printf("loss: %f, acc: %f\n", monitor.loss, monitor.acc);
 #endif
 
@@ -87,32 +90,32 @@ int test_train_xor_float()
 
     // FIXME: when using other seed, test may fail, training may diverge and not reach tested condition
     const int seed = 1;
-    Network *xor_network = create_network(2, 2, xor_layers, act_sigmoid, D_FLOAT, seed);
+    Network *xor_network = create_network(BINARY_OPERAND_COUNT, 2, xor_neurons_per_layer, act_sigmoid, D_FLOAT, seed);
 
-    Matrix **inputs = (Matrix**) malloc (sizeof (Matrix*) * 4);
-    float inputs_mat[4][2][1] = {
+    Matrix **inputs = (Matrix**) malloc (sizeof (Matrix*) * XOR_COMBINATION_COUNT);
+    float inputs_mat[XOR_COMBINATION_COUNT][BINARY_OPERAND_COUNT][1] = {
             {{1}, {1}},
             {{1}, {0}},
             {{0}, {1}},
             {{0}, {0}}
     };
 
-    Matrix **labels = (Matrix**) malloc (sizeof (Matrix*) * 4);
-    float labels_mat[4][1][1] = {
+    Matrix **labels = (Matrix**) malloc (sizeof (Matrix*) * XOR_COMBINATION_COUNT);
+    float labels_mat[XOR_COMBINATION_COUNT][1][1] = {
             {{0}},
             {{1}},
             {{1}},
             {{0}}
     };
 
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < XOR_COMBINATION_COUNT; i++)
     {
-        inputs[i] = create_matrix_f(2, 1, inputs_mat[i]);
+        inputs[i] = create_matrix_f(BINARY_OPERAND_COUNT, 1, inputs_mat[i]);
         labels[i] = create_matrix_f(1, 1, labels_mat[i]);
     }
 
     Metrics monitor;
-    Dataset *dataset = create_dataset(4, 4, inputs, labels, NULL, NULL);
+    Dataset *dataset = create_dataset(XOR_COMBINATION_COUNT, XOR_COMBINATION_COUNT, inputs, labels, NULL, NULL);
 
     CostType cost_type = CROSS_ENTROPY;
 
@@ -128,7 +131,7 @@ int test_train_xor_float()
 
     int res = (monitor.loss < 0.1 && monitor.acc > 0.9) ? 0 : -1;
 
-#if 0
+#if DEBUG_MODE
     printf("loss: %f, acc: %f\n", monitor.loss, monitor.acc);
 #endif
 

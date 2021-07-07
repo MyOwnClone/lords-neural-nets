@@ -3,6 +3,8 @@
 #include "bench_utils.h"
 #include "../lib/network.h"
 
+// TODO: refactor
+
 void xor_float()
 {
     int layers[] = {2,1};
