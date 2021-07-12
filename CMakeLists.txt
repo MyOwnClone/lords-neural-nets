@@ -25,6 +25,7 @@ add_subdirectory(examples)
 add_subdirectory(bench)
 add_subdirectory(test)
 add_subdirectory(just_build_all)
+add_subdirectory(acts2ppm)
 
 message(STATUS "Cmake detected CPU arch: " ${CMAKE_HOST_SYSTEM_PROCESSOR})
 message(STATUS "Cmake detected operating system: " ${CMAKE_SYSTEM_NAME})

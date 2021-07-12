@@ -1,0 +1,1 @@
+add_executable (acts2ppm acts2ppm.c)
