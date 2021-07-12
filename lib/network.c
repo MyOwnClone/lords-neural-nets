@@ -614,3 +614,31 @@ int train(Network *network, Dataset *dataset, Metrics *metrics, TrainingOptions 
 
     return 0;
 }
+
+void write_network_introspection_params(Network *network)
+{
+#ifdef INTROSPECT
+    if (!g_introspection_file_handle)
+    {
+        printf("g_introspection_file_handle == null!!!");
+        return;
+    }
+
+    if (!network)
+    {
+        printf("Network == NULL !!!");
+    }
+
+    fprintf(g_introspection_file_handle, "%ld\n", network->num_layers);
+
+    for (int layer_idx = 0; layer_idx < network->num_layers; layer_idx++)
+    {
+        Layer* layer = network->layers[layer_idx];
+
+        fprintf(g_introspection_file_handle, "%ld\n", layer->num_neurons);
+    }
+
+#else
+    printf("Warning! Calling introspection functions, but INTROSPECT is undefined!!!");
+#endif
+}

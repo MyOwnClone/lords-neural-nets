@@ -41,6 +41,8 @@ int main() {
         labels[i] = create_matrix_f(1, 1, labels_mat[i]);
     }
 
+    open_activation_introspection("xor_f_activations.txt");
+
     Metrics monitor;
     Dataset *dataset = create_dataset(XOR_COMBINATION_COUNT, XOR_COMBINATION_COUNT, inputs, labels, NULL, NULL);
 
@@ -55,7 +57,11 @@ int main() {
     TrainingLoggingOptions *training_logging_options = init_training_logging_options();
     training_logging_options->log_each_nth_epoch = 1;
 
+    write_network_introspection_params(xor_network);
+
     train(xor_network, dataset, &monitor, training_options, training_logging_options);
+
+    close_activation_introspection();
 
     delete_network(xor_network);
     delete_activation(act_sigmoid);

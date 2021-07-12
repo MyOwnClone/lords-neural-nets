@@ -536,3 +536,26 @@ void on_neuron_activation_d(int layer_idx, int row, int col, double value)
 
 #endif
 }
+
+FILE* g_introspection_file_handle = NULL;
+
+void open_activation_introspection(const char *data_filename)
+{
+#ifdef INTROSPECT
+    g_introspection_file_handle = fopen(data_filename, "w");
+#else
+    printf("Warning! Calling introspection functions, but INTROSPECT is undefined!!!");
+#endif
+}
+
+void close_activation_introspection()
+{
+#ifdef INTROSPECT
+    if (g_introspection_file_handle)
+    {
+        fclose(g_introspection_file_handle);
+    }
+#else
+    printf("Warning! Calling introspection functions, but INTROSPECT is undefined!!!");
+#endif
+}

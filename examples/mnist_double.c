@@ -4,7 +4,7 @@
 
 static const int TRAIN_SAMPLE_COUNT = 60;
 static const int TEST_SAMPLE_COUNT = 10;
-long MNIST_EPOCH_COUNT = 20;
+long MNIST_EPOCH_COUNT = 2000;
 const int MNIST_CHAR_RES = 28;
 const int MNIST_CHAR_COUNT = 10;    // 10 possible digits 0-9
 const int MNIST_BATCH_SIZE = 10;
@@ -38,6 +38,7 @@ int main()
     vectorize(test_labels, num_test, MNIST_CHAR_COUNT);
     logger(LOG_INFO, __func__, "Created test labels dataset");
 
+    open_activation_introspection("mnist_d_activations.txt");
 
     Dataset *dataset = create_dataset(num_train, num_test, train_inputs, train_labels, test_inputs, test_labels);
     Metrics metrics;
@@ -58,7 +59,11 @@ int main()
     TrainingLoggingOptions *training_logging_options = init_training_logging_options();
     training_logging_options->log_each_nth_epoch = 1;
 
+    write_network_introspection_params(mnist_network);
+
     train(mnist_network, dataset, &metrics, training_options, training_logging_options);
+
+    close_activation_introspection();
 
     delete_network(mnist_network);
     delete_dataset(dataset);

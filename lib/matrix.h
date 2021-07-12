@@ -109,4 +109,10 @@ else                                                                  \
 void on_neuron_activation_f(int layer_idx, int row, int col, float value);
 void on_neuron_activation_d(int layer_idx, int row, int col, double value);
 
+void open_activation_introspection(const char *data_filename);
+void close_activation_introspection();
+
+#include <stdio.h>
+extern FILE* g_introspection_file_handle;
+
 #endif /* MATRIX_H */
