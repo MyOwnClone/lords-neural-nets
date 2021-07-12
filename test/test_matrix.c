@@ -846,7 +846,7 @@ static int test_apply_float()
 
     const float res_mat[2][2] = {{1,4}, {9, 16}};
 
-    APPLY(a_matrix, NULL, square_ptr);
+    DISP_APPLY(a_matrix, NULL, square_ptr);
 
     if (is_null(a_matrix))
     {
@@ -878,7 +878,7 @@ static int test_apply()
 
     const double res_mat[2][2] = {{1,4}, {9, 16}};
 
-    APPLY(a_matrix, NULL, square_ptr);
+    DISP_APPLY(a_matrix, NULL, square_ptr);
 
     if (is_null(a_matrix))
     {
@@ -1035,7 +1035,7 @@ static int test_argmax_float()
     }
 
     int index = 4;
-    MATRIX_IADD(a, index, 0, 10);
+    DISP_MATRIX_IADD(a, index, 0, 10);
 
     arg = argmax(a);
 

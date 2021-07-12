@@ -8,7 +8,7 @@ float** matrix_get_f(Matrix* x) { return x->f_matrix; }
 
 inline void matrix_item_assign(Matrix *x, Matrix *y, int row1, int col1, int row2, int col2 )
 {
-    MATRIX_ISET(x, row1, col1, MATRIX_IGET(y, row2, col2))
+    DISP_MATRIX_ISET(x, row1, col1, DISP_MATRIX_IGET(y, row2, col2))
 }
 
 Matrix* create_matrix(int rows, int cols, const double double_mat[][cols], const float float_mat[][cols], MatrixDataType dataType)
@@ -47,10 +47,10 @@ Matrix* create_matrix(int rows, int cols, const double double_mat[][cols], const
                 {
                     if (double_mat != NULL)
                     {
-                        MATRIX_ISET(matrix, i, j, double_mat[i][j])
+                        DISP_MATRIX_ISET(matrix, i, j, double_mat[i][j])
                     } else
                     {
-                        MATRIX_ISET(matrix, i, j, 0)
+                        DISP_MATRIX_ISET(matrix, i, j, 0)
                     }
                 }
             }
@@ -67,11 +67,11 @@ Matrix* create_matrix(int rows, int cols, const double double_mat[][cols], const
                     {
                         float f_value = float_mat[row][col];
 
-                        MATRIX_ISET(matrix, row, col, f_value)
+                        DISP_MATRIX_ISET(matrix, row, col, f_value)
                     }
                     else
                     {
-                        MATRIX_ISET(matrix, row, col, 0)
+                        DISP_MATRIX_ISET(matrix, row, col, 0)
                     }
                 }
             }
@@ -88,7 +88,7 @@ void print_matrix(Matrix *matrix)
         printf("[ ");
         for (int j = 0; j < matrix->cols; j++)
         {
-            printf("%.8f ", MATRIX_IGET(matrix, i, j));
+            printf("%.8f ", DISP_MATRIX_IGET(matrix, i, j));
         }
         printf("]\n");
     }    
@@ -141,11 +141,11 @@ int multiply(Matrix *a, Matrix *b, Matrix *result)
     {
         for (int col = 0; col < b->cols; col++)
         {
-            MATRIX_ISET(result, row, col, 0)
+            DISP_MATRIX_ISET(result, row, col, 0)
 
             for (int k = 0; k < a->cols; k++)
             {
-                MATRIX_IADD(result, row, col, MATRIX_IGET(a, row, k) * MATRIX_IGET(b, k, col))
+                DISP_MATRIX_IADD(result, row, col, DISP_MATRIX_IGET(a, row, k) * DISP_MATRIX_IGET(b, k, col))
             }            
         }        
     }
@@ -169,11 +169,11 @@ int multiply_transposed(Matrix *a, Matrix *b_t, Matrix *result)
     {
         for (int j = 0; j < b_t->rows; j++)
         {
-            MATRIX_ISET(result, i, j, 0)
+            DISP_MATRIX_ISET(result, i, j, 0)
 
             for (int k = 0; k < a->cols; k++)
             {
-                MATRIX_IADD(result, i, j, MATRIX_IGET(a, i, k) * MATRIX_IGET(b_t, j, k))
+                DISP_MATRIX_IADD(result, i, j, DISP_MATRIX_IGET(a, i, k) * DISP_MATRIX_IGET(b_t, j, k))
             }            
         }        
     }
@@ -197,7 +197,7 @@ int add(Matrix *a, Matrix *b)
     {
         for (int col = 0; col < a->cols; col++)
         {
-            MATRIX_IADD(a, row, col, MATRIX_IGET(b, row, col))
+            DISP_MATRIX_IADD(a, row, col, DISP_MATRIX_IGET(b, row, col))
         }        
     }
 
@@ -220,7 +220,7 @@ int subtract(Matrix *a, Matrix *b)
     {
         for (int col = 0; col < a->cols; col++)
         {
-            MATRIX_ISUB(a, row, col, MATRIX_IGET(b, row, col))
+            DISP_MATRIX_ISUB(a, row, col, DISP_MATRIX_IGET(b, row, col))
         }        
     }
 
@@ -238,7 +238,7 @@ int scalar_multiply(Matrix *a, double x)
     {
         for (int col = 0; col < a->cols; col++)
         {
-            MATRIX_IMULS(a, row, col, x)
+            DISP_MATRIX_IMULS(a, row, col, x)
         }        
     }  
 
@@ -255,7 +255,7 @@ int scalar_add(Matrix *a, double x) {
     {
         for (int col = 0; col < a->cols; col++)
         {
-            MATRIX_IADDS(a, row, col, x)
+            DISP_MATRIX_IADDS(a, row, col, x)
         }        
     }
 
@@ -347,7 +347,7 @@ int hadamard(Matrix *a, Matrix *b, Matrix *result)
     {
         for (int col = 0; col < a->cols; col++)
         {
-            MATRIX_ISET(result, row, col, MATRIX_IGET(a, row, col) * MATRIX_IGET(b, row, col) )
+            DISP_MATRIX_ISET(result, row, col, DISP_MATRIX_IGET(a, row, col) * DISP_MATRIX_IGET(b, row, col) )
         }        
     }
 
@@ -362,7 +362,7 @@ int argmax(Matrix *a)
     {
         for (int i = 0; i < a->cols; i++)
         {
-            if (MATRIX_IGET(a, 0, i) > MATRIX_IGET(a, 0, max))
+            if (DISP_MATRIX_IGET(a, 0, i) > DISP_MATRIX_IGET(a, 0, max))
             {
                 max = i;
             }
@@ -372,7 +372,7 @@ int argmax(Matrix *a)
     {
         for (int i = 0; i < a->rows; i++)
         {
-            if (MATRIX_IGET(a, i, 0) > MATRIX_IGET(a, max, 0))
+            if (DISP_MATRIX_IGET(a, i, 0) > DISP_MATRIX_IGET(a, max, 0))
             {
                 max = i;
             }
@@ -397,7 +397,7 @@ int reset_matrix(Matrix *a)
     {
         for (int col = 0; col < a->cols; col++)
         {
-            MATRIX_ISET(a, row, col, 0)
+            DISP_MATRIX_ISET(a, row, col, 0)
         }        
     }
 
@@ -461,14 +461,14 @@ bool is_equal(Matrix *matrix, int rows, int cols, const double d_mat[rows][cols]
             {
                 float f_value = (float) f_mat[i][j];
 
-                if ((float)MATRIX_IGET(matrix, i, j) != f_value)
+                if ((float)DISP_MATRIX_IGET(matrix, i, j) != f_value)
                 {
                     return false;
                 }
             }
             else
             {
-                if (MATRIX_IGET(matrix, i, j) != d_mat[i][j])
+                if (DISP_MATRIX_IGET(matrix, i, j) != d_mat[i][j])
                 {
                     return false;
                 }

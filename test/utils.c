@@ -49,7 +49,7 @@ bool is_non_zero(Matrix *matrix)
     {
         for (int j = 0; j < matrix->cols; j++)
         {
-            if (MATRIX_IGET(matrix, i, j) != 0)
+            if (DISP_MATRIX_IGET(matrix, i, j) != 0)
             {
                 return true;
             }

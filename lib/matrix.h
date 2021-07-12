@@ -23,7 +23,6 @@ typedef struct
     };
 } Matrix;
 
-// TODO: benchmark performance float vs double
 // TODO: in memory dataset/loader
 
 double** matrix_get_d(Matrix* x);
@@ -32,14 +31,20 @@ float** matrix_get_f(Matrix* x);
 void matrix_set_d(Matrix* x, double **mat);
 void matrix_set_f(Matrix* x, float **mat);
 
-#define IS_FLOAT(x) ((x)->type == D_FLOAT)
+// __ == internal
+
+#define __IS_FLOAT(x) ((x)->type == D_FLOAT)
 //#define IS_FLOAT(x) true
 
+// all the DISP_ macros (dispatcher) are basically a way to avoid static typing screaming at us that we are using different types: float or double, macros do not check this
+// unfortunately, we do not have anything like templates or generics in pure C
+// i.e.: DISP_MATRIX_ISET() tak "val" parameter, user can supply double or float, there is a condition which based on type of matrix select double or float assignment, but we can still have one macro, not 2 functions
+
 // Item GET
-#define MATRIX_IGET(x, row, col) (IS_FLOAT(x) ? (float)(matrix_get_f(x)[row][col]) : (double)(matrix_get_d(x)[row][col]))
+#define DISP_MATRIX_IGET(x, row, col) (__IS_FLOAT(x) ? (float)(matrix_get_f(x)[row][col]) : (double)(matrix_get_d(x)[row][col]))
 
 // Item SET
-#define MATRIX_ISET(x, row, col, val) if (IS_FLOAT(x)) { \
+#define DISP_MATRIX_ISET(x, row, col, val) if (__IS_FLOAT(x)) { \
                                 (x)->f_matrix[row][col] = val; \
                                 } else {\
                                 (x)->d_matrix[row][col] = val; };
@@ -47,17 +52,17 @@ void matrix_set_f(Matrix* x, float **mat);
 void matrix_item_assign(Matrix *x, Matrix *y, int row1, int col1, int row2, int col2);
 
 // Item APPLY FuNction
-#define MATRIX_IAPPLY_FN(result, row, col, source, function) MATRIX_ISET(result, row, col, function(MATRIX_IGET(source, row, col)))
+#define MATRIX_IAPPLY_FN(result, row, col, source, function) DISP_MATRIX_ISET(result, row, col, function(DISP_MATRIX_IGET(source, row, col)))
 
 // Item ADD
-#define MATRIX_IADD(x, row, col, val) MATRIX_ISET(x, row, col, MATRIX_IGET(x, row, col) + (val))
+#define DISP_MATRIX_IADD(x, row, col, val) DISP_MATRIX_ISET(x, row, col, DISP_MATRIX_IGET(x, row, col) + (val))
 
 // Item SUBtract
-#define MATRIX_ISUB(x, row, col, val) MATRIX_ISET(x, row, col, MATRIX_IGET(x, row, col) - (val))
+#define DISP_MATRIX_ISUB(x, row, col, val) DISP_MATRIX_ISET(x, row, col, DISP_MATRIX_IGET(x, row, col) - (val))
 
 // Item MULtiply by Scalar
-#define MATRIX_IMULS(x, row, col, val) MATRIX_ISET(x, row, col, MATRIX_IGET(x, row, col) * (val))
-#define MATRIX_IADDS(x, row, col, val) MATRIX_ISET(x, row, col, MATRIX_IGET(x, row, col) + (val))
+#define DISP_MATRIX_IMULS(x, row, col, val) DISP_MATRIX_ISET(x, row, col, DISP_MATRIX_IGET(x, row, col) * (val))
+#define DISP_MATRIX_IADDS(x, row, col, val) DISP_MATRIX_ISET(x, row, col, DISP_MATRIX_IGET(x, row, col) + (val))
 
 Matrix* create_matrix(int rows, int cols, const double double_mat[][cols], const float float_mat[][cols], MatrixDataType dataType);
 
@@ -94,7 +99,7 @@ else                                                           \
 
 #define MATRIX_GET(matrix) (is_float_matrix(matrix) == true) ? matrix_get_f(matrix) : matrix_get_d(matrix)
 
-#define APPLY(matrix, matrix_result, fn) if (is_float_matrix(matrix)) \
+#define DISP_APPLY(matrix, matrix_result, fn) if (is_float_matrix(matrix)) \
     apply_f(matrix, matrix_result, fn);                                \
 else                                                                  \
     apply_d(matrix, matrix_result, fn);

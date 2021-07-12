@@ -75,9 +75,9 @@ float accuracy_f(Network *network, Matrix **inputs, Matrix **targets, int input_
         Matrix *prediction = predict(network, inputs[i]);
         if (targets[i]->cols == 1 && targets[i]->rows == 1)
         {
-            float pred_value = MATRIX_IGET(prediction, 0, 0) < 0.5 ? 0 : 1;
+            float pred_value = DISP_MATRIX_IGET(prediction, 0, 0) < 0.5 ? 0 : 1;
 
-            if (pred_value == MATRIX_IGET(targets[i], 0, 0))
+            if (pred_value == DISP_MATRIX_IGET(targets[i], 0, 0))
             {
                 correct++;
             }
@@ -102,9 +102,9 @@ double accuracy_d(Network *network, Matrix **inputs, Matrix **targets, int input
         Matrix *prediction = predict(network, inputs[i]);
         if (targets[i]->cols == 1 && targets[i]->rows == 1)
         {
-            double pred_value = MATRIX_IGET(prediction, 0, 0) < 0.5 ? 0 : 1;
+            double pred_value = DISP_MATRIX_IGET(prediction, 0, 0) < 0.5 ? 0 : 1;
 
-            if (pred_value == MATRIX_IGET(targets[i], 0, 0))
+            if (pred_value == DISP_MATRIX_IGET(targets[i], 0, 0))
             {
                 correct++;
             }

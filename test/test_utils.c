@@ -36,7 +36,7 @@ static int test_vectorize_float()
 
         for (int j = 0; j < 15; j++)
         {
-            if ((i == j && MATRIX_IGET(a[i], j, 0) != 1) || (i != j && MATRIX_IGET(a[i], j, 0) != 0))
+            if ((i == j && DISP_MATRIX_IGET(a[i], j, 0) != 1) || (i != j && DISP_MATRIX_IGET(a[i], j, 0) != 0))
             {
                 res += fail(__func__,  __LINE__, "Wrong vectorized matrix values");
             }
@@ -133,7 +133,7 @@ static int test_normalize_float()
     {
         for (int j = 0; j < 3; j++)
         {
-            if (MATRIX_IGET(a[0], i, j) != 0.25 || MATRIX_IGET(a[1], i, j) != 0.5 || MATRIX_IGET(a[2], i, j) != 0.75)
+            if (DISP_MATRIX_IGET(a[0], i, j) != 0.25 || DISP_MATRIX_IGET(a[1], i, j) != 0.5 || DISP_MATRIX_IGET(a[2], i, j) != 0.75)
             {
                 res += fail(__func__,  __LINE__, "Wrong normalized matrix values");
             }

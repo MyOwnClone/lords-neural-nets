@@ -52,11 +52,11 @@ static int init_layer(Layer *layer, int seed)
                 {
                     double rand_value = (double) rand() / RAND_MAX * 2 * range - range;
 
-                    MATRIX_ISET(weights, row, col, (float)rand_value);
+                    DISP_MATRIX_ISET(weights, row, col, (float)rand_value);
                 }
                 else
                 {
-                    MATRIX_ISET(weights, row, col, 0);
+                    DISP_MATRIX_ISET(weights, row, col, 0);
                 }
             }
         }
@@ -65,11 +65,11 @@ static int init_layer(Layer *layer, int seed)
         {
             if (RAND_INIT)
             {
-                MATRIX_ISET(bias, row, 0, (float)((double) rand() / (double)RAND_MAX));
+                DISP_MATRIX_ISET(bias, row, 0, (float)((double) rand() / (double)RAND_MAX));
             }
             else
             {
-                MATRIX_ISET(bias, row, 0, 0);
+                DISP_MATRIX_ISET(bias, row, 0, 0);
             }
         }
     }
@@ -85,18 +85,18 @@ static int init_layer(Layer *layer, int seed)
                 if (RAND_INIT)
                 {
                     double rand_value = (double) rand() / RAND_MAX * 2 * range - range;
-                    MATRIX_ISET(weights, row, col, rand_value);
+                    DISP_MATRIX_ISET(weights, row, col, rand_value);
                 }
                 else
                 {
-                    MATRIX_ISET(weights, row, col, 0);
+                    DISP_MATRIX_ISET(weights, row, col, 0);
                 }
             }
         }
 
         for (int row = 0; row < bias->rows; row++)
         {
-            MATRIX_ISET(bias, row, 0,(double) rand() / RAND_MAX);
+            DISP_MATRIX_ISET(bias, row, 0, (double) rand() / RAND_MAX);
         }
     }
 

@@ -84,7 +84,7 @@ int vectorize(Matrix **a, int length, int num_classes)
 
     for (int i = 0; i < length; i++)
     {
-        int index = (int) MATRIX_IGET(a[i], 0, 0);
+        int index = (int) DISP_MATRIX_IGET(a[i], 0, 0);
 
         if (index >= num_classes)
         {
@@ -133,7 +133,7 @@ int normalize(Matrix **a, int length, int max_num)
         {
             for (int k = 0; k < matrix->cols; k++)
             {
-                MATRIX_ISET(matrix, j, k, MATRIX_IGET(matrix, j, k) / max_num);
+                DISP_MATRIX_ISET(matrix, j, k, DISP_MATRIX_IGET(matrix, j, k) / max_num);
             }            
         }        
     }
