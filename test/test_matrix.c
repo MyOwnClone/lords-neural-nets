@@ -822,12 +822,12 @@ static int test_scalar_add()
     return eval_test_result(__func__, res);
 }
 
-static double square(double num)
+static double square_fn(double num)
 {
     return num*num;
 }
 
-static float square_f(float num)
+static float square_f_fn(float num)
 {
     return num*num;
 }
@@ -837,7 +837,7 @@ static int test_apply_float()
     // Setup
     int res = 0;
 
-    float (*square_ptr)(float) = &square_f;
+    float (*square_fn_ptr)(float) = &square_f_fn;
 
     int rows = 2;
     int cols = 2;
@@ -846,7 +846,7 @@ static int test_apply_float()
 
     const float res_mat[2][2] = {{1,4}, {9, 16}};
 
-    DISP_APPLY(a_matrix, NULL, square_ptr);
+    DISP_APPLY(a_matrix, NULL, square_fn_ptr);
 
     if (is_null(a_matrix))
     {
@@ -859,7 +859,7 @@ static int test_apply_float()
     }
 
     delete_matrix(a_matrix);
-    square_ptr = NULL;
+    square_fn_ptr = NULL;
 
     return eval_test_result(__func__, res);
 }
@@ -869,7 +869,7 @@ static int test_apply()
     // Setup
     int res = 0;
 
-    double (*square_ptr)(double) = &square;
+    double (*square_fn_ptr)(double) = &square_fn;
 
     int rows = 2;
     int cols = 2;
@@ -878,7 +878,7 @@ static int test_apply()
 
     const double res_mat[2][2] = {{1,4}, {9, 16}};
 
-    DISP_APPLY(a_matrix, NULL, square_ptr);
+    DISP_APPLY(a_matrix, NULL, square_fn_ptr);
 
     if (is_null(a_matrix))
     {
@@ -891,7 +891,7 @@ static int test_apply()
     }
 
     delete_matrix(a_matrix);
-    square_ptr = NULL;
+    square_fn_ptr = NULL;
    
     return eval_test_result(__func__, res);
 }

@@ -263,7 +263,7 @@ int scalar_add(Matrix *a, double x) {
 }
 
 // we need special _f version, because pointers to functions are incompatible between float and double
-int apply_f(Matrix *a, Matrix *result, float (*fn)(float))  // TODO: add layer index param
+int apply_f(Matrix *a, Matrix *result, float (*fn)(float), int layer_idx)
 {
     if (is_null(result))
     {
@@ -297,7 +297,7 @@ int apply_f(Matrix *a, Matrix *result, float (*fn)(float))  // TODO: add layer i
     return 0;
 }
 
-int apply_d(Matrix *a, Matrix *result, double (*fn)(double))    // TODO: add layer index param
+int apply_d(Matrix *a, Matrix *result, double (*fn)(double), int layer_idx)    // TODO: add layer index param
 {
     if (is_null(result))
     {

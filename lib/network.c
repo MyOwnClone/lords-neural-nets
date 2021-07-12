@@ -52,10 +52,10 @@ Matrix *predict(Network *network, Matrix *input)
 
     layer_input->type = input->type;
 
-    for (int i = 0; i < network->num_layers; i++)
+    for (int layer_idx = 0; layer_idx < network->num_layers; layer_idx++)
     {
-        Layer *layer = network->layers[i];
-        int res = layer_compute(layer, layer_input);
+        Layer *layer = network->layers[layer_idx];
+        int res = layer_compute(layer, layer_input, layer_idx);
         if (res < 0)
         {
             logger(LOG_EXCEPTION, __func__, "Exception during prediction");
@@ -179,17 +179,17 @@ static int backpropagate(
     Layer *layer;
     Matrix *prev_act;
 
-    for (int l = network->num_layers - 2; l >= 0; l--)
+    for (int layer_idx = network->num_layers - 2; layer_idx >= 0; layer_idx--)
     {
-        layer = network->layers[l];
+        layer = network->layers[layer_idx];
 
-        if (l == 0)
+        if (layer_idx == 0)
         {
             prev_act = input;
         }
         else
         {
-            prev_act = network->layers[l - 1]->neurons_act;
+            prev_act = network->layers[layer_idx - 1]->neurons_act;
         }
 
         // Compute new delta
@@ -197,15 +197,15 @@ static int backpropagate(
 
         if (layer->neurons->type == D_FLOAT)
         {
-            res += apply_f(layer->neurons, NULL, layer->activation->fn_der_f);
+            res += apply_f(layer->neurons, NULL, layer->activation->fn_der_f, layer_idx);
         }
         else
         {
-            res += apply_d(layer->neurons, NULL, layer->activation->fn_der);
+            res += apply_d(layer->neurons, NULL, layer->activation->fn_der, layer_idx);
         }
 
-        res += multiply(transposed_weights[l], deltas[l + 1], temp_deltas[l]); // Transposed weights array is 1 shorter than matrix length
-        res += hadamard(temp_deltas[l], layer->neurons, deltas[l]);
+        res += multiply(transposed_weights[layer_idx], deltas[layer_idx + 1], temp_deltas[layer_idx]); // Transposed weights array is 1 shorter than matrix length
+        res += hadamard(temp_deltas[layer_idx], layer->neurons, deltas[layer_idx]);
         if (res < 0)
         {
             logger(LOG_EXCEPTION, __func__, "Exception during delta calculation");
@@ -214,8 +214,8 @@ static int backpropagate(
 
         // Compute delta weights
         res = 0;
-        res += multiply_transposed(deltas[l], prev_act, temp_delta_weights[l]);
-        res += add(delta_weights[l], temp_delta_weights[l]);
+        res += multiply_transposed(deltas[layer_idx], prev_act, temp_delta_weights[layer_idx]);
+        res += add(delta_weights[layer_idx], temp_delta_weights[layer_idx]);
         if (res < 0)
         {
             logger(LOG_EXCEPTION, __func__, "Exception during delta weights calculation");
@@ -223,7 +223,7 @@ static int backpropagate(
         }
 
         // Compute delta bias
-        res = add(delta_bias[l], deltas[l]);
+        res = add(delta_bias[layer_idx], deltas[layer_idx]);
         if (res < 0)
         {
             logger(LOG_EXCEPTION, __func__, "Exception during delta bias calculation");
@@ -315,7 +315,7 @@ get_initial_delta(CostType cost_type, Activation *activation, Matrix *prediction
 
         res = 0;
         res += subtract(prediction, target);
-        res += apply_d(layer_output, NULL, activation->fn_der); // TODO: distinction between float and double is missing
+        res += apply_d(layer_output, NULL, activation->fn_der, 0); // TODO: distinction between float and double is missing
         res += hadamard(prediction, layer_output, delta);
         if (res < 0)
         {

@@ -128,7 +128,7 @@ int test_layer_compute_float()
     float mat[10][1] = {{1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}};
     Matrix *input = create_matrix_f(input_size, 1, mat);
 
-    if (layer_compute(layer, input) < 0)
+    if (layer_compute(layer, input, -1) < 0)
     {
         res+=fail(__func__,  __LINE__, "Layer compute failed");
     }
@@ -163,7 +163,7 @@ int test_layer_compute()
     double mat[10][1] = {{1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}};
     Matrix *input = create_matrix_d(input_size, 1, mat);
 
-    if (layer_compute(layer, input) < 0)
+    if (layer_compute(layer, input, -1) < 0)
     {
         res+=fail(__func__,  __LINE__, "Layer compute failed");
     }

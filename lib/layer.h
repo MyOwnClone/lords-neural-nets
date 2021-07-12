@@ -16,7 +16,7 @@ typedef struct
 } Layer;
 
 Layer *create_layer(int layer_size, int input_size, Activation *activation, MatrixDataType dataType, int seed);
-int layer_compute(Layer *layer, Matrix *input);
+int layer_compute(Layer *layer, Matrix *input, int layer_idx);
 int delete_layer(Layer *layer);
 
 #endif /* LAYER_H */

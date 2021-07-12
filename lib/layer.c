@@ -103,17 +103,17 @@ static int init_layer(Layer *layer, int seed)
     return 0;
 }
 
-int layer_compute(Layer *layer, Matrix *input)
+int layer_compute(Layer *layer, Matrix *input, int layer_idx)
 {
     multiply(layer->weights, input, layer->neurons);
     add(layer->neurons, layer->bias);
 
     if (layer->neurons->type == D_FLOAT)
     {
-        apply_f(layer->neurons, layer->neurons_act, layer->activation->fn_f);
+        apply_f(layer->neurons, layer->neurons_act, layer->activation->fn_f, layer_idx);
     }
     else {
-        apply_d(layer->neurons, layer->neurons_act, layer->activation->fn);
+        apply_d(layer->neurons, layer->neurons_act, layer->activation->fn, layer_idx);
     }
 
     return 0;
