@@ -137,7 +137,7 @@ int main(int argc, char **argv)
 
             char output_filename[MAX_LINE_LEN];
 
-            sprintf(output_filename, "ppm_out\\\\%d.ppm", epoch_count);
+            sprintf(output_filename, "ppm_out\\\\%d.ppm", epoch_count++);
 
             out_file = fopen(output_filename, "w");
 
@@ -172,9 +172,10 @@ int main(int argc, char **argv)
 
             int int_value = value * MAX_PPM_INT_VALUE;
 
-            fprintf(out_file, "%d %d %d ", int_value);
+            // commented line gives nice images :-D
+            // fprintf(out_file, "%d %d %d ", int_value);
 
-            //printf("%f\n", value);
+            fprintf(out_file, "%d %d %d ", int_value, int_value, int_value);
         }
 
         line_counter++;
