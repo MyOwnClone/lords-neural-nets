@@ -4,7 +4,7 @@
 
 static const int TRAIN_SAMPLE_COUNT = 60;
 static const int TEST_SAMPLE_COUNT = 10;
-long MNIST_EPOCH_COUNT = 20;
+long MNIST_EPOCH_COUNT = 2000;
 const int MNIST_CHAR_RES = 28;
 const int MNIST_CHAR_COUNT = 10;    // 10 possible digits 0-9
 const int MNIST_BATCH_SIZE = 10;
@@ -57,7 +57,7 @@ int main()
     training_options->regularization_lambda = MNIST_DOUBLE_REG_LAMBDA;
 
     TrainingLoggingOptions *training_logging_options = init_training_logging_options();
-    training_logging_options->log_each_nth_epoch = 1;
+    training_logging_options->log_each_nth_epoch = 1000;
 
     write_network_introspection_params(mnist_network);
 
