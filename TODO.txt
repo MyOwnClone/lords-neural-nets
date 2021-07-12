@@ -26,9 +26,13 @@ TODO: add support for visualization of activation values for individial neurons 
         * or python + Tk gui?
     * vulkan rendering?
     * JS viewer?
+    * aggregate activations for specific mnist numbers together and show how they train to get better for each specific number
+        * so basically, aggregate activation information according to input mnist bitmap
+
 
 IDEAS:
 * graph visualisation with graphviz?
 * hyperparameter search? NAS?
+* emscripten - try to export one of the examples or tests to webassembly
 
 
