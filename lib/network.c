@@ -46,8 +46,12 @@ int delete_network(Network *network)
     return 0;
 }
 
+IntrospectionMode g_introspection_mode;
+
 Matrix *predict(Network *network, Matrix *input)
 {
+    g_introspection_mode = IM_PREDICT;
+
     Matrix *layer_input = input;
 
     layer_input->type = input->type;
@@ -62,6 +66,8 @@ Matrix *predict(Network *network, Matrix *input)
         }
         layer_input = layer->neurons_act;
     }
+
+    g_introspection_mode = IM_NONE;
 
     return layer_input;
 }
@@ -443,7 +449,7 @@ int train(Network *network, Dataset *dataset, Metrics *metrics, TrainingOptions 
     Layer *last_layer = network->layers[L];
 
     int res = 0;
-    int epoch = 0;
+    int epoch_idx = 0;
 
     double epoch_accuracy;
     double epoch_loss;
@@ -453,12 +459,14 @@ int train(Network *network, Dataset *dataset, Metrics *metrics, TrainingOptions 
         batch_size = dataset->train_size;
     }
 
-    while (epoch < epochs)
+    while (epoch_idx < epochs)
     {
-        if (training_logging_options != NULL && (training_logging_options->log_each_nth_epoch > 0 && (epoch + 1) % training_logging_options->log_each_nth_epoch == 0))
+        on_new_epoch_start(epoch_idx);
+
+        if (training_logging_options != NULL && (training_logging_options->log_each_nth_epoch > 0 && (epoch_idx + 1) % training_logging_options->log_each_nth_epoch == 0))
         {
-            char buffer[10 + (epoch % 10) + (epochs % 10)];
-            sprintf(buffer, "Epoch: %d/%d", epoch + 1, epochs);
+            char buffer[10 + (epoch_idx % 10) + (epochs % 10)];
+            sprintf(buffer, "Epoch: %d/%d", epoch_idx + 1, epochs);
             logger(LOG_INFO, __func__, buffer);
         }
 
@@ -566,7 +574,7 @@ int train(Network *network, Dataset *dataset, Metrics *metrics, TrainingOptions 
             i += batch_size;
         }
 
-        if (training_logging_options != NULL && (training_logging_options->log_each_nth_epoch > 0 && (epoch + 1) % training_logging_options->log_each_nth_epoch == 0))
+        if (training_logging_options != NULL && (training_logging_options->log_each_nth_epoch > 0 && (epoch_idx + 1) % training_logging_options->log_each_nth_epoch == 0))
         {
             if (training_logging_options != NULL && training_logging_options->log_accuracy)
             {
@@ -599,7 +607,7 @@ int train(Network *network, Dataset *dataset, Metrics *metrics, TrainingOptions 
         metrics->acc = epoch_accuracy;
         metrics->loss = final_epoch_loss;
 
-        epoch++;
+        epoch_idx++;
     }
 
     cleanup(
@@ -620,7 +628,7 @@ void write_network_introspection_params(Network *network)
 #ifdef INTROSPECT
     if (!g_introspection_file_handle)
     {
-        printf("g_introspection_file_handle == null!!!");
+        //printf("g_introspection_file_handle == null!!!");
         return;
     }
 
@@ -640,5 +648,18 @@ void write_network_introspection_params(Network *network)
 
 #else
     printf("Warning! Calling introspection functions, but INTROSPECT is undefined!!!");
+#endif
+}
+
+void on_new_epoch_start(int epoch_idx)
+{
+#ifdef INTROSPECT
+    if (!g_introspection_file_handle)
+    {
+        //printf("g_introspection_file_handle == null!!!");
+        return;
+    }
+
+    fprintf(g_introspection_file_handle, "==\n");
 #endif
 }

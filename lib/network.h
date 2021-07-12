@@ -21,5 +21,6 @@ double accuracy_d(Network *network, Matrix **inputs, Matrix **targets, int input
 float accuracy_f(Network *network, Matrix **inputs, Matrix **targets, int input_length);
 int train(Network *network, Dataset *dataset, Metrics *metrics, TrainingOptions *training_options, TrainingLoggingOptions * training_logging_options);
 void write_network_introspection_params(Network *network);
+void on_new_epoch_start(int epoch_idx);
 
 #endif

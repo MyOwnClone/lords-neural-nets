@@ -115,4 +115,11 @@ void close_activation_introspection();
 #include <stdio.h>
 extern FILE* g_introspection_file_handle;
 
+typedef enum {
+    IM_NONE,
+    IM_PREDICT
+} IntrospectionMode;
+
+extern IntrospectionMode g_introspection_mode;
+
 #endif /* MATRIX_H */

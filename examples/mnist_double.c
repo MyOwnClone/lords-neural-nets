@@ -4,7 +4,7 @@
 
 static const int TRAIN_SAMPLE_COUNT = 60;
 static const int TEST_SAMPLE_COUNT = 10;
-long MNIST_EPOCH_COUNT = 2000;
+long MNIST_EPOCH_COUNT = 20;
 const int MNIST_CHAR_RES = 28;
 const int MNIST_CHAR_COUNT = 10;    // 10 possible digits 0-9
 const int MNIST_BATCH_SIZE = 10;

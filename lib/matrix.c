@@ -526,18 +526,36 @@ Matrix *create_empty_matrix(int rows, int cols, MatrixDataType dataType)
 void on_neuron_activation_f(int layer_idx, int row, int col, float value)
 {
 #ifdef INTROSPECT
+    if (!g_introspection_file_handle)
+    {
+        //printf("g_introspection_file_handle == null!!!");
+        return;
+    }
 
-#endif
-}
-
-void on_neuron_activation_d(int layer_idx, int row, int col, double value)
-{
-#ifdef INTROSPECT
-
+    if (g_introspection_mode == IM_PREDICT)
+    {
+        fprintf(g_introspection_file_handle, "%ld %ld %ld : %f\n", layer_idx, row, col, value);
+    }
 #endif
 }
 
 FILE* g_introspection_file_handle = NULL;
+
+void on_neuron_activation_d(int layer_idx, int row, int col, double value)
+{
+#ifdef INTROSPECT
+    if (!g_introspection_file_handle)
+    {
+        //printf("g_introspection_file_handle == null!!!");
+        return;
+    }
+
+    if (g_introspection_mode == IM_PREDICT)
+    {
+        fprintf(g_introspection_file_handle, "%ld %ld %ld : %f\n", layer_idx, row, col, value);
+    }
+#endif
+}
 
 void open_activation_introspection(const char *data_filename)
 {
