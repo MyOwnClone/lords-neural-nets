@@ -288,7 +288,7 @@ int apply_f(Matrix *a, Matrix *result, float (*fn)(float))  // TODO: add layer i
     {
         for (int col = 0; col < a->cols; col++)
         {
-            MATRIX_IAPPLY_FN(result, row, col, a, fn)
+            DISP_MATRIX_IAPPLY_FN(result, row, col, a, fn)
 
             // TODO: call OnNeuronActivation(layer, row, col, value) or OnNeuronBackprop(layer, row, col, value)
         }
@@ -322,7 +322,7 @@ int apply_d(Matrix *a, Matrix *result, double (*fn)(double))    // TODO: add lay
     {
         for (int j = 0; j < a->cols; j++)
         {
-            MATRIX_IAPPLY_FN(result, i, j, a, fn)
+            DISP_MATRIX_IAPPLY_FN(result, i, j, a, fn)
 
             // TODO: call OnNeuronActivation(layer, row, col, value) or OnNeuronBackprop(layer, row, col, value)
         }        

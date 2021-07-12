@@ -52,7 +52,7 @@ void matrix_set_f(Matrix* x, float **mat);
 void matrix_item_assign(Matrix *x, Matrix *y, int row1, int col1, int row2, int col2);
 
 // Item APPLY FuNction
-#define MATRIX_IAPPLY_FN(result, row, col, source, function) DISP_MATRIX_ISET(result, row, col, function(DISP_MATRIX_IGET(source, row, col)))
+#define DISP_MATRIX_IAPPLY_FN(result, row, col, source, function) DISP_MATRIX_ISET(result, row, col, function(DISP_MATRIX_IGET(source, row, col)))
 
 // Item ADD
 #define DISP_MATRIX_IADD(x, row, col, val) DISP_MATRIX_ISET(x, row, col, DISP_MATRIX_IGET(x, row, col) + (val))
@@ -90,14 +90,14 @@ bool is_float_matrix(Matrix *a);
 
 bool is_equal(Matrix *matrix, int rows, int cols, const double d_mat[rows][cols], const float f_mat[rows][cols]);
 
-#define IS_EQUAL(mat, rows, cols, other_mat) ((is_float_matrix(mat) == true) && (is_equal(mat, rows, cols, NULL, other_mat) == true) || (is_equal(mat, rows, cols, other_mat, NULL)) == true)
+#define DISP_IS_EQUAL(mat, rows, cols, other_mat) ((is_float_matrix(mat) == true) && (is_equal(mat, rows, cols, NULL, other_mat) == true) || (is_equal(mat, rows, cols, other_mat, NULL)) == true)
 
-#define MATRIX_SET(matrix, p_mat) if (is_float_matrix(matrix)) \
+#define DISP_MATRIX_SET(matrix, p_mat) if (is_float_matrix(matrix)) \
     matrix_set_f(matrix, p_mat);                                \
 else                                                           \
     matrix_set_d(matrix, p_mat);
 
-#define MATRIX_GET(matrix) (is_float_matrix(matrix) == true) ? matrix_get_f(matrix) : matrix_get_d(matrix)
+#define DISP_MATRIX_GET(matrix) (is_float_matrix(matrix) == true) ? matrix_get_f(matrix) : matrix_get_d(matrix)
 
 #define DISP_APPLY(matrix, matrix_result, fn) if (is_float_matrix(matrix)) \
     apply_f(matrix, matrix_result, fn);                                \
