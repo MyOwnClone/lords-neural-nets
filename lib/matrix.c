@@ -489,12 +489,12 @@ void matrix_set_f(Matrix *x, float **mat)
     x->f_matrix = mat;
 }
 
-Matrix *create_matrix_f(int rows, int cols, const float **float_mat)
+Matrix *create_matrix_f(int rows, int cols, const float float_mat[][cols])
 {
     return create_matrix(rows, cols, NULL, float_mat, D_FLOAT);
 }
 
-Matrix *create_matrix_d(int rows, int cols, const double **double_mat)
+Matrix *create_matrix_d(int rows, int cols, const double double_mat[][cols])
 {
     return create_matrix(rows, cols, double_mat, NULL, D_DOUBLE);
 }
