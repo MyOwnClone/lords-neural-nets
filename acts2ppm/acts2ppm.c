@@ -1,11 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include <xlocinfo.h>
 
 #define PPM_HEADER "P3"
 #define PPM_COMMENT "# lnn activations from one epoch"
 #define APP_NAME "acts2ppm"
+
+#define MAX_PPM_INT_VALUE 65536
 
 // source: https://stackoverflow.com/questions/122616/how-do-i-trim-leading-trailing-whitespace-in-a-standard-way
 // Stores the trimmed input string into the given output buffer, which must be
@@ -70,7 +73,15 @@ int main(int argc, char **argv)
     int line_counter = 0;
     int layer_count = 0;
 
+    int epoch_count = 0;
+
     int* neuron_count_arr = NULL;
+
+    FILE * out_file = NULL;
+
+    int max_neuron_count = INT_MIN;
+
+    int last_col = 0;
 
     while (fgets(line_buff, MAX_LINE_LEN, act_file) != NULL)
     {
@@ -96,7 +107,14 @@ int main(int argc, char **argv)
         {
             int layer_idx = line_counter-1;
 
-            neuron_count_arr[layer_idx] = atoi(line_buff);
+            int neuron_count = atoi(line_buff);
+
+            neuron_count_arr[layer_idx] = neuron_count;
+
+            if (neuron_count > max_neuron_count)
+            {
+                max_neuron_count = neuron_count;
+            }
 
             printf("layer %d has %d neurons\n", layer_idx, neuron_count_arr[layer_idx]);
         }
@@ -110,6 +128,55 @@ int main(int argc, char **argv)
             }
         }
 
+        if (strncmp(trimmed_line_buff, "==", MAX_LINE_LEN) == 0)
+        {
+            if (out_file != NULL)
+            {
+                fclose(out_file);
+            }
+
+            char output_filename[MAX_LINE_LEN];
+
+            sprintf(output_filename, "ppm_out\\\\%d.ppm", epoch_count);
+
+            out_file = fopen(output_filename, "w");
+
+            if (out_file == NULL)
+            {
+                printf("cannot open output file for writing!\n");
+                perror("error when opening output file!");
+                break;
+            }
+
+            fprintf(out_file, "%s\n", PPM_HEADER);
+            fprintf(out_file, "%d %d\n", max_neuron_count, layer_count);
+            fprintf(out_file, "%d\n", MAX_PPM_INT_VALUE);
+        }
+
+        if (line_counter > 1 + layer_count)
+        {
+            int layer_idx =-1, row = -1, col =-1;
+
+            float value;
+
+            sscanf(trimmed_line_buff, "%d %d %d : %f", &layer_idx, &row, &col, &value);
+
+            bool new_line = (col < last_col);
+
+            if (new_line)
+            {
+                fprintf(out_file, "\n");
+            }
+
+            last_col = col;
+
+            int int_value = value * MAX_PPM_INT_VALUE;
+
+            fprintf(out_file, "%d %d %d ", int_value);
+
+            //printf("%f\n", value);
+        }
+
         line_counter++;
     }
 
@@ -118,6 +185,11 @@ int main(int argc, char **argv)
     if (neuron_count_arr)
     {
         free(neuron_count_arr);
+    }
+
+    if (out_file)
+    {
+        fclose(out_file);
     }
 
     return 0;
