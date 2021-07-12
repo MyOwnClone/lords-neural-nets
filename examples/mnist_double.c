@@ -38,7 +38,7 @@ int main()
     vectorize(test_labels, num_test, MNIST_CHAR_COUNT);
     logger(LOG_INFO, __func__, "Created test labels dataset");
 
-    open_activation_introspection("mnist_d_activations.txt");
+    open_activation_introspection("mnist_d.acts");
 
     Dataset *dataset = create_dataset(num_train, num_test, train_inputs, train_labels, test_inputs, test_labels);
     Metrics metrics;

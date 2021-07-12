@@ -41,7 +41,7 @@ int main() {
         labels[i] = create_matrix_f(1, 1, labels_mat[i]);
     }
 
-    open_activation_introspection("xor_f_activations.txt");
+    open_activation_introspection("xor_f.acts");
 
     Metrics monitor;
     Dataset *dataset = create_dataset(XOR_COMBINATION_COUNT, XOR_COMBINATION_COUNT, inputs, labels, NULL, NULL);
