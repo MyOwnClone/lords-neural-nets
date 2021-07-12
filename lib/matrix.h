@@ -3,6 +3,8 @@
 
 #include <stdbool.h>
 
+#define INTROSPECT
+
 typedef enum
 {
     D_FLOAT = 0,
@@ -103,5 +105,8 @@ else                                                           \
     apply_f(matrix, matrix_result, fn, -1);                                \
 else                                                                  \
     apply_d(matrix, matrix_result, fn, -1);
+
+void on_neuron_activation_f(int layer_idx, int row, int col, float value);
+void on_neuron_activation_d(int layer_idx, int row, int col, double value);
 
 #endif /* MATRIX_H */

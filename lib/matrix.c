@@ -288,9 +288,18 @@ int apply_f(Matrix *a, Matrix *result, float (*fn)(float), int layer_idx)
     {
         for (int col = 0; col < a->cols; col++)
         {
+#ifdef INTROSPECT
+            float old_value = DISP_MATRIX_IGET(result, row, col);
+#endif
             DISP_MATRIX_IAPPLY_FN(result, row, col, a, fn)
 
-            // TODO: call OnNeuronActivation(layer, row, col, value) or OnNeuronBackprop(layer, row, col, value)
+#ifdef INTROSPECT
+            float new_value = DISP_MATRIX_IGET(result, row, col);
+
+            on_neuron_activation_f(layer_idx, row, col, new_value);
+#endif
+
+            // TODO: call OnNeuronBackprop(layer, row, col, value)
         }
     }
 
@@ -318,13 +327,23 @@ int apply_d(Matrix *a, Matrix *result, double (*fn)(double), int layer_idx)    /
         return -1;
     }
 
-    for (int i = 0; i < a->rows; i++)
+    for (int row = 0; row < a->rows; row++)
     {
-        for (int j = 0; j < a->cols; j++)
+        for (int col = 0; col < a->cols; col++)
         {
-            DISP_MATRIX_IAPPLY_FN(result, i, j, a, fn)
+#ifdef INTROSPECT
+            double old_value = DISP_MATRIX_IGET(result, row, col);
+#endif
 
-            // TODO: call OnNeuronActivation(layer, row, col, value) or OnNeuronBackprop(layer, row, col, value)
+            DISP_MATRIX_IAPPLY_FN(result, row, col, a, fn)
+
+#ifdef INTROSPECT
+            float new_value = DISP_MATRIX_IGET(result, row, col);
+
+            on_neuron_activation_d(layer_idx, row, col, new_value);
+#endif
+
+            // TODO: call OnNeuronBackprop(layer, row, col, value)
         }        
     }
 
@@ -504,3 +523,16 @@ Matrix *create_empty_matrix(int rows, int cols, MatrixDataType dataType)
     return create_matrix(rows, cols, NULL,NULL, dataType);
 }
 
+void on_neuron_activation_f(int layer_idx, int row, int col, float value)
+{
+#ifdef INTROSPECT
+
+#endif
+}
+
+void on_neuron_activation_d(int layer_idx, int row, int col, double value)
+{
+#ifdef INTROSPECT
+
+#endif
+}
