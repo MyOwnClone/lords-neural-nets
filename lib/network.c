@@ -46,8 +46,6 @@ int delete_network(Network *network)
     return 0;
 }
 
-IntrospectionMode g_introspection_mode;
-
 Matrix *predict(Network *network, Matrix *input)
 {
     g_introspection_mode = IM_PREDICT;

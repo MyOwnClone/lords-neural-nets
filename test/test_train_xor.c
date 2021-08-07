@@ -1,5 +1,5 @@
 #include "../lib/network.h"
-#include <malloc.h>
+#include <stdlib.h>
 
 #ifdef DEBUG_MODE
     #include <stdio.h>

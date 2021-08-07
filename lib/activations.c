@@ -1,6 +1,6 @@
 #include <math.h>
 #include <stdio.h>
-#include <malloc.h>
+#include <stdlib.h>
 #include "activations.h"
 
 // Activations and derivatives

@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include <xlocinfo.h>
+#include <ctype.h>
+#include <limits.h>
 
 #define PPM_HEADER "P3"
 #define PPM_COMMENT "# lnn activations from one epoch"

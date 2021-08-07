@@ -6,6 +6,8 @@
 double** matrix_get_d(Matrix* x) { return x->d_matrix; }
 float** matrix_get_f(Matrix* x) { return x->f_matrix; }
 
+IntrospectionMode g_introspection_mode;
+
 inline void matrix_item_assign(Matrix *x, Matrix *y, int row1, int col1, int row2, int col2 )
 {
     DISP_MATRIX_ISET(x, row1, col1, DISP_MATRIX_IGET(y, row2, col2))
