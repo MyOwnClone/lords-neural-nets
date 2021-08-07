@@ -12,4 +12,14 @@ mnist double: Average time elapsed over 10 runs: 26698.200000 ms
 
 float over double speed-up factor: 0.704869x
 
-TODO: ARM M1 Mac
+ARM M1 Mac
+compiler: apple clang
+CPU: Apple M1
+compiler flags: -O3 -finline-functions -m64 -funroll-loops -oFast -ffast-math -mcpu=apple-a14
+results:
+
+sizeof(float) == 4
+sizeof(double) == 8
+mnist float: Average time elapsed over 10 runs: 31010.150000 ms
+mnist double: Average time elapsed over 10 runs: 34323.961000 ms
+float over double speed-up factor: 1.106862x
