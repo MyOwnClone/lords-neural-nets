@@ -164,7 +164,15 @@ void mnist_float()
     printf("acc %f, loss: %f\n", metrics.acc, metrics.loss);
 #endif
 
-    assert(metrics.acc >= 0.9 && metrics.loss < 0.1);
+    float expected_acc_threshold = 0.9;
+    float expected_loss_threshold = 0.2;
+
+    if (metrics.acc < expected_acc_threshold || metrics.loss >= expected_loss_threshold)
+    {
+        printf("assert failed with acc %f and loss %f\n", metrics.acc, metrics.loss);
+    }
+
+    assert(metrics.acc >= expected_acc_threshold && metrics.loss < expected_loss_threshold);
 
     delete_training_data(dataset, act_sigmoid, mnist_network, training_options, training_logging_options);
 }
