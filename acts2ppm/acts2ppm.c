@@ -51,8 +51,6 @@ size_t trim_whitespace(char *out, size_t len, const char *str)
 // example params: mnist_d.acts
 int main(int argc, char **argv)
 {
-    //RED_COLOR;
-
     if (argc == 1)
     {
         printf("usage: %s file.acts", APP_NAME);
