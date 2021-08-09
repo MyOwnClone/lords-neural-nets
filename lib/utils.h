@@ -34,7 +34,9 @@
     #define set_color(color_index) \
     { \
         HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); \
-        SetConsoleTextAttribute(hConsole, color_index); \
+        SetConsoleTextAttribute(hConsole, color_index);    \
+        hConsole = GetStdHandle(STD_ERROR_HANDLE);         \
+        SetConsoleTextAttribute(hConsole, color_index);    \
     }
 
     #define RED_COLOR set_color(RED)
@@ -42,9 +44,9 @@
     #define GREEN_COLOR set_color(GREEN)
 #else
 
-    #define RED_COLOR printf("\033[0;31m")
-    #define GREEN_COLOR printf("\033[0;32m")
-    #define RESET_COLOR printf("\033[0m" )
+    #define RED_COLOR fprintf(stderr, "\033[0;31m"); printf("\033[0;31m")
+    #define GREEN_COLOR fprintf(stderr, "\033[0;32m"); printf("\033[0;32m")
+    #define RESET_COLOR fprintf(stderr, "\033[0m"); printf("\033[0m" )
 
 #endif
 
