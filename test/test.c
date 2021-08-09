@@ -5,6 +5,8 @@
 
 int main()
 {
+    fail("NONE", -1, "this should fail, just test of coloring" );
+
     int res = 0;
     
     res += test_matrix();

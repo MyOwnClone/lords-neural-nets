@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <ctype.h>
 #include <limits.h>
+#include "../lib/utils.h"
 
 #define PPM_HEADER "P3"
 #define PPM_COMMENT "# lnn activations from one epoch"
@@ -47,8 +48,11 @@ size_t trim_whitespace(char *out, size_t len, const char *str)
     return out_size;
 }
 
+// example params: mnist_d.acts
 int main(int argc, char **argv)
 {
+    //RED_COLOR;
+
     if (argc == 1)
     {
         printf("usage: %s file.acts", APP_NAME);

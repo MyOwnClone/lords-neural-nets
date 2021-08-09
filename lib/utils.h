@@ -6,9 +6,46 @@
 #include "train_opts.h"
 #include "train_log_opts.h"
 
-#define RED_COLOR printf("\033[0;31m")
-#define GREEN_COLOR printf("\033[0;32m")
-#define RESET_COLOR printf("\033[0m" )
+#ifdef __WIN32__
+    #include <windows.h>
+
+    // i can't properly name few colors, so take this with a grain of salt :-)
+    typedef enum win32_text_color {
+        BLACK = 0,
+        LIGHT_GREY,
+        GREEN,
+        DARK_GREEN,
+        RED,
+        PURPLE,
+        ORANGE,
+        WHITE,
+        GREY,
+        BLUE,
+        DARKER_GREEN,
+        CYAN,
+        LIGHT_RED,
+        PINK,
+        YELLOW
+    } win32_text_color_t;
+
+    #define DEFAULT_WIN32_COLOR WHITE
+
+    #define set_color(color_index) \
+    { \
+        HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); \
+        SetConsoleTextAttribute(hConsole, color_index); \
+    }
+
+    #define RED_COLOR set_color(RED)
+    #define RESET_COLOR set_color(WHITE)
+    #define GREEN_COLOR set_color(GREEN)
+#else
+
+    #define RED_COLOR printf("\033[0;31m")
+    #define GREEN_COLOR printf("\033[0;32m")
+    #define RESET_COLOR printf("\033[0m" )
+
+#endif
 
 #define LOG_DEBUG 0
 #define LOG_INFO 1
