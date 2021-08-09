@@ -30,6 +30,7 @@
 
     #define DEFAULT_WIN32_COLOR WHITE
 
+    // https://stackoverflow.com/questions/3274824/color-console-in-ansi-c
     #define set_color(color_index) \
     { \
         HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE); \
