@@ -2,3 +2,9 @@ cmake-build-debug/
 cmake-build-release/
 build/
 resources/
+.idea/*
+.vscode/*
+*.acts
+ppm_out/*
+*.ppm
+*.7z
