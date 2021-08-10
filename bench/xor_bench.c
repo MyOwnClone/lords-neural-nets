@@ -99,14 +99,15 @@ void xor_float()
 
     delete_train_data(act_sigmoid_gen, xor_network_gen, dataset_gen, training_options, training_logging_options);
 
-    for (int i = 0; i < XOR_COMBINATION_COUNT; i++)
+    // these are freed in delete_dataset() called from delete_training_data()
+    /*for (int i = 0; i < XOR_COMBINATION_COUNT; i++)
     {
-        free(inputs_gen[i]);
-        free(labels_gen[i]);
+        delete_matrix(inputs_gen[i]);
+        delete_matrix(labels_gen[i]);
     }
 
     free(inputs_gen);
-    free(labels_gen);
+    free(labels_gen);*/
 }
 
 void xor_double()
@@ -167,14 +168,15 @@ void xor_double()
 
     delete_train_data(act_sigmoid_gen, xor_network_gen, dataset_gen, training_options, training_logging_options);
 
-    for (int i = 0; i < XOR_COMBINATION_COUNT; i++)
+    // these are freed in delete_dataset() called from delete_training_data()
+    /*for (int i = 0; i < XOR_COMBINATION_COUNT; i++)
     {
-        free(inputs_gen[i]);
-        free(labels_gen[i]);
+        delete_matrix(inputs_gen[i]);
+        delete_matrix(labels_gen[i]);
     }
 
     free(inputs_gen);
-    free(labels_gen);
+    free(labels_gen);*/
 }
 
 int main()

@@ -32,6 +32,7 @@ void print_network(Network *network)
     }
 }
 
+// TODO: assign NULLs
 int delete_network(Network *network)
 {
     for (int i = 0; i < network->num_layers; i++)
