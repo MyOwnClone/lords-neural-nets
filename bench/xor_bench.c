@@ -71,10 +71,10 @@ void xor_float()
     Metrics metrics;
     Dataset *dataset_gen = generate_dataset_structures(XOR_COMBINATION_COUNT, XOR_COMBINATION_COUNT, inputs_gen, labels_gen, NULL, NULL);
 
-    TrainingOptions *training_options = init_training_options();
+    TrainingOptions *training_options = generate_training_options();
     set_training_options(training_options);
 
-    TrainingLoggingOptions *training_logging_options = init_training_logging_options();
+    TrainingLoggingOptions *training_logging_options = generate_training_logging_options();
 #ifdef DEBUG_MODE
     training_logging_options->LogEachNThEpoch = 1;
 #else
@@ -140,10 +140,10 @@ void xor_double()
     Metrics metrics;
     Dataset *dataset_gen = generate_dataset_structures(XOR_COMBINATION_COUNT, XOR_COMBINATION_COUNT, inputs_gen, labels_gen, NULL, NULL);
 
-    TrainingOptions *training_options = init_training_options();
+    TrainingOptions *training_options = generate_training_options();
     set_training_options(training_options);
 
-    TrainingLoggingOptions *training_logging_options = init_training_logging_options();
+    TrainingLoggingOptions *training_logging_options = generate_training_logging_options();
 #ifdef DEBUG_MODE
     training_logging_options->LogEachNThEpoch = 1;
 #else

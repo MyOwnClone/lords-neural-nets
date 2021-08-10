@@ -62,8 +62,10 @@ int main(int argc, char **argv)
 
     if (!act_file)
     {
+        RED_COLOR;
         printf("File %s cannot be open!", argv[1]);
         perror("error while opening acts file:");
+        RESET_COLOR;
 
         return -1;
     }
@@ -98,9 +100,11 @@ int main(int argc, char **argv)
 
             if (neuron_count_arr == NULL)
             {
+                RED_COLOR;
                 printf("Malloc failed!");
                 perror("error while allocating memory:");
-                break;
+                RESET_COLOR;
+                exit(1);
             }
 
             printf("network has %d layers\n", layer_count);
@@ -126,8 +130,10 @@ int main(int argc, char **argv)
         {
             if (strncmp(trimmed_line_buff, "==", MAX_LINE_LEN) != 0)
             {
+                RED_COLOR;
                 printf("Expected == on line %d!!!\n", line_counter);
-                break;
+                RESET_COLOR;
+                exit(1);
             }
         }
 
@@ -146,9 +152,11 @@ int main(int argc, char **argv)
 
             if (out_file == NULL)
             {
+                RED_COLOR;
                 printf("cannot open output file for writing!\n");
                 perror("error when opening output file!");
-                break;
+                RESET_COLOR;
+                exit(1);
             }
 
             fprintf(out_file, "%s\n", PPM_HEADER);
@@ -195,6 +203,10 @@ int main(int argc, char **argv)
     {
         fclose(out_file);
     }
+
+    GREEN_COLOR;
+    printf("Operation completed successfully.\n");
+    RESET_COLOR;
 
     return 0;
 }

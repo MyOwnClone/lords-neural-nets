@@ -48,16 +48,16 @@ int main()
     Activation *act_sigmoid_gen = generate_sigmoid_activation();
     Network *mnist_network_gen = generate_network(MNIST_CHAR_RES * MNIST_CHAR_RES, 2, neurons_per_layer, act_sigmoid_gen, D_DOUBLE, TIME_SEED);
 
-    TrainingOptions *training_options = init_training_options();
-    training_options->cost_type = CROSS_ENTROPY;
-    training_options->epochs = MNIST_EPOCH_COUNT;
-    training_options->batch_size = MNIST_BATCH_SIZE;
-    training_options->learning_rate = MNIST_LEARNING_RATE;
-    training_options->momentum = MNIST_MOMENTUM;
-    training_options->regularization_lambda = MNIST_DOUBLE_REG_LAMBDA;
+    TrainingOptions *training_options_gen = generate_training_options();
+    training_options_gen->cost_type = CROSS_ENTROPY;
+    training_options_gen->epochs = MNIST_EPOCH_COUNT;
+    training_options_gen->batch_size = MNIST_BATCH_SIZE;
+    training_options_gen->learning_rate = MNIST_LEARNING_RATE;
+    training_options_gen->momentum = MNIST_MOMENTUM;
+    training_options_gen->regularization_lambda = MNIST_DOUBLE_REG_LAMBDA;
 
-    TrainingLoggingOptions *training_logging_options = init_training_logging_options();
-    training_logging_options->log_each_nth_epoch = 1000;
+    TrainingLoggingOptions *training_logging_options_gen = generate_training_logging_options();
+    training_logging_options_gen->log_each_nth_epoch = 1000;
 
     write_network_introspection_params(mnist_network_gen);
 
@@ -70,13 +70,13 @@ int main()
 
     printf("network size: %f MB, dataset size: %f MB\n", convert_bytes_to_Mbytes(network_data_size), convert_bytes_to_Mbytes(dataset_size));
 
-    train(mnist_network_gen, dataset_gen, &metrics, training_options, training_logging_options);
+    train(mnist_network_gen, dataset_gen, &metrics, training_options_gen, training_logging_options_gen);
 
     close_activation_introspection();
 
     delete_network(mnist_network_gen);
     delete_dataset(dataset_gen);
     delete_activation(act_sigmoid_gen);
-    delete_training_options(training_options);
-    delete_training_logging_options(training_logging_options);
+    delete_training_options(training_options_gen);
+    delete_training_logging_options(training_logging_options_gen);
 }

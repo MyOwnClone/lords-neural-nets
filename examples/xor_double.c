@@ -42,24 +42,24 @@ int main() {
     Metrics monitor;
     Dataset *dataset_gen = generate_dataset_structures(XOR_COMBINATION_COUNT, XOR_COMBINATION_COUNT, inputs_gen, labels_gen, NULL, NULL);
 
-    TrainingOptions *training_options = init_training_options();
-    training_options->cost_type = CROSS_ENTROPY;
-    training_options->epochs = XOR_EPOCH_COUNT;
-    training_options->batch_size = XOR_BATCH_SIZE;
-    training_options->learning_rate = XOR_LEARNING_RATE;
-    training_options->momentum = XOR_MOMENTUM;
-    training_options->regularization_lambda = XOR_REG_LAMBDA;
+    TrainingOptions *training_options_gen = generate_training_options();
+    training_options_gen->cost_type = CROSS_ENTROPY;
+    training_options_gen->epochs = XOR_EPOCH_COUNT;
+    training_options_gen->batch_size = XOR_BATCH_SIZE;
+    training_options_gen->learning_rate = XOR_LEARNING_RATE;
+    training_options_gen->momentum = XOR_MOMENTUM;
+    training_options_gen->regularization_lambda = XOR_REG_LAMBDA;
 
-    TrainingLoggingOptions *training_logging_options = init_training_logging_options();
-    training_logging_options->log_each_nth_epoch = 1;
+    TrainingLoggingOptions *training_logging_options_gen = generate_training_logging_options();
+    training_logging_options_gen->log_each_nth_epoch = 1;
 
     printf("network size: %ld B\n", get_network_data_size(xor_network_gen));
 
-    train(xor_network_gen, dataset_gen, &monitor, training_options, training_logging_options);
+    train(xor_network_gen, dataset_gen, &monitor, training_options_gen, training_logging_options_gen);
 
     delete_network(xor_network_gen);
     delete_activation(act_sigmoid_gen);
     delete_dataset(dataset_gen);
-    delete_training_options(training_options);
-    delete_training_logging_options(training_logging_options);
+    delete_training_options(training_options_gen);
+    delete_training_logging_options(training_logging_options_gen);
 }

@@ -64,7 +64,7 @@ int test_train_xor_double()
 
     CostType cost_type = CROSS_ENTROPY;
 
-    TrainingOptions *training_options = init_training_options();
+    TrainingOptions *training_options = generate_training_options();
     set_xor_training_options(&cost_type, training_options);
 
     train(xor_network, dataset, &monitor, training_options, NULL);
@@ -115,7 +115,7 @@ int test_train_xor_float()
 
     CostType cost_type = CROSS_ENTROPY;
 
-    TrainingOptions *training_options = init_training_options();
+    TrainingOptions *training_options = generate_training_options();
     set_xor_training_options(&cost_type, training_options);
 
     train(xor_network, dataset, &monitor, training_options, NULL);

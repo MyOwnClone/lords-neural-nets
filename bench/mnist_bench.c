@@ -82,10 +82,10 @@ void mnist_double()
     Activation *act_sigmoid_gen = generate_sigmoid_activation();
     Network *mnist_network_gen = generate_network(MNIST_CHAR_RES * MNIST_CHAR_RES, 2, neurons_per_layer, act_sigmoid_gen, D_DOUBLE, SEED);
 
-    TrainingOptions *training_options = init_training_options();
+    TrainingOptions *training_options = generate_training_options();
     set_mnist_bench_training_options(training_options, MNIST_DOUBLE_REG_LAMBDA);
 
-    TrainingLoggingOptions *training_logging_options = init_training_logging_options();
+    TrainingLoggingOptions *training_logging_options = generate_training_logging_options();
     
 #ifdef DEBUG_MODE
     training_logging_options->log_each_nth_epoch = 1;
@@ -154,10 +154,10 @@ void mnist_float()
     Activation *act_sigmoid_gen = generate_sigmoid_activation();
     Network *mnist_network_gen = generate_network(MNIST_CHAR_RES * MNIST_CHAR_RES, 2, neurons_per_layer, act_sigmoid_gen, D_FLOAT, SEED);
 
-    TrainingOptions *training_options = init_training_options();
+    TrainingOptions *training_options = generate_training_options();
     set_mnist_bench_training_options(training_options, MNIST_FLOAT_REG_LAMBDA);
 
-    TrainingLoggingOptions *training_logging_options = init_training_logging_options();
+    TrainingLoggingOptions *training_logging_options = generate_training_logging_options();
 #ifdef DEBUG_MODE
     training_logging_options->log_each_nth_epoch = 1;
 #else

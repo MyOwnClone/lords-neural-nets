@@ -143,7 +143,7 @@ int normalize(Matrix **a, int length, int max_num)
     return 0;
 }
 
-TrainingOptions* init_training_options()
+TrainingOptions* generate_training_options()
 {
     TrainingOptions *training_options = (TrainingOptions *) malloc (sizeof (TrainingOptions));
     training_options->cost_type = CROSS_ENTROPY;
@@ -156,7 +156,7 @@ TrainingOptions* init_training_options()
     return training_options;
 }
 
-TrainingLoggingOptions* init_training_logging_options()
+TrainingLoggingOptions* generate_training_logging_options()
 {
     TrainingLoggingOptions *training_logging_options = (TrainingLoggingOptions *) malloc (sizeof (TrainingLoggingOptions));
     training_logging_options->log_loss = true;

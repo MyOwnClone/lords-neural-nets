@@ -74,7 +74,7 @@ int test_train_mnist_double()
     // FIXME: when using other seed, test may fail, training may diverge and not reach tested condition
     Network *mnist_network = generate_network(MNIST_CHAR_RES * MNIST_CHAR_RES, 2, mnist_neurons_per_layer, act_sigmoid, D_DOUBLE, seed);
 
-    TrainingOptions *training_options = init_training_options();
+    TrainingOptions *training_options = generate_training_options();
 
     float reg_lambda = MNIST_DOUBLE_REG_LAMBDA;  // yeah, this is different from float version. Why? Dunno :-(
     set_mnist_training_options(training_options, reg_lambda);
@@ -139,7 +139,7 @@ int test_train_mnist_float()
     int seed = 1;
     Network *mnist_network = generate_network(MNIST_CHAR_RES * MNIST_CHAR_RES, 2, mnist_neurons_per_layer, act_sigmoid, D_FLOAT, seed);
 
-    TrainingOptions *training_options = init_training_options();
+    TrainingOptions *training_options = generate_training_options();
     set_mnist_training_options(training_options, MNIST_FLOAT_REG_LAMBDA);
 
     train(mnist_network, dataset, &monitor, training_options, NULL);

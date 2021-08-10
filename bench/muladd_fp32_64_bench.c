@@ -1,4 +1,3 @@
-#include "../lib/network.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include "bench_utils.h"
@@ -46,6 +45,7 @@ int main()
 
     printf("float over double speed-up factor: %fx\n", (double_msecs / float_msecs));
 
+    // these results are obsole, TODO: write results to separated txt file
     // mingw 64 gcc, windows 10, intel i7 cometlake
 
     /*
