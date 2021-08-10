@@ -70,4 +70,14 @@ Matrix** load_csv(char *filename, int lines, int line_length, MatrixDataType mat
 int vectorize(Matrix **a, int length, int num_classes);
 int normalize(Matrix **a, int length, int max_num);
 
+#include <stdio.h>
+extern FILE* g_introspection_file_handle;
+
+typedef enum {
+    IM_NONE,
+    IM_PREDICT
+} IntrospectionMode;
+
+extern IntrospectionMode g_introspection_mode;
+
 #endif

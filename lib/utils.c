@@ -3,6 +3,8 @@
 #include <string.h>
 #include "utils.h"
 
+FILE* g_introspection_file_handle = NULL;
+
 void logger(int log_level, const char *function_name, const char *message)
 {
     if (log_level >= LOG_LEVEL)

@@ -1,4 +1,5 @@
 #include "matrix.h"
+#include "utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -540,8 +541,6 @@ void on_neuron_activation_f(int layer_idx, int row, int col, float value)
     }
 #endif
 }
-
-FILE* g_introspection_file_handle = NULL;
 
 void on_neuron_activation_d(int layer_idx, int row, int col, double value)
 {
