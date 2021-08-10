@@ -17,6 +17,8 @@ typedef struct
     int rows;
     int cols;
 
+    // all the *_matrix field should be technically called with suffix _gen, cause memory is malloced, but it would pollute code too much
+
     float **f_matrix;
 
     union {
@@ -66,12 +68,12 @@ void matrix_item_assign(Matrix *x, Matrix *y, int row1, int col1, int row2, int 
 #define DISP_MATRIX_IMULS(x, row, col, val) DISP_MATRIX_ISET(x, row, col, DISP_MATRIX_IGET(x, row, col) * (val))
 #define DISP_MATRIX_IADDS(x, row, col, val) DISP_MATRIX_ISET(x, row, col, DISP_MATRIX_IGET(x, row, col) + (val))
 
-Matrix* create_matrix(int rows, int cols, const double double_mat[][cols], const float float_mat[][cols], MatrixDataType dataType);
+Matrix* generate_matrix(int rows, int cols, const double double_mat[][cols], const float float_mat[][cols], MatrixDataType dataType);
 
-Matrix* create_empty_matrix(int rows, int cols, MatrixDataType dataType);
+Matrix* generate_empty_matrix(int rows, int cols, MatrixDataType dataType);
 
-Matrix* create_matrix_f(int rows, int cols, const float float_mat[][cols]);
-Matrix* create_matrix_d(int rows, int cols, const double double_mat[][cols]);
+Matrix* generate_matrix_f(int rows, int cols, const float float_mat[][cols]);
+Matrix* generate_matrix_d(int rows, int cols, const double double_mat[][cols]);
 
 void print_matrix(Matrix *matrix);
 bool is_null(Matrix *matrix);

@@ -166,33 +166,33 @@ float act_relu_der_f(float num)
 }
 #endif
 
-Activation* create_sigmoid_activation()
+Activation* generate_sigmoid_activation()
 {
-    Activation *activation = (Activation *) malloc ( sizeof (Activation));
+    Activation *activation_gen = (Activation *) malloc (sizeof (Activation));
 
-    activation->fn = &act_sigmoid_d;
-    activation->fn_f = &act_sigmoid_f;
+    activation_gen->fn = &act_sigmoid_d;
+    activation_gen->fn_f = &act_sigmoid_f;
 
-    activation->fn_der = &act_sigmoid_der_d;
-    activation->fn_der_f = &act_sigmoid_der_f;
+    activation_gen->fn_der = &act_sigmoid_der_d;
+    activation_gen->fn_der_f = &act_sigmoid_der_f;
 
-    activation->type = SIGMOID;
+    activation_gen->type = SIGMOID;
 
-    return activation;
+    return activation_gen;
 }
 
-Activation* create_relu_activation()
+Activation* generate_relu_activation()
 {
-    Activation *activation = (Activation *) malloc ( sizeof (Activation));
-    activation->fn = &act_relu_d;
-    activation->fn_der = &act_relu_der_d;
+    Activation *activation_gen = (Activation *) malloc (sizeof (Activation));
+    activation_gen->fn = &act_relu_d;
+    activation_gen->fn_der = &act_relu_der_d;
 
-    activation->fn_f = &act_relu_f;
-    activation->fn_der_f = &act_relu_der_f;
+    activation_gen->fn_f = &act_relu_f;
+    activation_gen->fn_der_f = &act_relu_der_f;
 
-    activation->type = RELU;
+    activation_gen->type = RELU;
 
-    return activation;
+    return activation_gen;
 }
 
 int delete_activation(Activation *activation)

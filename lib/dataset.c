@@ -1,29 +1,30 @@
 #include <stdlib.h>
 #include "dataset.h"
 
-Dataset *create_dataset(int train_size, int val_size, Matrix **train_inputs, Matrix **train_labels, Matrix **val_inputs, Matrix **val_labels)
+// renamed from create_dataset() to reflect the fact that it allocates memory (generate_* prefix), also _structure suffix added, since we do not generate actual dataset sample pairs (they are loaded), just a c structures in memory
+Dataset *generate_dataset_structures(int train_size, int val_size, Matrix **train_inputs, Matrix **train_labels, Matrix **val_inputs, Matrix **val_labels)
 {
-    Dataset *dataset = (Dataset *) malloc(sizeof(Dataset));
-    dataset->train_size = train_size;
-    dataset->val_size = val_size;
+    Dataset *dataset_gen = (Dataset *) malloc(sizeof(Dataset));
+    dataset_gen->train_size = train_size;
+    dataset_gen->val_size = val_size;
 
     if (train_inputs == NULL || train_labels == NULL)
     {
         return NULL;
     }
 
-    dataset->train_inputs = train_inputs;
-    dataset->train_labels = train_labels;
-    dataset->val_inputs = val_inputs;
-    dataset->val_labels = val_labels;
+    dataset_gen->train_inputs = train_inputs;
+    dataset_gen->train_labels = train_labels;
+    dataset_gen->val_inputs = val_inputs;
+    dataset_gen->val_labels = val_labels;
 
     if (val_inputs == NULL)
     {
-        dataset->val_inputs = train_inputs;
-        dataset->val_labels = train_labels;
+        dataset_gen->val_inputs = train_inputs;
+        dataset_gen->val_labels = train_labels;
     }
 
-    return dataset;
+    return dataset_gen;
 }
 
 int delete_dataset(Dataset *dataset)

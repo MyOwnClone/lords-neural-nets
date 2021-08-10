@@ -19,34 +19,34 @@ int main()
     int num_test = TEST_SAMPLE_COUNT;
 
     char *train_inputs_fn = "./resources/mnist_train_vectors.csv";
-    Matrix **train_inputs = load_csv(train_inputs_fn, num_train, MNIST_CHAR_RES*MNIST_CHAR_RES, D_DOUBLE);
+    Matrix **train_inputs = load_csv_to_generated_matrix(train_inputs_fn, num_train, MNIST_CHAR_RES * MNIST_CHAR_RES, D_DOUBLE);
     normalize(train_inputs, num_train, 255);
     logger(LOG_INFO, __func__, "Created training dataset");
 
     char *train_labels_fn = "./resources/mnist_train_labels.csv";
-    Matrix **train_labels = load_csv(train_labels_fn, num_train, 1, D_DOUBLE);
+    Matrix **train_labels = load_csv_to_generated_matrix(train_labels_fn, num_train, 1, D_DOUBLE);
     vectorize(train_labels, num_train, MNIST_CHAR_COUNT);
     logger(LOG_INFO, __func__, "Created training labels dataset");
  
     char *test_inputs_fn = "./resources/mnist_test_vectors.csv";
-    Matrix **test_inputs = load_csv(test_inputs_fn, num_test, MNIST_CHAR_RES*MNIST_CHAR_RES, D_DOUBLE);
+    Matrix **test_inputs = load_csv_to_generated_matrix(test_inputs_fn, num_test, MNIST_CHAR_RES * MNIST_CHAR_RES, D_DOUBLE);
     normalize(test_inputs, num_test, 255);
     logger(LOG_INFO, __func__, "Created test dataset");
 
     char *test_labels_fn = "./resources/mnist_test_labels.csv";
-    Matrix **test_labels = load_csv(test_labels_fn, num_test, 1, D_DOUBLE);
+    Matrix **test_labels = load_csv_to_generated_matrix(test_labels_fn, num_test, 1, D_DOUBLE);
     vectorize(test_labels, num_test, MNIST_CHAR_COUNT);
     logger(LOG_INFO, __func__, "Created test labels dataset");
 
     open_activation_introspection("mnist_d.acts");
 
-    Dataset *dataset = create_dataset(num_train, num_test, train_inputs, train_labels, test_inputs, test_labels);
+    Dataset *dataset = generate_dataset_structures(num_train, num_test, train_inputs, train_labels, test_inputs, test_labels);
     Metrics metrics;
 
     int neurons_per_layer[] = {100, MNIST_CHAR_COUNT};
 
-    Activation *act_sigmoid = create_sigmoid_activation();
-    Network *mnist_network = create_network(MNIST_CHAR_RES * MNIST_CHAR_RES, 2, neurons_per_layer, act_sigmoid, D_DOUBLE, -1);
+    Activation *act_sigmoid = generate_sigmoid_activation();
+    Network *mnist_network = generate_network(MNIST_CHAR_RES * MNIST_CHAR_RES, 2, neurons_per_layer, act_sigmoid, D_DOUBLE, -1);
 
     TrainingOptions *training_options = init_training_options();
     training_options->cost_type = CROSS_ENTROPY;

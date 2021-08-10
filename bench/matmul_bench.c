@@ -14,18 +14,18 @@ void double_multiply()
     int a_rows = 3;
     int a_cols = 2;
     const double a_mat[3][2] = {{2,1}, {3,2}, {5,3}};
-    Matrix *a_matrix = create_matrix_d(a_rows, a_cols, a_mat);
+    Matrix *a_matrix = generate_matrix_d(a_rows, a_cols, a_mat);
 
     int b_rows = 2;
     int b_cols = 3;
     const double b_mat[2][3] = {{5,0,3}, {4,1,7}};
-    Matrix *b_matrix = create_matrix_d(b_rows, b_cols, b_mat);
+    Matrix *b_matrix = generate_matrix_d(b_rows, b_cols, b_mat);
 
     // Test multiply correct dimensions
     int res_rows = 3;
     int res_cols = 3;
 
-    Matrix *res_matrix = create_matrix_d(res_rows, res_cols, NULL);
+    Matrix *res_matrix = generate_matrix_d(res_rows, res_cols, NULL);
 
     for (long long i = 0; i < MUL_REPEAT_COUNT; i++)
     {
@@ -49,18 +49,18 @@ void float_multiply()
     int a_rows = 3;
     int a_cols = 2;
     const float a_mat[3][2] = {{2,1}, {3,2}, {5,3}};
-    Matrix *a_matrix = create_matrix_f(a_rows, a_cols, a_mat);
+    Matrix *a_matrix = generate_matrix_f(a_rows, a_cols, a_mat);
 
     int b_rows = 2;
     int b_cols = 3;
     const float b_mat[2][3] = {{5,0,3}, {4,1,7}};
-    Matrix *b_matrix = create_matrix_f(b_rows, b_cols, b_mat);
+    Matrix *b_matrix = generate_matrix_f(b_rows, b_cols, b_mat);
 
     // Test multiply correct dimensions
     int res_rows = 3;
     int res_cols = 3;
 
-    Matrix *res_matrix = create_matrix_f(res_rows, res_cols, NULL);
+    Matrix *res_matrix = generate_matrix_f(res_rows, res_cols, NULL);
 
     for (long long i = 0; i < MUL_REPEAT_COUNT; i++)
     {

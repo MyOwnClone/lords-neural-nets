@@ -11,8 +11,8 @@ static int test_create_layer_float()
     int layer_size = 20;
     int input_size = 30;
 
-    Activation *sigmoid = create_sigmoid_activation();
-    Layer *layer = create_layer(layer_size, input_size, sigmoid, D_FLOAT, -1);
+    Activation *sigmoid = generate_sigmoid_activation();
+    Layer *layer = generate_layer(layer_size, input_size, sigmoid, D_FLOAT, -1);
 
     //Tests
     if (layer->num_neurons != layer_size)
@@ -67,8 +67,8 @@ static int test_create_layer()
     int layer_size = 20;
     int input_size = 30;
 
-    Activation *sigmoid = create_sigmoid_activation();
-    Layer *layer = create_layer(layer_size, input_size, sigmoid, D_DOUBLE, -1);
+    Activation *sigmoid = generate_sigmoid_activation();
+    Layer *layer = generate_layer(layer_size, input_size, sigmoid, D_DOUBLE, -1);
 
     //Tests
     if (layer->num_neurons != layer_size)
@@ -122,11 +122,11 @@ int test_layer_compute_float()
     int layer_size = 30;
     int input_size = 10;
 
-    Activation *sigmoid = create_sigmoid_activation();
-    Layer *layer = create_layer(layer_size, input_size, sigmoid, D_FLOAT, -1);
+    Activation *sigmoid = generate_sigmoid_activation();
+    Layer *layer = generate_layer(layer_size, input_size, sigmoid, D_FLOAT, -1);
 
     float mat[10][1] = {{1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}};
-    Matrix *input = create_matrix_f(input_size, 1, mat);
+    Matrix *input = generate_matrix_f(input_size, 1, mat);
 
     if (layer_compute(layer, input, -1) < 0)
     {
@@ -157,11 +157,11 @@ int test_layer_compute()
     int layer_size = 30;
     int input_size = 10;
 
-    Activation *sigmoid = create_sigmoid_activation();
-    Layer *layer = create_layer(layer_size, input_size, sigmoid, D_DOUBLE, -1);
+    Activation *sigmoid = generate_sigmoid_activation();
+    Layer *layer = generate_layer(layer_size, input_size, sigmoid, D_DOUBLE, -1);
 
     double mat[10][1] = {{1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}};
-    Matrix *input = create_matrix_d(input_size, 1, mat);
+    Matrix *input = generate_matrix_d(input_size, 1, mat);
 
     if (layer_compute(layer, input, -1) < 0)
     {

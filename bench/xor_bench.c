@@ -43,10 +43,10 @@ static void set_training_options(TrainingOptions *training_options)
 
 void xor_float()
 {
-    Activation *act_sigmoid = create_sigmoid_activation();
-    Network *xor_network = create_network(BINARY_OPERAND_COUNT, 2, xor_neurons_per_layer, act_sigmoid, D_FLOAT, SEED);
+    Activation *act_sigmoid_gen = generate_sigmoid_activation();
+    Network *xor_network_gen = generate_network(BINARY_OPERAND_COUNT, 2, xor_neurons_per_layer, act_sigmoid_gen, D_FLOAT, SEED);
 
-    Matrix **inputs = (Matrix**) malloc (sizeof (Matrix*) * XOR_COMBINATION_COUNT);
+    Matrix **inputs_gen = (Matrix**) malloc (sizeof (Matrix*) * XOR_COMBINATION_COUNT);
     float inputs_mat[XOR_COMBINATION_COUNT][BINARY_OPERAND_COUNT][1] = {
             {{1}, {1}},
             {{1}, {0}},
@@ -54,7 +54,7 @@ void xor_float()
             {{0}, {0}}
     };
 
-    Matrix **labels = (Matrix**) malloc (sizeof (Matrix*) * XOR_COMBINATION_COUNT);
+    Matrix **labels_gen = (Matrix**) malloc (sizeof (Matrix*) * XOR_COMBINATION_COUNT);
     float labels_mat[XOR_COMBINATION_COUNT][1][1] = {
             {{0}},
             {{1}},
@@ -64,12 +64,12 @@ void xor_float()
 
     for (int i = 0; i < XOR_COMBINATION_COUNT; i++)
     {
-        inputs[i] = create_matrix_f(BINARY_OPERAND_COUNT, 1, inputs_mat[i]);
-        labels[i] = create_matrix_f(1, 1, labels_mat[i]);
+        inputs_gen[i] = generate_matrix_f(BINARY_OPERAND_COUNT, 1, inputs_mat[i]);
+        labels_gen[i] = generate_matrix_f(1, 1, labels_mat[i]);
     }
 
     Metrics metrics;
-    Dataset *dataset = create_dataset(XOR_COMBINATION_COUNT, XOR_COMBINATION_COUNT, inputs, labels, NULL, NULL);
+    Dataset *dataset_gen = generate_dataset_structures(XOR_COMBINATION_COUNT, XOR_COMBINATION_COUNT, inputs_gen, labels_gen, NULL, NULL);
 
     TrainingOptions *training_options = init_training_options();
     set_training_options(training_options);
@@ -81,7 +81,7 @@ void xor_float()
     training_logging_options->log_each_nth_epoch = NO_LOGGING;
 #endif
 
-    train(xor_network, dataset, &metrics, training_options, training_logging_options);
+    train(xor_network_gen, dataset_gen, &metrics, training_options, training_logging_options);
 
 #ifdef DEBUG_MODE
     printf("acc %f, loss: %f\n", metrics.acc, metrics.loss);
@@ -97,15 +97,18 @@ void xor_float()
 
     assert(metrics.acc >= expected_acc_threshold && metrics.loss < expected_loss_threshold);
 
-    delete_train_data(act_sigmoid, xor_network, dataset, training_options, training_logging_options);
+    delete_train_data(act_sigmoid_gen, xor_network_gen, dataset_gen, training_options, training_logging_options);
+
+    free(inputs_gen);
+    free(labels_gen);
 }
 
 void xor_double()
 {
-    Activation *act_sigmoid = create_sigmoid_activation();
-    Network *xor_network = create_network(BINARY_OPERAND_COUNT, 2, xor_neurons_per_layer, act_sigmoid, D_DOUBLE, SEED);
+    Activation *act_sigmoid_gen = generate_sigmoid_activation();
+    Network *xor_network_gen = generate_network(BINARY_OPERAND_COUNT, 2, xor_neurons_per_layer, act_sigmoid_gen, D_DOUBLE, SEED);
 
-    Matrix **inputs = (Matrix**) malloc (sizeof (Matrix*) * XOR_COMBINATION_COUNT);
+    Matrix **inputs_gen = (Matrix**) malloc (sizeof (Matrix*) * XOR_COMBINATION_COUNT);
     double inputs_mat[XOR_COMBINATION_COUNT][BINARY_OPERAND_COUNT][1] = {
             {{1}, {1}},
             {{1}, {0}},
@@ -113,7 +116,7 @@ void xor_double()
             {{0}, {0}}
     };
 
-    Matrix **labels = (Matrix**) malloc (sizeof (Matrix*) * XOR_COMBINATION_COUNT);
+    Matrix **labels_gen = (Matrix**) malloc (sizeof (Matrix*) * XOR_COMBINATION_COUNT);
     double labels_mat[XOR_COMBINATION_COUNT][1][1] = {
             {{0}},
             {{1}},
@@ -123,12 +126,12 @@ void xor_double()
 
     for (int i = 0; i < XOR_COMBINATION_COUNT; i++)
     {
-        inputs[i] = create_matrix_d(BINARY_OPERAND_COUNT, 1, inputs_mat[i]);
-        labels[i] = create_matrix_d(1, 1, labels_mat[i]);
+        inputs_gen[i] = generate_matrix_d(BINARY_OPERAND_COUNT, 1, inputs_mat[i]);
+        labels_gen[i] = generate_matrix_d(1, 1, labels_mat[i]);
     }
 
     Metrics metrics;
-    Dataset *dataset = create_dataset(XOR_COMBINATION_COUNT, XOR_COMBINATION_COUNT, inputs, labels, NULL, NULL);
+    Dataset *dataset_gen = generate_dataset_structures(XOR_COMBINATION_COUNT, XOR_COMBINATION_COUNT, inputs_gen, labels_gen, NULL, NULL);
 
     TrainingOptions *training_options = init_training_options();
     set_training_options(training_options);
@@ -140,7 +143,7 @@ void xor_double()
     training_logging_options->log_each_nth_epoch = NO_LOGGING;
 #endif
 
-    train(xor_network, dataset, &metrics, training_options, training_logging_options);
+    train(xor_network_gen, dataset_gen, &metrics, training_options, training_logging_options);
 
 #ifdef DEBUG_MODE
     printf("acc %f, loss: %f\n", metrics.acc, metrics.loss);
@@ -156,7 +159,9 @@ void xor_double()
 
     assert(metrics.acc >= expected_acc_threshold && metrics.loss < expected_loss_threshold);
 
-    delete_train_data(act_sigmoid, xor_network, dataset, training_options, training_logging_options);
+    delete_train_data(act_sigmoid_gen, xor_network_gen, dataset_gen, training_options, training_logging_options);
+    free(inputs_gen);
+    free(labels_gen);
 }
 
 int main()

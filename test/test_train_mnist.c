@@ -37,42 +37,42 @@ int test_train_mnist_double()
     int num_test = MNIST_NUM_TEST;
 
     char *train_inputs_fn = "./resources/mnist_train_vectors.csv";
-    Matrix **train_inputs = load_csv(train_inputs_fn, num_train, MNIST_CHAR_RES*MNIST_CHAR_RES, D_DOUBLE);
+    Matrix **train_inputs = load_csv_to_generated_matrix(train_inputs_fn, num_train, MNIST_CHAR_RES * MNIST_CHAR_RES, D_DOUBLE);
     normalize(train_inputs, num_train, 255);
 #if DEBUG_MODE
     logger(INFO, __func__, "Created training dataset");
 #endif
 
     char *train_labels_fn = "./resources/mnist_train_labels.csv";
-    Matrix **train_labels = load_csv(train_labels_fn, num_train, 1, D_DOUBLE);
+    Matrix **train_labels = load_csv_to_generated_matrix(train_labels_fn, num_train, 1, D_DOUBLE);
     vectorize(train_labels, num_train, MNIST_CHAR_COUNT);
 #if DEBUG_MODE
     logger(INFO, __func__, "Created training labels dataset");
 #endif
 
     char *test_inputs_fn = "./resources/mnist_test_vectors.csv";
-    Matrix **test_inputs = load_csv(test_inputs_fn, num_test, MNIST_CHAR_RES*MNIST_CHAR_RES, D_DOUBLE);
+    Matrix **test_inputs = load_csv_to_generated_matrix(test_inputs_fn, num_test, MNIST_CHAR_RES * MNIST_CHAR_RES, D_DOUBLE);
     normalize(test_inputs, num_test, 255);
 #if DEBUG_MODE
     logger(INFO, __func__, "Created test dataset");
 #endif
 
     char *test_labels_fn = "./resources/mnist_test_labels.csv";
-    Matrix **test_labels = load_csv(test_labels_fn, num_test, 1, D_DOUBLE);
+    Matrix **test_labels = load_csv_to_generated_matrix(test_labels_fn, num_test, 1, D_DOUBLE);
     vectorize(test_labels, num_test, MNIST_CHAR_COUNT);
 #if DEBUG_MODE
     logger(INFO, __func__, "Created test labels dataset");
 #endif
 
 
-    Dataset *dataset = create_dataset(num_train, num_test, train_inputs, train_labels, test_inputs, test_labels);
+    Dataset *dataset = generate_dataset_structures(num_train, num_test, train_inputs, train_labels, test_inputs, test_labels);
     Metrics monitor;
 
-    Activation *act_sigmoid = create_sigmoid_activation();
+    Activation *act_sigmoid = generate_sigmoid_activation();
 
     int seed = 1;
     // FIXME: when using other seed, test may fail, training may diverge and not reach tested condition
-    Network *mnist_network = create_network(MNIST_CHAR_RES * MNIST_CHAR_RES, 2, mnist_neurons_per_layer, act_sigmoid, D_DOUBLE, seed);
+    Network *mnist_network = generate_network(MNIST_CHAR_RES * MNIST_CHAR_RES, 2, mnist_neurons_per_layer, act_sigmoid, D_DOUBLE, seed);
 
     TrainingOptions *training_options = init_training_options();
 
@@ -98,7 +98,7 @@ int test_train_mnist_float()
     int num_test = MNIST_NUM_TEST;
 
     char *train_inputs_fn = "./resources/mnist_train_vectors.csv";
-    Matrix **train_inputs = load_csv(train_inputs_fn, num_train, MNIST_CHAR_RES*MNIST_CHAR_RES, D_FLOAT);
+    Matrix **train_inputs = load_csv_to_generated_matrix(train_inputs_fn, num_train, MNIST_CHAR_RES * MNIST_CHAR_RES, D_FLOAT);
 
     normalize(train_inputs, num_train, 255);
 
@@ -107,7 +107,7 @@ int test_train_mnist_float()
 #endif
 
     char *train_labels_fn = "./resources/mnist_train_labels.csv";
-    Matrix **train_labels = load_csv(train_labels_fn, num_train, 1, D_FLOAT);
+    Matrix **train_labels = load_csv_to_generated_matrix(train_labels_fn, num_train, 1, D_FLOAT);
 
     vectorize(train_labels, num_train, MNIST_CHAR_COUNT);
 #if DEBUG_MODE
@@ -115,7 +115,7 @@ int test_train_mnist_float()
 #endif
 
     char *test_inputs_fn = "./resources/mnist_test_vectors.csv";
-    Matrix **test_inputs = load_csv(test_inputs_fn, num_test, MNIST_CHAR_RES*MNIST_CHAR_RES, D_FLOAT);
+    Matrix **test_inputs = load_csv_to_generated_matrix(test_inputs_fn, num_test, MNIST_CHAR_RES * MNIST_CHAR_RES, D_FLOAT);
 
     normalize(test_inputs, num_test, 255);
 #if DEBUG_MODE
@@ -123,21 +123,21 @@ int test_train_mnist_float()
 #endif
 
     char *test_labels_fn = "./resources/mnist_test_labels.csv";
-    Matrix **test_labels = load_csv(test_labels_fn, num_test, 1, D_FLOAT);
+    Matrix **test_labels = load_csv_to_generated_matrix(test_labels_fn, num_test, 1, D_FLOAT);
 
     vectorize(test_labels, num_test, MNIST_CHAR_COUNT);
 #if DEBUG_MODE
     logger(INFO, __func__, "Created test labels dataset");
 #endif
 
-    Dataset *dataset = create_dataset(num_train, num_test, train_inputs, train_labels, test_inputs, test_labels);
+    Dataset *dataset = generate_dataset_structures(num_train, num_test, train_inputs, train_labels, test_inputs, test_labels);
     Metrics monitor;
 
-    Activation *act_sigmoid = create_sigmoid_activation();
+    Activation *act_sigmoid = generate_sigmoid_activation();
 
     // FIXME: when using other seed, test may fail, training may diverge and not reach tested condition
     int seed = 1;
-    Network *mnist_network = create_network(MNIST_CHAR_RES * MNIST_CHAR_RES, 2, mnist_neurons_per_layer, act_sigmoid, D_FLOAT, seed);
+    Network *mnist_network = generate_network(MNIST_CHAR_RES * MNIST_CHAR_RES, 2, mnist_neurons_per_layer, act_sigmoid, D_FLOAT, seed);
 
     TrainingOptions *training_options = init_training_options();
     set_mnist_training_options(training_options, MNIST_FLOAT_REG_LAMBDA);

@@ -10,21 +10,21 @@
 
 static int init_layer(Layer *layer, int seed);
 
-Layer *create_layer(int layer_size, int input_size, Activation *activation, MatrixDataType dataType, int seed)
+Layer *generate_layer(int layer_size, int input_size, Activation *activation, MatrixDataType dataType, int seed)
 {
-    Layer *layer = (Layer *) malloc (sizeof (Layer));
+    Layer *layer_gen = (Layer *) malloc (sizeof (Layer));
 
-    layer->num_neurons = layer_size;
-    layer->activation = activation;
+    layer_gen->num_neurons = layer_size;
+    layer_gen->activation = activation;
 
-    layer->weights = create_empty_matrix(layer_size, input_size, dataType);
-    layer->bias = create_empty_matrix(layer_size, 1, dataType);
-    layer->neurons = create_empty_matrix(layer_size, 1, dataType);
-    layer->neurons_act = create_empty_matrix(layer_size, 1, dataType);
+    layer_gen->weights = generate_empty_matrix(layer_size, input_size, dataType);
+    layer_gen->bias = generate_empty_matrix(layer_size, 1, dataType);
+    layer_gen->neurons = generate_empty_matrix(layer_size, 1, dataType);
+    layer_gen->neurons_act = generate_empty_matrix(layer_size, 1, dataType);
 
-    init_layer(layer, seed);
+    init_layer(layer_gen, seed);
 
-    return layer;
+    return layer_gen;
 }
 
 static int init_layer(Layer *layer, int seed)

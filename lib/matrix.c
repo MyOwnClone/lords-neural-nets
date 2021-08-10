@@ -14,16 +14,16 @@ inline void matrix_item_assign(Matrix *x, Matrix *y, int row1, int col1, int row
     DISP_MATRIX_ISET(x, row1, col1, DISP_MATRIX_IGET(y, row2, col2))
 }
 
-Matrix* create_matrix(int rows, int cols, const double double_mat[][cols], const float float_mat[][cols], MatrixDataType dataType)
+Matrix* generate_matrix(int rows, int cols, const double double_mat[][cols], const float float_mat[][cols], MatrixDataType dataType)
 {
-    Matrix *matrix = (Matrix *) malloc (sizeof (Matrix));
+    Matrix *matrix_gen = (Matrix *) malloc (sizeof (Matrix));
 
-    matrix->rows = rows;
-    matrix->cols = cols;
-    matrix->matrix = NULL;
-    matrix->d_matrix = NULL;
-    matrix->f_matrix = NULL;
-    matrix->type = dataType;
+    matrix_gen->rows = rows;
+    matrix_gen->cols = cols;
+    matrix_gen->matrix = NULL;
+    matrix_gen->d_matrix = NULL;
+    matrix_gen->f_matrix = NULL;
+    matrix_gen->type = dataType;
 
     if (dataType == D_FLOAT && float_mat == NULL && double_mat != NULL)
     {
@@ -42,46 +42,46 @@ Matrix* create_matrix(int rows, int cols, const double double_mat[][cols], const
     if (rows > 0 && cols > 0) {
         if (dataType == D_DOUBLE)
         {
-            matrix->matrix = (double **) malloc(sizeof(double *) * rows);
+            matrix_gen->matrix = (double **) malloc(sizeof(double *) * rows);
             for (int i = 0; i < rows; i++)
             {
-                matrix->matrix[i] = (double *) malloc(sizeof(double) * cols);
+                matrix_gen->matrix[i] = (double *) malloc(sizeof(double) * cols);
                 for (int j = 0; j < cols; j++)
                 {
                     if (double_mat != NULL)
                     {
-                        DISP_MATRIX_ISET(matrix, i, j, double_mat[i][j])
+                        DISP_MATRIX_ISET(matrix_gen, i, j, double_mat[i][j])
                     } else
                     {
-                        DISP_MATRIX_ISET(matrix, i, j, 0)
+                        DISP_MATRIX_ISET(matrix_gen, i, j, 0)
                     }
                 }
             }
         }
         else
         {
-            matrix->f_matrix = (float**) malloc (sizeof (float*) *rows);
+            matrix_gen->f_matrix = (float**) malloc (sizeof (float*) * rows);
             for (int row = 0; row < rows; row++)
             {
-                matrix->f_matrix[row] = (float*) malloc (sizeof (float) *cols);
+                matrix_gen->f_matrix[row] = (float*) malloc (sizeof (float) * cols);
                 for (int col = 0; col < cols; col++)
                 {
                     if (float_mat != NULL)
                     {
                         float f_value = float_mat[row][col];
 
-                        DISP_MATRIX_ISET(matrix, row, col, f_value)
+                        DISP_MATRIX_ISET(matrix_gen, row, col, f_value)
                     }
                     else
                     {
-                        DISP_MATRIX_ISET(matrix, row, col, 0)
+                        DISP_MATRIX_ISET(matrix_gen, row, col, 0)
                     }
                 }
             }
         }
     }
 
-    return matrix;
+    return matrix_gen;
 }
 
 void print_matrix(Matrix *matrix)
@@ -353,6 +353,14 @@ int apply_d(Matrix *a, Matrix *result, double (*fn)(double), int layer_idx)    /
     return 0;
 }
 
+// https://en.wikipedia.org/wiki/Hadamard_product_(matrices)
+/*
+ * In mathematics, the Hadamard product (also known as the element-wise product, entrywise product[1][2]:ch. 5 or Schur product[3])
+ * is a binary operation that takes two matrices of the same dimensions and produces another matrix of the same dimension as the operands,
+ * where each element i, j is the product of elements i, j of the original two matrices.
+ * It is to be distinguished from the more common matrix product. It is attributed to, and named after,
+ * either French mathematician Jacques Hadamard or German mathematician Issai Schur.
+ */
 int hadamard(Matrix *a, Matrix *b, Matrix *result)
 {
     if (is_null(a) || is_null(b))
@@ -511,19 +519,19 @@ void matrix_set_f(Matrix *x, float **mat)
     x->f_matrix = mat;
 }
 
-Matrix *create_matrix_f(int rows, int cols, const float float_mat[][cols])
+Matrix *generate_matrix_f(int rows, int cols, const float float_mat[][cols])
 {
-    return create_matrix(rows, cols, NULL, float_mat, D_FLOAT);
+    return generate_matrix(rows, cols, NULL, float_mat, D_FLOAT);
 }
 
-Matrix *create_matrix_d(int rows, int cols, const double double_mat[][cols])
+Matrix *generate_matrix_d(int rows, int cols, const double double_mat[][cols])
 {
-    return create_matrix(rows, cols, double_mat, NULL, D_DOUBLE);
+    return generate_matrix(rows, cols, double_mat, NULL, D_DOUBLE);
 }
 
-Matrix *create_empty_matrix(int rows, int cols, MatrixDataType dataType)
+Matrix *generate_empty_matrix(int rows, int cols, MatrixDataType dataType)
 {
-    return create_matrix(rows, cols, NULL,NULL, dataType);
+    return generate_matrix(rows, cols, NULL, NULL, dataType);
 }
 
 void on_neuron_activation_f(int layer_idx, int row, int col, float value)

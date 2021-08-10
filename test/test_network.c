@@ -12,8 +12,8 @@ static int test_create_network_float()
     int num_layers = 3;
     int layers[] = {30,20,10};
 
-    Activation *sigmoid = create_sigmoid_activation();
-    Network *network = create_network(input_size, num_layers, layers, sigmoid, D_FLOAT, -1);
+    Activation *sigmoid = generate_sigmoid_activation();
+    Network *network = generate_network(input_size, num_layers, layers, sigmoid, D_FLOAT, -1);
 
     if (network->num_layers != num_layers)
     {
@@ -46,8 +46,8 @@ static int test_create_network()
     int num_layers = 3;
     int layers[] = {30,20,10};
 
-    Activation *sigmoid = create_sigmoid_activation();
-    Network *network = create_network(input_size, num_layers, layers, sigmoid, D_DOUBLE, -1);
+    Activation *sigmoid = generate_sigmoid_activation();
+    Network *network = generate_network(input_size, num_layers, layers, sigmoid, D_DOUBLE, -1);
 
     if (network->num_layers != num_layers)
     {
@@ -80,11 +80,11 @@ static int test_predict_float()
     int num_layers = 3;
     int layers[] = {30,20,10};
 
-    Activation *sigmoid = create_sigmoid_activation();
-    Network *network = create_network(input_size, num_layers, layers, sigmoid, D_FLOAT, -1);
+    Activation *sigmoid = generate_sigmoid_activation();
+    Network *network = generate_network(input_size, num_layers, layers, sigmoid, D_FLOAT, -1);
 
     float input_mat[10][1] =  {{1},{1},{1},{1},{1},{1},{1},{1},{1},{1}};
-    Matrix *input = create_matrix_f(10, 1, input_mat);
+    Matrix *input = generate_matrix_f(10, 1, input_mat);
 
     Matrix *result = predict(network, input);
 
@@ -112,11 +112,11 @@ static int test_predict()
     int num_layers = 3;
     int layers[] = {30,20,10};
 
-    Activation *sigmoid = create_sigmoid_activation();
-    Network *network = create_network(input_size, num_layers, layers, sigmoid, D_DOUBLE, -1);
+    Activation *sigmoid = generate_sigmoid_activation();
+    Network *network = generate_network(input_size, num_layers, layers, sigmoid, D_DOUBLE, -1);
 
     double input_mat[10][1] =  {{1},{1},{1},{1},{1},{1},{1},{1},{1},{1}};
-    Matrix *input = create_matrix_d(10, 1, input_mat);
+    Matrix *input = generate_matrix_d(10, 1, input_mat);
 
     Matrix *result = predict(network, input);
 

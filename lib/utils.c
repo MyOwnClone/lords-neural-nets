@@ -23,7 +23,7 @@ void logger(int log_level, const char *function_name, const char *message)
 }
 
 
-Matrix** load_csv(char *filename, int lines, int line_length, MatrixDataType matrixDataType)
+Matrix** load_csv_to_generated_matrix(char *filename, int lines, int line_length, MatrixDataType matrixDataType)
 {
     FILE* fp = fopen(filename, "r");
 
@@ -33,7 +33,7 @@ Matrix** load_csv(char *filename, int lines, int line_length, MatrixDataType mat
         return NULL;
     }
 
-    Matrix **result = (Matrix**) malloc (sizeof (Matrix*) * lines);
+    Matrix **result_gen = (Matrix**) malloc (sizeof (Matrix*) * lines);
 
     int buffer_length = line_length*4;
     char buffer[buffer_length];
@@ -53,7 +53,7 @@ Matrix** load_csv(char *filename, int lines, int line_length, MatrixDataType mat
                 token = strtok(NULL, ",");
             }
 
-            result[line_idx++] = create_matrix_d(line_length, 1, mat);
+            result_gen[line_idx++] = generate_matrix_d(line_length, 1, mat);
         }
         else if (matrixDataType == D_FLOAT)
         {
@@ -66,7 +66,7 @@ Matrix** load_csv(char *filename, int lines, int line_length, MatrixDataType mat
                 token = strtok(NULL, ",");
             }
 
-            result[line_idx++] = create_matrix_f(line_length, 1, mat);
+            result_gen[line_idx++] = generate_matrix_f(line_length, 1, mat);
         }
 
         if (line_idx >= lines)
@@ -76,7 +76,7 @@ Matrix** load_csv(char *filename, int lines, int line_length, MatrixDataType mat
     }
 
     fclose(fp);
-    return result;
+    return result_gen;
 }
 
 // creates one hot encoding?
@@ -103,7 +103,7 @@ int vectorize(Matrix **a, int length, int num_classes)
             mat[index][0] = 1;
 
             delete_matrix(a[i]);
-            a[i] = create_matrix_f(num_classes, 1, mat);
+            a[i] = generate_matrix_f(num_classes, 1, mat);
         }
         else {
             double mat[num_classes][1];
@@ -114,7 +114,7 @@ int vectorize(Matrix **a, int length, int num_classes)
             mat[index][0] = 1;
 
             delete_matrix(a[i]);
-            a[i] = create_matrix_d(num_classes, 1, mat);
+            a[i] = generate_matrix_d(num_classes, 1, mat);
         }
     }
 

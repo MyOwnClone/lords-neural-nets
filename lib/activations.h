@@ -29,8 +29,8 @@ typedef struct
     ActivationType type;
 } Activation;
 
-Activation* create_sigmoid_activation();
-Activation* create_relu_activation();
+Activation* generate_sigmoid_activation();
+Activation* generate_relu_activation();
 
 int delete_activation(Activation *activation);
 

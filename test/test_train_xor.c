@@ -31,11 +31,11 @@ static void set_xor_training_options(const CostType *cost_type, TrainingOptions 
 
 int test_train_xor_double()
 {
-    Activation *act_sigmoid = create_sigmoid_activation();
+    Activation *act_sigmoid = generate_sigmoid_activation();
 
     // FIXME: when using other seed, test may fail, training may diverge and not reach tested condition
     const int seed = 1;
-    Network *xor_network = create_network(BINARY_OPERAND_COUNT, 2, xor_neurons_per_layer, act_sigmoid, D_DOUBLE, seed);
+    Network *xor_network = generate_network(BINARY_OPERAND_COUNT, 2, xor_neurons_per_layer, act_sigmoid, D_DOUBLE, seed);
 
     Matrix **inputs = (Matrix**) malloc (sizeof (Matrix*) * XOR_COMBINATION_COUNT);
     double inputs_mat[XOR_COMBINATION_COUNT][BINARY_OPERAND_COUNT][1] = {
@@ -55,12 +55,12 @@ int test_train_xor_double()
 
     for (int i = 0; i < XOR_COMBINATION_COUNT; i++)
     {
-        inputs[i] = create_matrix_d(BINARY_OPERAND_COUNT, 1, inputs_mat[i]);
-        labels[i] = create_matrix_d(1, 1, labels_mat[i]);
+        inputs[i] = generate_matrix_d(BINARY_OPERAND_COUNT, 1, inputs_mat[i]);
+        labels[i] = generate_matrix_d(1, 1, labels_mat[i]);
     }
 
     Metrics monitor;
-    Dataset *dataset = create_dataset(XOR_COMBINATION_COUNT, XOR_COMBINATION_COUNT, inputs, labels, NULL, NULL);
+    Dataset *dataset = generate_dataset_structures(XOR_COMBINATION_COUNT, XOR_COMBINATION_COUNT, inputs, labels, NULL, NULL);
 
     CostType cost_type = CROSS_ENTROPY;
 
@@ -82,11 +82,11 @@ int test_train_xor_double()
 
 int test_train_xor_float()
 {
-    Activation *act_sigmoid = create_sigmoid_activation();
+    Activation *act_sigmoid = generate_sigmoid_activation();
 
     // FIXME: when using other seed, test may fail, training may diverge and not reach tested condition
     const int seed = 1;
-    Network *xor_network = create_network(BINARY_OPERAND_COUNT, 2, xor_neurons_per_layer, act_sigmoid, D_FLOAT, seed);
+    Network *xor_network = generate_network(BINARY_OPERAND_COUNT, 2, xor_neurons_per_layer, act_sigmoid, D_FLOAT, seed);
 
     Matrix **inputs = (Matrix**) malloc (sizeof (Matrix*) * XOR_COMBINATION_COUNT);
     float inputs_mat[XOR_COMBINATION_COUNT][BINARY_OPERAND_COUNT][1] = {
@@ -106,12 +106,12 @@ int test_train_xor_float()
 
     for (int i = 0; i < XOR_COMBINATION_COUNT; i++)
     {
-        inputs[i] = create_matrix_f(BINARY_OPERAND_COUNT, 1, inputs_mat[i]);
-        labels[i] = create_matrix_f(1, 1, labels_mat[i]);
+        inputs[i] = generate_matrix_f(BINARY_OPERAND_COUNT, 1, inputs_mat[i]);
+        labels[i] = generate_matrix_f(1, 1, labels_mat[i]);
     }
 
     Metrics monitor;
-    Dataset *dataset = create_dataset(XOR_COMBINATION_COUNT, XOR_COMBINATION_COUNT, inputs, labels, NULL, NULL);
+    Dataset *dataset = generate_dataset_structures(XOR_COMBINATION_COUNT, XOR_COMBINATION_COUNT, inputs, labels, NULL, NULL);
 
     CostType cost_type = CROSS_ENTROPY;
 

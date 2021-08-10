@@ -1,4 +1,4 @@
-// get_*() == you do not need to free the memory returned by the function
+// get_*(), is_*() == you do not need to free the memory returned by the function
 // generate_() == you need to free the memory returned by the function
 // *_gen in variable name == generated, you need to free the memory
 // all static functions are really meant to be private and not part of the API

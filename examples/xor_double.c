@@ -14,8 +14,8 @@ static const double XOR_MOMENTUM = 0.9;
 static const double XOR_REG_LAMBDA = 0.0001;
 
 int main() {
-    Activation *act_sigmoid = create_sigmoid_activation();
-    Network *xor_network = create_network(BINARY_OPERAND_COUNT, 2, xor_neurons_per_layer, act_sigmoid, D_DOUBLE, -1);
+    Activation *act_sigmoid = generate_sigmoid_activation();
+    Network *xor_network = generate_network(BINARY_OPERAND_COUNT, 2, xor_neurons_per_layer, act_sigmoid, D_DOUBLE, -1);
 
     Matrix **inputs = (Matrix**) malloc (sizeof (Matrix*) * XOR_COMBINATION_COUNT);
     double inputs_mat[XOR_COMBINATION_COUNT][BINARY_OPERAND_COUNT][1] = {
@@ -35,12 +35,12 @@ int main() {
 
     for (int i = 0; i < XOR_COMBINATION_COUNT; i++)
     {
-        inputs[i] = create_matrix_d(BINARY_OPERAND_COUNT, 1, inputs_mat[i]);
-        labels[i] = create_matrix_d(1, 1, labels_mat[i]);
+        inputs[i] = generate_matrix_d(BINARY_OPERAND_COUNT, 1, inputs_mat[i]);
+        labels[i] = generate_matrix_d(1, 1, labels_mat[i]);
     }
 
     Metrics monitor;
-    Dataset *dataset = create_dataset(XOR_COMBINATION_COUNT, XOR_COMBINATION_COUNT, inputs, labels, NULL, NULL);
+    Dataset *dataset = generate_dataset_structures(XOR_COMBINATION_COUNT, XOR_COMBINATION_COUNT, inputs, labels, NULL, NULL);
 
     TrainingOptions *training_options = init_training_options();
     training_options->cost_type = CROSS_ENTROPY;
