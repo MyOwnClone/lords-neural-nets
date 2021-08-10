@@ -665,3 +665,24 @@ void on_new_epoch_start(int epoch_idx)
     fprintf(g_introspection_file_handle, "==\n");
 #endif
 }
+
+long get_network_data_size(Network *network)
+{
+    if (!network)
+    {
+        return 0L;
+    }
+
+    long result = 0L;
+
+    for (int layerIdx = 0; layerIdx < network->num_layers; layerIdx++)
+    {
+        Layer** currentLayer_ptr2 = network->layers;
+        Matrix *weights = (*currentLayer_ptr2)->weights;
+        Matrix *bias = (*currentLayer_ptr2)->bias;
+
+        result += get_matrix_data_size(weights) + get_matrix_data_size(bias);
+    }
+
+    return result;
+}

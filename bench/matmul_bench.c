@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <assert.h>
+#include <stdlib.h>
 #include "bench_utils.h"
 #include "../lib/matrix.h"
 
@@ -14,23 +15,27 @@ void double_multiply()
     int a_rows = 3;
     int a_cols = 2;
     const double a_mat[3][2] = {{2,1}, {3,2}, {5,3}};
-    Matrix *a_matrix = generate_matrix_d(a_rows, a_cols, a_mat);
+    Matrix *input_a_matrix_gen = generate_matrix_d(a_rows, a_cols, a_mat);
 
     int b_rows = 2;
     int b_cols = 3;
     const double b_mat[2][3] = {{5,0,3}, {4,1,7}};
-    Matrix *b_matrix = generate_matrix_d(b_rows, b_cols, b_mat);
+    Matrix *input_b_matrix_gen = generate_matrix_d(b_rows, b_cols, b_mat);
 
     // Test multiply correct dimensions
     int res_rows = 3;
     int res_cols = 3;
 
-    Matrix *res_matrix = generate_matrix_d(res_rows, res_cols, NULL);
+    Matrix *result_matrix_gen = generate_matrix_d(res_rows, res_cols, NULL);
 
     for (long long i = 0; i < MUL_REPEAT_COUNT; i++)
     {
-        reset_matrix(res_matrix);
-        multiply(a_matrix, b_matrix, res_matrix);
+        reset_matrix(result_matrix_gen);
+
+        // do randomization, invalidate cache
+        DISP_MATRIX_ISET(input_a_matrix_gen, rand()%a_rows, rand()%a_cols, (double)(rand()%100));
+
+        multiply(input_a_matrix_gen, input_b_matrix_gen, result_matrix_gen);
 
         /*if (i % LOG_PERIOD == 0)
         {
@@ -39,9 +44,9 @@ void double_multiply()
     }
 
     // Cleanup
-    delete_matrix(a_matrix);
-    delete_matrix(b_matrix);
-    delete_matrix(res_matrix);
+    delete_matrix(input_a_matrix_gen);
+    delete_matrix(input_b_matrix_gen);
+    delete_matrix(result_matrix_gen);
 }
 
 void float_multiply()
@@ -49,23 +54,27 @@ void float_multiply()
     int a_rows = 3;
     int a_cols = 2;
     const float a_mat[3][2] = {{2,1}, {3,2}, {5,3}};
-    Matrix *a_matrix = generate_matrix_f(a_rows, a_cols, a_mat);
+    Matrix *input_a_matrix_gen = generate_matrix_f(a_rows, a_cols, a_mat);
 
     int b_rows = 2;
     int b_cols = 3;
     const float b_mat[2][3] = {{5,0,3}, {4,1,7}};
-    Matrix *b_matrix = generate_matrix_f(b_rows, b_cols, b_mat);
+    Matrix *input_b_matrix_gen = generate_matrix_f(b_rows, b_cols, b_mat);
 
     // Test multiply correct dimensions
     int res_rows = 3;
     int res_cols = 3;
 
-    Matrix *res_matrix = generate_matrix_f(res_rows, res_cols, NULL);
+    Matrix *output_res_matrix_gen = generate_matrix_f(res_rows, res_cols, NULL);
 
     for (long long i = 0; i < MUL_REPEAT_COUNT; i++)
     {
-        reset_matrix(res_matrix);
-        multiply(a_matrix, b_matrix, res_matrix);
+        reset_matrix(output_res_matrix_gen);
+
+        // do randomization, invalidate cache
+        DISP_MATRIX_ISET(input_a_matrix_gen, rand()%a_rows, rand()%a_cols, (float)(rand()%100));
+
+        multiply(input_a_matrix_gen, input_b_matrix_gen, output_res_matrix_gen);
 
         /*if (i % LOG_PERIOD == 0)
         {
@@ -74,9 +83,9 @@ void float_multiply()
     }
 
     // Cleanup
-    delete_matrix(a_matrix);
-    delete_matrix(b_matrix);
-    delete_matrix(res_matrix);
+    delete_matrix(input_a_matrix_gen);
+    delete_matrix(input_b_matrix_gen);
+    delete_matrix(output_res_matrix_gen);
 }
 
 int main()
@@ -87,13 +96,14 @@ int main()
     assert(sizeof(float) == 4);
     assert(sizeof(double) == 8);
 
-    long repeat_count = 10;
+    int repeat_count = 50;
 
     double float_msecs = print_elapsed_time(float_multiply, "float", repeat_count);
     double double_msecs = print_elapsed_time(double_multiply, "double", repeat_count);
 
     printf("float over double speed-up factor: %fx\n", (double_msecs / float_msecs));
 
+    // these results are obsole, TODO: write results to separated txt file
     // mingw 64 gcc, windows 10, intel i7 cometlake
     /*
      *  sizeof(float) == 4

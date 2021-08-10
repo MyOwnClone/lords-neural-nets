@@ -97,6 +97,17 @@ void print_matrix(Matrix *matrix)
     }    
 }
 
+// data_size == without management data (pointers and row col counts)
+long get_matrix_data_size(Matrix *matrix)
+{
+    if (!matrix)
+    {
+        return 0L;
+    }
+
+    return matrix->rows * matrix->cols * ((matrix->type == D_FLOAT) ? sizeof(float) : sizeof(double));
+}
+
 bool is_null(Matrix *a)
 {
     if (a == NULL || (a->matrix == NULL && a->f_matrix == NULL))
@@ -128,27 +139,27 @@ int transpose(Matrix *a, Matrix *result)
 }
 #pragma clang diagnostic pop
 
-int multiply(Matrix *a, Matrix *b, Matrix *result)
+int multiply(Matrix *in_a, Matrix *in_b, Matrix *out_result)
 {
-    if (is_null(a) || is_null(b) || is_null(result))
+    if (is_null(in_a) || is_null(in_b) || is_null(out_result))
     {
         return -1;
     }
 
-    if (a->cols != b->rows || a->rows != result->rows || b->cols != result->cols)
+    if (in_a->cols != in_b->rows || in_a->rows != out_result->rows || in_b->cols != out_result->cols)
     {
         return -1;
     }
 
-    for (int row = 0; row < a->rows; row++)
+    for (int row = 0; row < in_a->rows; row++)
     {
-        for (int col = 0; col < b->cols; col++)
+        for (int col = 0; col < in_b->cols; col++)
         {
-            DISP_MATRIX_ISET(result, row, col, 0)
+            DISP_MATRIX_ISET(out_result, row, col, 0)
 
-            for (int k = 0; k < a->cols; k++)
+            for (int k = 0; k < in_a->cols; k++)
             {
-                DISP_MATRIX_IADD(result, row, col, DISP_MATRIX_IGET(a, row, k) * DISP_MATRIX_IGET(b, k, col))
+                DISP_MATRIX_IADD(out_result, row, col, DISP_MATRIX_IGET(in_a, row, k) * DISP_MATRIX_IGET(in_b, k, col))
             }            
         }        
     }
@@ -156,27 +167,27 @@ int multiply(Matrix *a, Matrix *b, Matrix *result)
     return 0;
 }
 
-int multiply_transposed(Matrix *a, Matrix *b_t, Matrix *result)
+int multiply_transposed(Matrix *in_a, Matrix *in_b_t, Matrix *out_result)
 {
-    if (is_null(a) || is_null(b_t) || is_null(result))
+    if (is_null(in_a) || is_null(in_b_t) || is_null(out_result))
     {
         return -1;
     }
 
-    if (a->cols != b_t->cols || a->rows != result->rows || b_t->rows != result->cols)
+    if (in_a->cols != in_b_t->cols || in_a->rows != out_result->rows || in_b_t->rows != out_result->cols)
     {
         return -1;
     }
 
-    for (int i = 0; i < a->rows; i++)
+    for (int i = 0; i < in_a->rows; i++)
     {
-        for (int j = 0; j < b_t->rows; j++)
+        for (int j = 0; j < in_b_t->rows; j++)
         {
-            DISP_MATRIX_ISET(result, i, j, 0)
+            DISP_MATRIX_ISET(out_result, i, j, 0)
 
-            for (int k = 0; k < a->cols; k++)
+            for (int k = 0; k < in_a->cols; k++)
             {
-                DISP_MATRIX_IADD(result, i, j, DISP_MATRIX_IGET(a, i, k) * DISP_MATRIX_IGET(b_t, j, k))
+                DISP_MATRIX_IADD(out_result, i, j, DISP_MATRIX_IGET(in_a, i, k) * DISP_MATRIX_IGET(in_b_t, j, k))
             }            
         }        
     }
@@ -184,81 +195,81 @@ int multiply_transposed(Matrix *a, Matrix *b_t, Matrix *result)
     return 0;
 }
 
-int add(Matrix *a, Matrix *b)
+int add(Matrix *in_out_a, Matrix *in_b)
 {
-    if (is_null(a) || is_null(b))
+    if (is_null(in_out_a) || is_null(in_b))
     {
         return -1;
     }
 
-    if (a->rows != b->rows || a->cols != b->cols)
+    if (in_out_a->rows != in_b->rows || in_out_a->cols != in_b->cols)
     {
         return -1;
     }
 
-    for (int row = 0; row < a->rows; row++)
+    for (int row = 0; row < in_out_a->rows; row++)
     {
-        for (int col = 0; col < a->cols; col++)
+        for (int col = 0; col < in_out_a->cols; col++)
         {
-            DISP_MATRIX_IADD(a, row, col, DISP_MATRIX_IGET(b, row, col))
+            DISP_MATRIX_IADD(in_out_a, row, col, DISP_MATRIX_IGET(in_b, row, col))
         }        
     }
 
     return 0;
 }
 
-int subtract(Matrix *a, Matrix *b)
+int subtract(Matrix *in_out_a, Matrix *in_b)
 {
-    if (is_null(a) || is_null(b))
+    if (is_null(in_out_a) || is_null(in_b))
     {
         return -1;
     }
 
-    if (a->rows != b->rows || a->cols != b->cols)
+    if (in_out_a->rows != in_b->rows || in_out_a->cols != in_b->cols)
     {
         return -1;
     }
 
-    for (int row = 0; row < a->rows; row++)
+    for (int row = 0; row < in_out_a->rows; row++)
     {
-        for (int col = 0; col < a->cols; col++)
+        for (int col = 0; col < in_out_a->cols; col++)
         {
-            DISP_MATRIX_ISUB(a, row, col, DISP_MATRIX_IGET(b, row, col))
+            DISP_MATRIX_ISUB(in_out_a, row, col, DISP_MATRIX_IGET(in_b, row, col))
         }        
     }
 
     return 0;
 }
 
-int scalar_multiply(Matrix *a, double x)
+int scalar_multiply(Matrix *in_out_a, double in_x)
 {
-    if (is_null(a))
+    if (is_null(in_out_a))
     {
         return -1;
     }
 
-    for (int row = 0; row < a->rows; row++)
+    for (int row = 0; row < in_out_a->rows; row++)
     {
-        for (int col = 0; col < a->cols; col++)
+        for (int col = 0; col < in_out_a->cols; col++)
         {
-            DISP_MATRIX_IMULS(a, row, col, x)
+            DISP_MATRIX_IMULS(in_out_a, row, col, in_x)
         }        
     }  
 
     return 0;  
 }
 
-int scalar_add(Matrix *a, double x) {
-    if (is_null(a))
+int scalar_add(Matrix *in_out_a, double in_x) {
+    if (is_null(in_out_a))
     {
         return -1;
     }
 
-    for (int row = 0; row < a->rows; row++)
+    for (int row = 0; row < in_out_a->rows; row++)
     {
-        for (int col = 0; col < a->cols; col++)
+        for (int col = 0; col < in_out_a->cols; col++)
         {
-            DISP_MATRIX_IADDS(a, row, col, x)
+            DISP_MATRIX_IADDS(in_out_a, row, col, in_x)
         }        
     }
 
@@ -266,18 +277,18 @@ int scalar_add(Matrix *a, double x) {
 }
 
 // we need special _f version, because pointers to functions are incompatible between float and double
-int apply_f(Matrix *a, Matrix *result, float (*fn)(float), int layer_idx)
+int apply_f(Matrix *in_a, Matrix *out_result, float (*fn)(float), int layer_idx)
 {
-    if (is_null(result))
+    if (is_null(out_result))
     {
-        result = a;
+        out_result = in_a;
     }
-    else if (a->rows != result->rows || a->cols != result->cols)
+    else if (in_a->rows != out_result->rows || in_a->cols != out_result->cols)
     {
         return -1;
     }
 
-    if (is_null(a))
+    if (is_null(in_a))
     {
         return -1;
     }
@@ -287,17 +298,17 @@ int apply_f(Matrix *a, Matrix *result, float (*fn)(float), int layer_idx)
         return -1;
     }
 
-    for (int row = 0; row < a->rows; row++)
+    for (int row = 0; row < in_a->rows; row++)
     {
-        for (int col = 0; col < a->cols; col++)
+        for (int col = 0; col < in_a->cols; col++)
         {
 #ifdef INTROSPECT
-            float old_value = DISP_MATRIX_IGET(result, row, col);
+            float old_value = DISP_MATRIX_IGET(out_result, row, col);
 #endif
-            DISP_MATRIX_IAPPLY_FN(result, row, col, a, fn)
+            DISP_MATRIX_IAPPLY_FN(out_result, row, col, in_a, fn)
 
 #ifdef INTROSPECT
-            float new_value = DISP_MATRIX_IGET(result, row, col);
+            float new_value = DISP_MATRIX_IGET(out_result, row, col);
 
             on_neuron_activation_f(layer_idx, row, col, new_value);
 #endif
@@ -309,18 +320,18 @@ int apply_f(Matrix *a, Matrix *result, float (*fn)(float), int layer_idx)
     return 0;
 }
 
-int apply_d(Matrix *a, Matrix *result, double (*fn)(double), int layer_idx)    // TODO: add layer index param
+int apply_d(Matrix *in_a, Matrix *out_result, double (*fn)(double), int layer_idx)    // TODO: add layer index param
 {
-    if (is_null(result))
+    if (is_null(out_result))
     {
-        result = a;
+        out_result = in_a;
     }
-    else if (a->rows != result->rows || a->cols != result->cols)
+    else if (in_a->rows != out_result->rows || in_a->cols != out_result->cols)
     {
         return -1;
     }    
     
-    if (is_null(a))
+    if (is_null(in_a))
     {
         return -1;
     }
@@ -330,18 +341,18 @@ int apply_d(Matrix *a, Matrix *result, double (*fn)(double), int layer_idx)    /
         return -1;
     }
 
-    for (int row = 0; row < a->rows; row++)
+    for (int row = 0; row < in_a->rows; row++)
     {
-        for (int col = 0; col < a->cols; col++)
+        for (int col = 0; col < in_a->cols; col++)
         {
 #ifdef INTROSPECT
-            double old_value = DISP_MATRIX_IGET(result, row, col);
+            double old_value = DISP_MATRIX_IGET(out_result, row, col);
 #endif
 
-            DISP_MATRIX_IAPPLY_FN(result, row, col, a, fn)
+            DISP_MATRIX_IAPPLY_FN(out_result, row, col, in_a, fn)
 
 #ifdef INTROSPECT
-            float new_value = DISP_MATRIX_IGET(result, row, col);
+            float new_value = DISP_MATRIX_IGET(out_result, row, col);
 
             on_neuron_activation_d(layer_idx, row, col, new_value);
 #endif
@@ -361,48 +372,48 @@ int apply_d(Matrix *a, Matrix *result, double (*fn)(double), int layer_idx)    /
  * It is to be distinguished from the more common matrix product. It is attributed to, and named after,
  * either French mathematician Jacques Hadamard or German mathematician Issai Schur.
  */
-int hadamard(Matrix *a, Matrix *b, Matrix *result)
+int hadamard(Matrix *in_a, Matrix *in_b, Matrix *out_result)
 {
-    if (is_null(a) || is_null(b))
+    if (is_null(in_a) || is_null(in_b))
     {
         return -1;
     }
 
-    if (a->rows != b->rows || a->cols != b->cols || a->rows != result->rows || a->cols != result->cols)
+    if (in_a->rows != in_b->rows || in_a->cols != in_b->cols || in_a->rows != out_result->rows || in_a->cols != out_result->cols)
     {
         return -1;
     }
 
-    for (int row = 0; row < a->rows; row++)
+    for (int row = 0; row < in_a->rows; row++)
     {
-        for (int col = 0; col < a->cols; col++)
+        for (int col = 0; col < in_a->cols; col++)
         {
-            DISP_MATRIX_ISET(result, row, col, DISP_MATRIX_IGET(a, row, col) * DISP_MATRIX_IGET(b, row, col) )
+            DISP_MATRIX_ISET(out_result, row, col, DISP_MATRIX_IGET(in_a, row, col) * DISP_MATRIX_IGET(in_b, row, col) )
         }        
     }
 
     return 0;    
 }
 
-int argmax(Matrix *a)
+int argmax(Matrix *in_a)
 {
     int max = 0;
 
-    if (a->rows == 1)
+    if (in_a->rows == 1)
     {
-        for (int i = 0; i < a->cols; i++)
+        for (int i = 0; i < in_a->cols; i++)
         {
-            if (DISP_MATRIX_IGET(a, 0, i) > DISP_MATRIX_IGET(a, 0, max))
+            if (DISP_MATRIX_IGET(in_a, 0, i) > DISP_MATRIX_IGET(in_a, 0, max))
             {
                 max = i;
             }
         }        
     }
-    else if (a->cols == 1)
+    else if (in_a->cols == 1)
     {
-        for (int i = 0; i < a->rows; i++)
+        for (int i = 0; i < in_a->rows; i++)
         {
-            if (DISP_MATRIX_IGET(a, i, 0) > DISP_MATRIX_IGET(a, max, 0))
+            if (DISP_MATRIX_IGET(in_a, i, 0) > DISP_MATRIX_IGET(in_a, max, 0))
             {
                 max = i;
             }
@@ -416,89 +427,89 @@ int argmax(Matrix *a)
     return max;    
 }
 
-int reset_matrix(Matrix *a)
+int reset_matrix(Matrix *in_out_a)
 {
-    if (is_null(a))
+    if (is_null(in_out_a))
     {
         return -1;
     }
 
-    for (int row = 0; row < a->rows; row++)
+    for (int row = 0; row < in_out_a->rows; row++)
     {
-        for (int col = 0; col < a->cols; col++)
+        for (int col = 0; col < in_out_a->cols; col++)
         {
-            DISP_MATRIX_ISET(a, row, col, 0)
+            DISP_MATRIX_ISET(in_out_a, row, col, 0)
         }        
     }
 
     return 0;    
 }
 
-int delete_matrix(Matrix *a)
+int delete_matrix(Matrix *in_out_a)
 {
-    if (is_null(a))
+    if (is_null(in_out_a))
     {
         return -1;
     }
 
-    if (a->type == D_FLOAT)
+    if (in_out_a->type == D_FLOAT)
     {
-        for (int i = 0; i < a->rows; i++)
+        for (int i = 0; i < in_out_a->rows; i++)
         {
-            free(a->f_matrix[i]);
+            free(in_out_a->f_matrix[i]);
         }
     }
     else
     {
-        for (int i = 0; i < a->rows; i++)
+        for (int i = 0; i < in_out_a->rows; i++)
         {
-            free(a->d_matrix[i]);
+            free(in_out_a->d_matrix[i]);
         }
     }
 
-    if (a->type == D_FLOAT)
+    if (in_out_a->type == D_FLOAT)
     {
-        free(a->f_matrix);
+        free(in_out_a->f_matrix);
     }
     else
     {
-        free(a->d_matrix);
+        free(in_out_a->d_matrix);
     }
 
-    free(a);
-    a = NULL;
+    free(in_out_a);
+    in_out_a = NULL;
     
     return 0;
 }
 
-bool is_float_matrix(Matrix *a)
+bool is_float_matrix(Matrix *in_a)
 {
-    return a->type == D_FLOAT;
+    return in_a->type == D_FLOAT;
 }
 
-bool is_equal(Matrix *matrix, int rows, int cols, const double d_mat[rows][cols], const float f_mat[rows][cols])
+bool is_equal(Matrix *in_matrix, int in_rows, int in_cols, const double in_d_mat[in_rows][in_cols], const float in_f_mat[in_rows][in_cols])
 {
-    if (matrix->rows != rows || matrix->cols != cols)
+    if (in_matrix->rows != in_rows || in_matrix->cols != in_cols)
     {
         return false;
     }
 
-    for (int i = 0; i < rows; i++)
+    for (int i = 0; i < in_rows; i++)
     {
-        for (int j = 0; j < cols; j++)
+        for (int j = 0; j < in_cols; j++)
         {
-            if (is_float_matrix(matrix))
+            if (is_float_matrix(in_matrix))
             {
-                float f_value = (float) f_mat[i][j];
+                float f_value = (float) in_f_mat[i][j];
 
-                if ((float)DISP_MATRIX_IGET(matrix, i, j) != f_value)
+                if ((float)DISP_MATRIX_IGET(in_matrix, i, j) != f_value)
                 {
                     return false;
                 }
             }
             else
             {
-                if (DISP_MATRIX_IGET(matrix, i, j) != d_mat[i][j])
+                if (DISP_MATRIX_IGET(in_matrix, i, j) != in_d_mat[i][j])
                 {
                     return false;
                 }
@@ -509,32 +520,32 @@ bool is_equal(Matrix *matrix, int rows, int cols, const double d_mat[rows][cols]
     return true;
 }
 
-void matrix_set_d(Matrix *x, double **mat)
+void matrix_set_d(Matrix *out_x, double **in_mat)
 {
-    x->d_matrix = mat;
+    out_x->d_matrix = in_mat;
 }
 
-void matrix_set_f(Matrix *x, float **mat)
+void matrix_set_f(Matrix *out_x, float **in_mat)
 {
-    x->f_matrix = mat;
+    out_x->f_matrix = in_mat;
 }
 
-Matrix *generate_matrix_f(int rows, int cols, const float float_mat[][cols])
+Matrix *generate_matrix_f(int in_rows, int in_cols, const float in_float_mat[][in_cols])
 {
-    return generate_matrix(rows, cols, NULL, float_mat, D_FLOAT);
+    return generate_matrix(in_rows, in_cols, NULL, in_float_mat, D_FLOAT);
 }
 
-Matrix *generate_matrix_d(int rows, int cols, const double double_mat[][cols])
+Matrix *generate_matrix_d(int in_rows, int in_cols, const double in_double_mat[][in_cols])
 {
-    return generate_matrix(rows, cols, double_mat, NULL, D_DOUBLE);
+    return generate_matrix(in_rows, in_cols, in_double_mat, NULL, D_DOUBLE);
 }
 
-Matrix *generate_empty_matrix(int rows, int cols, MatrixDataType dataType)
+Matrix *generate_empty_matrix(int in_rows, int in_cols, MatrixDataType in_dataType)
 {
-    return generate_matrix(rows, cols, NULL, NULL, dataType);
+    return generate_matrix(in_rows, in_cols, NULL, NULL, in_dataType);
 }
 
-void on_neuron_activation_f(int layer_idx, int row, int col, float value)
+void on_neuron_activation_f(int in_layer_idx, int in_row, int in_col, float in_value)
 {
 #ifdef INTROSPECT
     if (!g_introspection_file_handle)
@@ -545,12 +556,12 @@ void on_neuron_activation_f(int layer_idx, int row, int col, float value)
 
     if (g_introspection_mode == IM_PREDICT)
     {
-        fprintf(g_introspection_file_handle, "%ld %ld %ld : %f\n", layer_idx, row, col, value);
+        fprintf(g_introspection_file_handle, "%ld %ld %ld : %f\n", in_layer_idx, in_row, in_col, in_value);
     }
 #endif
 }
 
-void on_neuron_activation_d(int layer_idx, int row, int col, double value)
+void on_neuron_activation_d(int in_layer_idx, int in_row, int in_col, double in_value)
 {
 #ifdef INTROSPECT
     if (!g_introspection_file_handle)
@@ -561,15 +572,15 @@ void on_neuron_activation_d(int layer_idx, int row, int col, double value)
 
     if (g_introspection_mode == IM_PREDICT)
     {
-        fprintf(g_introspection_file_handle, "%ld %ld %ld : %f\n", layer_idx, row, col, value);
+        fprintf(g_introspection_file_handle, "%ld %ld %ld : %f\n", in_layer_idx, in_row, in_col, in_value);
     }
 #endif
 }
 
-void open_activation_introspection(const char *data_filename)
+void open_activation_introspection(const char *in_output_data_filename)
 {
 #ifdef INTROSPECT
-    g_introspection_file_handle = fopen(data_filename, "w");
+    g_introspection_file_handle = fopen(in_output_data_filename, "w");
 #else
     printf("Warning! Calling introspection functions, but INTROSPECT is undefined!!!");
 #endif
@@ -585,4 +596,18 @@ void close_activation_introspection()
 #else
     printf("Warning! Calling introspection functions, but INTROSPECT is undefined!!!");
 #endif
+}
+
+long get_matrix_arr_data_size(Matrix **in_matrix_arr, int in_len)
+{
+    long result = 0;
+
+    for (int matrixIdx = 0; matrixIdx < in_len; matrixIdx++)
+    {
+        Matrix *currentMatrix = in_matrix_arr[matrixIdx];
+
+        result += get_matrix_data_size(currentMatrix);
+    }
+
+    return result;
 }

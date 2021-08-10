@@ -70,6 +70,9 @@ Matrix** load_csv_to_generated_matrix(char *filename, int lines, int line_length
 int vectorize(Matrix **a, int length, int num_classes);
 int normalize(Matrix **a, int length, int max_num);
 
+float convert_bytes_to_kbytes(long bytes);
+float convert_bytes_to_Mbytes(long bytes);
+
 #include <stdio.h>
 extern FILE* g_introspection_file_handle;
 

@@ -32,8 +32,8 @@ typedef struct
 double** matrix_get_d(Matrix* x);
 float** matrix_get_f(Matrix* x);
 
-void matrix_set_d(Matrix* x, double **mat);
-void matrix_set_f(Matrix* x, float **mat);
+void matrix_set_d(Matrix* out_x, double **in_mat);
+void matrix_set_f(Matrix* out_x, float **in_mat);
 
 // __ == internal
 
@@ -70,29 +70,31 @@ void matrix_item_assign(Matrix *x, Matrix *y, int row1, int col1, int row2, int 
 
 Matrix* generate_matrix(int rows, int cols, const double double_mat[][cols], const float float_mat[][cols], MatrixDataType dataType);
 
-Matrix* generate_empty_matrix(int rows, int cols, MatrixDataType dataType);
+Matrix* generate_empty_matrix(int in_rows, int in_cols, MatrixDataType in_dataType);
 
-Matrix* generate_matrix_f(int rows, int cols, const float float_mat[][cols]);
-Matrix* generate_matrix_d(int rows, int cols, const double double_mat[][cols]);
+Matrix* generate_matrix_f(int in_rows, int in_cols, const float in_float_mat[][in_cols]);
+Matrix* generate_matrix_d(int in_rows, int in_cols, const double in_double_mat[][in_cols]);
 
 void print_matrix(Matrix *matrix);
+long get_matrix_data_size(Matrix *matrix);
+long get_matrix_arr_data_size(Matrix **in_matrix_arr, int in_len);
 bool is_null(Matrix *matrix);
 int transpose(Matrix *a, Matrix *result);
-int multiply(Matrix *a, Matrix *b, Matrix *result);
-int multiply_transposed(Matrix *a, Matrix *b_t, Matrix *result);
-int add(Matrix *a, Matrix *b);
-int subtract(Matrix *a, Matrix *b);
-int scalar_multiply(Matrix *matrix, double a);
-int scalar_add(Matrix *matrix, double a);
-int apply_d(Matrix *a, Matrix *result, double (*fn)(double), int layer_idx);
-int apply_f(Matrix *a, Matrix *result, float (*fn)(float), int layer_idx);
-int hadamard(Matrix *a, Matrix *b, Matrix *result);
-int argmax(Matrix *a);
-int reset_matrix(Matrix *a);
-int delete_matrix(Matrix *a);
-bool is_float_matrix(Matrix *a);
+int multiply(Matrix *in_a, Matrix *in_b, Matrix *out_result);
+int multiply_transposed(Matrix *in_a, Matrix *in_b_t, Matrix *out_result);
+int add(Matrix *in_out_a, Matrix *in_b);
+int subtract(Matrix *in_out_a, Matrix *in_b);
+int scalar_multiply(Matrix *in_out_a, double in_x);
+int scalar_add(Matrix *in_out_a, double in_x);
+int apply_d(Matrix *in_a, Matrix *out_result, double (*fn)(double), int layer_idx);
+int apply_f(Matrix *in_a, Matrix *out_result, float (*fn)(float), int layer_idx);
+int hadamard(Matrix *in_a, Matrix *in_b, Matrix *out_result);
+int argmax(Matrix *in_a);
+int reset_matrix(Matrix *in_out_a);
+int delete_matrix(Matrix *in_out_a);
+bool is_float_matrix(Matrix *in_a);
 
-bool is_equal(Matrix *matrix, int rows, int cols, const double d_mat[rows][cols], const float f_mat[rows][cols]);
+bool is_equal(Matrix *in_matrix, int in_rows, int in_cols, const double in_d_mat[in_rows][in_cols], const float in_f_mat[in_rows][in_cols]);
 
 #define DISP_IS_EQUAL(mat, rows, cols, other_mat) ((is_float_matrix(mat) == true) && (is_equal(mat, rows, cols, NULL, other_mat) == true) || (is_equal(mat, rows, cols, other_mat, NULL)) == true)
 
@@ -108,10 +110,10 @@ else                                                           \
 else                                                                  \
     apply_d(matrix, matrix_result, fn, -1);
 
-void on_neuron_activation_f(int layer_idx, int row, int col, float value);
-void on_neuron_activation_d(int layer_idx, int row, int col, double value);
+void on_neuron_activation_f(int in_layer_idx, int in_row, int in_col, float in_value);
+void on_neuron_activation_d(int in_layer_idx, int in_row, int in_col, double in_value);
 
-void open_activation_introspection(const char *data_filename);
+void open_activation_introspection(const char *in_output_data_filename);
 void close_activation_introspection();
 
 #endif /* MATRIX_H */

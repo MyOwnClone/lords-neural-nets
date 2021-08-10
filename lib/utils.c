@@ -186,3 +186,13 @@ int delete_training_logging_options(TrainingLoggingOptions *training_logging_opt
 
     return 0;
 }
+
+float convert_bytes_to_kbytes(long bytes)
+{
+    return (float)bytes / 1024.0f;
+}
+
+float convert_bytes_to_Mbytes(long bytes)
+{
+    return (float)bytes / 1024.0f / 1024.0f;
+}

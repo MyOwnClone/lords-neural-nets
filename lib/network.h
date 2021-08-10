@@ -17,6 +17,7 @@ typedef struct
 
 Network *generate_network(int input_size, int num_layers, int neurons_per_layer[], Activation *activation, MatrixDataType dataType, int seed);
 void print_network(Network *network);
+long get_network_data_size(Network *network);
 int delete_network(Network *network);
 Matrix* predict(Network *network, Matrix *input);
 double accuracy_d(Network *network, Matrix **inputs, Matrix **targets, int input_length);

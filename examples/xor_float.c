@@ -17,7 +17,7 @@ int main() {
     int layer_count = 2;
 
     Activation *act_sigmoid = generate_sigmoid_activation();
-    Network *xor_network = generate_network(BINARY_OPERAND_COUNT, layer_count, xor_neurons_per_layer, act_sigmoid, D_FLOAT, TIME_SEED);
+    Network *xor_network = generate_network(BINARY_OPERAND_COUNT, layer_count, xor_neurons_per_layer, act_sigmoid, D_FLOAT, 1);
 
     Matrix **inputs = (Matrix**) malloc (sizeof (Matrix*) * XOR_COMBINATION_COUNT);
     float inputs_mat[XOR_COMBINATION_COUNT][BINARY_OPERAND_COUNT][1] = {
@@ -58,6 +58,8 @@ int main() {
     training_logging_options->log_each_nth_epoch = 1;
 
     write_network_introspection_params(xor_network);
+
+    printf("network size: %ld B\n", get_network_data_size(xor_network));
 
     train(xor_network, dataset, &monitor, training_options, training_logging_options);
 

@@ -14,10 +14,10 @@ static const double XOR_MOMENTUM = 0.9;
 static const double XOR_REG_LAMBDA = 0.0001;
 
 int main() {
-    Activation *act_sigmoid = generate_sigmoid_activation();
-    Network *xor_network = generate_network(BINARY_OPERAND_COUNT, 2, xor_neurons_per_layer, act_sigmoid, D_DOUBLE, TIME_SEED);
+    Activation *act_sigmoid_gen = generate_sigmoid_activation();
+    Network *xor_network_gen = generate_network(BINARY_OPERAND_COUNT, 2, xor_neurons_per_layer, act_sigmoid_gen, D_DOUBLE, 1);
 
-    Matrix **inputs = (Matrix**) malloc (sizeof (Matrix*) * XOR_COMBINATION_COUNT);
+    Matrix **inputs_gen = (Matrix**) malloc (sizeof (Matrix*) * XOR_COMBINATION_COUNT);
     double inputs_mat[XOR_COMBINATION_COUNT][BINARY_OPERAND_COUNT][1] = {
         {{1}, {1}},
         {{1}, {0}},
@@ -25,7 +25,7 @@ int main() {
         {{0}, {0}}
     };
 
-    Matrix **labels = (Matrix**) malloc (sizeof (Matrix*) * XOR_COMBINATION_COUNT);
+    Matrix **labels_gen = (Matrix**) malloc (sizeof (Matrix*) * XOR_COMBINATION_COUNT);
     double labels_mat[XOR_COMBINATION_COUNT][1][1] = {
         {{0}},
         {{1}},
@@ -35,12 +35,12 @@ int main() {
 
     for (int i = 0; i < XOR_COMBINATION_COUNT; i++)
     {
-        inputs[i] = generate_matrix_d(BINARY_OPERAND_COUNT, 1, inputs_mat[i]);
-        labels[i] = generate_matrix_d(1, 1, labels_mat[i]);
+        inputs_gen[i] = generate_matrix_d(BINARY_OPERAND_COUNT, 1, inputs_mat[i]);
+        labels_gen[i] = generate_matrix_d(1, 1, labels_mat[i]);
     }
 
     Metrics monitor;
-    Dataset *dataset = generate_dataset_structures(XOR_COMBINATION_COUNT, XOR_COMBINATION_COUNT, inputs, labels, NULL, NULL);
+    Dataset *dataset_gen = generate_dataset_structures(XOR_COMBINATION_COUNT, XOR_COMBINATION_COUNT, inputs_gen, labels_gen, NULL, NULL);
 
     TrainingOptions *training_options = init_training_options();
     training_options->cost_type = CROSS_ENTROPY;
@@ -53,11 +53,13 @@ int main() {
     TrainingLoggingOptions *training_logging_options = init_training_logging_options();
     training_logging_options->log_each_nth_epoch = 1;
 
-    train(xor_network, dataset, &monitor, training_options, training_logging_options);
+    printf("network size: %ld B\n", get_network_data_size(xor_network_gen));
 
-    delete_network(xor_network);
-    delete_activation(act_sigmoid);
-    delete_dataset(dataset);
+    train(xor_network_gen, dataset_gen, &monitor, training_options, training_logging_options);
+
+    delete_network(xor_network_gen);
+    delete_activation(act_sigmoid_gen);
+    delete_dataset(dataset_gen);
     delete_training_options(training_options);
     delete_training_logging_options(training_logging_options);
 }
