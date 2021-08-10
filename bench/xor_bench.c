@@ -99,6 +99,12 @@ void xor_float()
 
     delete_train_data(act_sigmoid_gen, xor_network_gen, dataset_gen, training_options, training_logging_options);
 
+    for (int i = 0; i < XOR_COMBINATION_COUNT; i++)
+    {
+        free(inputs_gen[i]);
+        free(labels_gen[i]);
+    }
+
     free(inputs_gen);
     free(labels_gen);
 }
@@ -160,6 +166,13 @@ void xor_double()
     assert(metrics.acc >= expected_acc_threshold && metrics.loss < expected_loss_threshold);
 
     delete_train_data(act_sigmoid_gen, xor_network_gen, dataset_gen, training_options, training_logging_options);
+
+    for (int i = 0; i < XOR_COMBINATION_COUNT; i++)
+    {
+        free(inputs_gen[i]);
+        free(labels_gen[i]);
+    }
+
     free(inputs_gen);
     free(labels_gen);
 }
