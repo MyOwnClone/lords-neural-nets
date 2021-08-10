@@ -19,7 +19,7 @@ static const double XOR_REG_LAMBDA = 0.0001;
 #ifdef __APPLE__
     const int SEED = 1; // macOS / Unix uses different stdlib and windows SEED does not provide weights that converge, BUT WHY? :-(
 #else
-    const int SEED = -1;
+    const int SEED = 1;
 #endif
 
 static void delete_train_data(Activation *act_sigmoid, Network *xor_network, Dataset *dataset, TrainingOptions *training_options, TrainingLoggingOptions *training_logging_options)
