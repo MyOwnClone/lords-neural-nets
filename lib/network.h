@@ -13,6 +13,8 @@ typedef struct
     int num_layers;
 } Network;
 
+#define TIME_SEED (-1)
+
 Network *generate_network(int input_size, int num_layers, int neurons_per_layer[], Activation *activation, MatrixDataType dataType, int seed);
 void print_network(Network *network);
 int delete_network(Network *network);

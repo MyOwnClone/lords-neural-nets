@@ -15,7 +15,7 @@ static const double XOR_REG_LAMBDA = 0.0001;
 
 int main() {
     Activation *act_sigmoid = generate_sigmoid_activation();
-    Network *xor_network = generate_network(BINARY_OPERAND_COUNT, 2, xor_neurons_per_layer, act_sigmoid, D_DOUBLE, -1);
+    Network *xor_network = generate_network(BINARY_OPERAND_COUNT, 2, xor_neurons_per_layer, act_sigmoid, D_DOUBLE, TIME_SEED);
 
     Matrix **inputs = (Matrix**) malloc (sizeof (Matrix*) * XOR_COMBINATION_COUNT);
     double inputs_mat[XOR_COMBINATION_COUNT][BINARY_OPERAND_COUNT][1] = {

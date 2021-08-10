@@ -7,6 +7,7 @@
 /*
  * seed == -1, function internally uses time(NULL) for seed, seed != -1 -> used as is
  */
+
 Network *generate_network(int input_size, int num_layers, int neurons_per_layer[], Activation *activation, MatrixDataType dataType, int seed)
 {
     Network *network_gen = (Network *) malloc(sizeof(Network));

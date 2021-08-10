@@ -46,7 +46,7 @@ int main()
     int neurons_per_layer[] = {100, MNIST_CHAR_COUNT};
 
     Activation *act_sigmoid = generate_sigmoid_activation();
-    Network *mnist_network = generate_network(MNIST_CHAR_RES * MNIST_CHAR_RES, 2, neurons_per_layer, act_sigmoid, D_DOUBLE, -1);
+    Network *mnist_network = generate_network(MNIST_CHAR_RES * MNIST_CHAR_RES, 2, neurons_per_layer, act_sigmoid, D_DOUBLE, TIME_SEED);
 
     TrainingOptions *training_options = init_training_options();
     training_options->cost_type = CROSS_ENTROPY;
