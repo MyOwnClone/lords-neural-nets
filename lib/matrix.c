@@ -128,12 +128,35 @@ int transpose(Matrix *in_a, Matrix *out_result)
         return -1;
     }
 
-    for (int row = 0; row < in_a->rows; row++)
+    if (is_float_matrix(in_a) && is_float_matrix(out_result))
     {
-        for (int col = 0; col < in_a->cols; col++)
+        for (int row = 0; row < in_a->rows; row++)
         {
-            matrix_assign_item_from_other(out_result, in_a, col, row, row, col);
-        }        
+            for (int col = 0; col < in_a->cols; col++)
+            {
+                float orig_value = matrix_get_item_f(in_a, row, col);
+
+                matrix_assign_item_f(out_result, col, row, orig_value);
+            }
+        }
+    }
+    else if (!is_float_matrix(in_a) && !is_float_matrix(out_result))
+    {
+        for (int row = 0; row < in_a->rows; row++)
+        {
+            for (int col = 0; col < in_a->cols; col++)
+            {
+                double orig_value = matrix_get_item_d(in_a, row, col);
+
+                matrix_assign_item_d(out_result, col, row, orig_value);
+            }
+        }
+    }
+    else
+    {
+        RED_COLOR;
+        fprintf(stderr, "error: Matrix type mismatch in transpose()!!!");
+        RESET_COLOR;
     }
     
     return 0;
@@ -287,7 +310,7 @@ int multiply_transposed(Matrix *in_a, Matrix *in_b_t, Matrix *out_result)
     else
     {
         RED_COLOR;
-        fprintf(stderr, "error: Matrix type mismatch in multiply()!!!");
+        fprintf(stderr, "error: Matrix type mismatch in multiply_transposed()!!!");
         RESET_COLOR;
     }
 
@@ -306,12 +329,49 @@ int add(Matrix *in_out_a, Matrix *in_b)
         return -1;
     }
 
+    // DISP_MATRIX_*() branches every iteration, not ideal, therefore new version is added after
+#if 0
     for (int row = 0; row < in_out_a->rows; row++)
     {
         for (int col = 0; col < in_out_a->cols; col++)
         {
             DISP_MATRIX_IADD(in_out_a, row, col, DISP_MATRIX_IGET(in_b, row, col))
         }        
+    }
+#endif
+    if (is_float_matrix(in_out_a) && is_float_matrix(in_b))
+    {
+        for (int row = 0; row < in_out_a->rows; row++)
+        {
+            for (int col = 0; col < in_out_a->cols; col++)
+            {
+                float orig_value = matrix_get_item_f(in_out_a, row, col);
+
+                float second_matrix_value = matrix_get_item_f(in_b, row, col);
+
+                matrix_assign_item_f(in_out_a, row, col, orig_value + second_matrix_value);
+            }
+        }
+    }
+    else if (!is_float_matrix(in_out_a) && !is_float_matrix(in_b))
+    {
+        for (int row = 0; row < in_out_a->rows; row++)
+        {
+            for (int col = 0; col < in_out_a->cols; col++)
+            {
+                double orig_value = matrix_get_item_d(in_out_a, row, col);
+
+                double second_matrix_value = matrix_get_item_d(in_b, row, col);
+
+                matrix_assign_item_d(in_out_a, row, col, orig_value + second_matrix_value);
+            }
+        }
+    }
+    else
+    {
+        RED_COLOR;
+        fprintf(stderr, "error: Matrix type mismatch in multiply()!!!");
+        RESET_COLOR;
     }
 
     return 0;
@@ -329,12 +389,37 @@ int subtract(Matrix *in_out_a, Matrix *in_b)
         return -1;
     }
 
-    for (int row = 0; row < in_out_a->rows; row++)
+    if (is_float_matrix(in_out_a) && is_float_matrix(in_b))
     {
-        for (int col = 0; col < in_out_a->cols; col++)
+        for (int row = 0; row < in_out_a->rows; row++)
         {
-            DISP_MATRIX_ISUB(in_out_a, row, col, DISP_MATRIX_IGET(in_b, row, col))
-        }        
+            for (int col = 0; col < in_out_a->cols; col++)
+            {
+                float orig_value = matrix_get_item_f(in_out_a, row, col);
+                float second_matrix_value = matrix_get_item_f(in_b, row, col);
+
+                matrix_assign_item_f(in_out_a, row, col, orig_value - second_matrix_value);
+            }
+        }
+    }
+    else if (!is_float_matrix(in_out_a) && !is_float_matrix(in_b))
+    {
+        for (int row = 0; row < in_out_a->rows; row++)
+        {
+            for (int col = 0; col < in_out_a->cols; col++)
+            {
+                double orig_value = matrix_get_item_d(in_out_a, row, col);
+                double second_matrix_value = matrix_get_item_d(in_b, row, col);
+
+                matrix_assign_item_d(in_out_a, row, col, orig_value - second_matrix_value);
+            }
+        }
+    }
+    else
+    {
+        RED_COLOR;
+        fprintf(stderr, "error: Matrix type mismatch in subtract()!!!");
+        RESET_COLOR;
     }
 
     return 0;
@@ -347,13 +432,30 @@ int scalar_multiply(Matrix *in_out_a, double in_x)
         return -1;
     }
 
-    for (int row = 0; row < in_out_a->rows; row++)
+    if (is_float_matrix(in_out_a))
     {
-        for (int col = 0; col < in_out_a->cols; col++)
+        for (int row = 0; row < in_out_a->rows; row++)
         {
-            DISP_MATRIX_IMULS(in_out_a, row, col, in_x)
-        }        
-    }  
+            for (int col = 0; col < in_out_a->cols; col++)
+            {
+                float orig_value = matrix_get_item_f(in_out_a, row, col);
+
+                matrix_assign_item_f(in_out_a, row, col, orig_value * in_x);
+            }
+        }
+    }
+    else
+    {
+        for (int row = 0; row < in_out_a->rows; row++)
+        {
+            for (int col = 0; col < in_out_a->cols; col++)
+            {
+                double orig_value = matrix_get_item_d(in_out_a, row, col);
+
+                matrix_assign_item_d(in_out_a, row, col, orig_value * in_x);
+            }
+        }
+    }
 
     return 0;  
 }
@@ -365,12 +467,29 @@ int scalar_add(Matrix *in_out_a, double in_x)
         return -1;
     }
 
-    for (int row = 0; row < in_out_a->rows; row++)
+    if (is_float_matrix(in_out_a))
     {
-        for (int col = 0; col < in_out_a->cols; col++)
+        for (int row = 0; row < in_out_a->rows; row++)
         {
-            DISP_MATRIX_IADDS(in_out_a, row, col, in_x)
-        }        
+            for (int col = 0; col < in_out_a->cols; col++)
+            {
+                float orig_value = matrix_get_item_f(in_out_a, row, col);
+
+                matrix_assign_item_f(in_out_a, row, col, orig_value + in_x);
+            }
+        }
+    }
+    else
+    {
+        for (int row = 0; row < in_out_a->rows; row++)
+        {
+            for (int col = 0; col < in_out_a->cols; col++)
+            {
+                double orig_value = matrix_get_item_d(in_out_a, row, col);
+
+                matrix_assign_item_d(in_out_a, row, col, orig_value + in_x);
+            }
+        }
     }
 
     return 0;
