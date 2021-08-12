@@ -17,7 +17,7 @@ static int test_create_matrix_float()
     Matrix *matrix = generate_matrix_f(rows, cols, f_mat);
 
     // Test
-    if (is_null(matrix))
+    if (is_matrix_null(matrix))
     {
         res+=fail(__func__,  __LINE__, "Matrix is NULL");
     }
@@ -62,7 +62,7 @@ static int test_create_matrix()
     Matrix *matrix = generate_matrix_d(rows, cols, mat);
 
     // Test
-    if (is_null(matrix))
+    if (is_matrix_null(matrix))
     {
         res+=fail(__func__, __LINE__, "Matrix is NULL");
     }
@@ -101,14 +101,14 @@ static int test_is_null_float()
     Matrix *matrix = NULL;
 
     // Test null pointer
-    if(!is_null(matrix))
+    if(!is_matrix_null(matrix))
     {
         res+=fail(__func__,  __LINE__, "Matrix should be null");
     }
 
     // Test non null matrix
     matrix = generate_matrix_f(1, 1, NULL);
-    if(is_null(matrix))
+    if(is_matrix_null(matrix))
     {
         res+=fail(__func__,  __LINE__, "Matrix should not be null");
 
@@ -118,7 +118,7 @@ static int test_is_null_float()
     float **temp = DISP_MATRIX_GET(matrix);
     DISP_MATRIX_SET(matrix, NULL);
 
-    if(!is_null(matrix))
+    if(!is_matrix_null(matrix))
     {
         res+=fail(__func__,  __LINE__, "Matrix should be null");
 
@@ -139,14 +139,14 @@ static int test_is_null()
     Matrix *matrix = NULL;
 
     // Test null pointer
-    if(!is_null(matrix))
+    if(!is_matrix_null(matrix))
     {
         res+=fail(__func__,  __LINE__, "Matrix should be null");
     }
 
     // Test non null matrix
     matrix = generate_matrix_d(1, 1, NULL);
-    if(is_null(matrix))
+    if(is_matrix_null(matrix))
     {
         res+=fail(__func__,  __LINE__, "Matrix should not be null");
 
@@ -156,7 +156,7 @@ static int test_is_null()
     double **temp = DISP_MATRIX_GET(matrix);
     DISP_MATRIX_SET(matrix, NULL);
 
-    if(!is_null(matrix))
+    if(!is_matrix_null(matrix))
     {
         res+=fail(__func__,  __LINE__, "Matrix should be null");
 
@@ -195,7 +195,7 @@ static int test_transpose_float()
     transpose(matrix, transposed);
 
     // Test
-    if (is_null(transposed))
+    if (is_matrix_null(transposed))
     {
         res+=fail(__func__,  __LINE__, "Transposed matrix is NULL\n");
     }
@@ -238,7 +238,7 @@ static int test_transpose()
     transpose(matrix, transposed);
 
     // Test
-    if (is_null(transposed))
+    if (is_matrix_null(transposed))
     {
         res+=fail(__func__,  __LINE__, "Transposed matrix is NULL\n");
     }
@@ -295,7 +295,7 @@ static int test_multiply_double()
     Matrix *res_matrix = generate_matrix_d(res_rows, res_cols, NULL);
     multiply(a_matrix, b_matrix, res_matrix);
 
-    if (is_null(res_matrix))
+    if (is_matrix_null(res_matrix))
     {
         res+=fail(__func__,  __LINE__, "Matrix should not be null");
     }
@@ -354,7 +354,7 @@ static int test_multiply_float()
     Matrix *res_matrix = generate_matrix_f(res_rows, res_cols, NULL);
     multiply(a_matrix, b_matrix, res_matrix);   // FIXME!
 
-    if (is_null(res_matrix))
+    if (is_matrix_null(res_matrix))
     {
         res+=fail(__func__,  __LINE__, "Matrix should not be null");
     }
@@ -413,7 +413,7 @@ static int test_multiply_transposed_float()
     Matrix *res_matrix = generate_matrix_f(res_rows, res_cols, NULL);
     multiply_transposed(a_matrix, b_matrix, res_matrix);
 
-    if (is_null(res_matrix))
+    if (is_matrix_null(res_matrix))
     {
         res+=fail(__func__,  __LINE__, "Matrix should not be null");
     }
@@ -472,7 +472,7 @@ static int test_multiply_transposed()
     Matrix *res_matrix = generate_matrix_d(res_rows, res_cols, NULL);
     multiply_transposed(a_matrix, b_matrix, res_matrix);
 
-    if (is_null(res_matrix))
+    if (is_matrix_null(res_matrix))
     {
         res+=fail(__func__,  __LINE__, "Matrix should not be null");
     }
@@ -525,7 +525,7 @@ static int test_add_float()
 
     add(a_matrix, b_matrix);
 
-    if (is_null(a_matrix))
+    if (is_matrix_null(a_matrix))
     {
         res+=fail(__func__,  __LINE__, "Matrix should not be null");
     }
@@ -576,7 +576,7 @@ static int test_add()
 
     add(a_matrix, b_matrix);
 
-    if (is_null(a_matrix))
+    if (is_matrix_null(a_matrix))
     {
         res+=fail(__func__,  __LINE__, "Matrix should not be null");
     }
@@ -627,7 +627,7 @@ static int test_subtract_float()
 
     subtract(a_matrix, b_matrix);
 
-    if (is_null(a_matrix))
+    if (is_matrix_null(a_matrix))
     {
         res+=fail(__func__,  __LINE__, "Matrix should not be null");
     }
@@ -678,7 +678,7 @@ static int test_subtract()
 
     subtract(a_matrix, b_matrix);
 
-    if (is_null(a_matrix))
+    if (is_matrix_null(a_matrix))
     {
         res+=fail(__func__,  __LINE__, "Matrix should not be null");
     }
@@ -711,7 +711,7 @@ static int test_scalar_multiply_float()
     scalar_multiply(a, x);
 
     // Test
-    if (is_null(a))
+    if (is_matrix_null(a))
     {
         res+=fail(__func__,  __LINE__, "Matrix should not be null");
     }
@@ -742,7 +742,7 @@ static int test_scalar_multiply()
     scalar_multiply(a, x);
 
     // Test
-    if (is_null(a))
+    if (is_matrix_null(a))
     {
         res+=fail(__func__,  __LINE__, "Matrix should not be null");
     }
@@ -774,7 +774,7 @@ static int test_scalar_add_float()
     scalar_add(a, x);
 
     // Test
-    if (is_null(a))
+    if (is_matrix_null(a))
     {
         res+=fail(__func__,  __LINE__, "Matrix should not be null");
     }
@@ -806,7 +806,7 @@ static int test_scalar_add()
     scalar_add(a, x);
 
     // Test
-    if (is_null(a))
+    if (is_matrix_null(a))
     {
         res+=fail(__func__,  __LINE__, "Matrix should not be null");
     }
@@ -848,7 +848,7 @@ static int test_apply_float()
 
     DISP_APPLY(a_matrix, NULL, square_fn_ptr);
 
-    if (is_null(a_matrix))
+    if (is_matrix_null(a_matrix))
     {
         res+=fail(__func__,  __LINE__, "Matrix should not be null");
     }
@@ -880,7 +880,7 @@ static int test_apply()
 
     DISP_APPLY(a_matrix, NULL, square_fn_ptr);
 
-    if (is_null(a_matrix))
+    if (is_matrix_null(a_matrix))
     {
         res+=fail(__func__,  __LINE__, "Matrix should not be null");
     }
@@ -935,7 +935,7 @@ static int test_hadamard_float()
     Matrix *res_matrix = generate_matrix_f(res_rows, res_cols, NULL);
     hadamard(a_matrix, b_matrix, res_matrix);
 
-    if (is_null(res_matrix))
+    if (is_matrix_null(res_matrix))
     {
         res+=fail(__func__,  __LINE__, "Matrix should not be null");
     }
@@ -994,7 +994,7 @@ static int test_hadamard()
     Matrix *res_matrix = generate_matrix_d(res_rows, res_cols, NULL);
     hadamard(a_matrix, b_matrix, res_matrix);
 
-    if (is_null(res_matrix))
+    if (is_matrix_null(res_matrix))
     {
         res+=fail(__func__,  __LINE__, "Matrix should not be null");
     }

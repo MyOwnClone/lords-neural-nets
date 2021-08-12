@@ -1,0 +1,13 @@
+compiler: mingw gcc
+OS: windows 10
+CPU: Intel® Core™ i7-10700KF (cometlake), Intel® SSE4.1, Intel® SSE4.2, Intel® AVX2
+compiler flags: -O3 -finline-functions -m64 -funroll-loops -oFast -funsafe-math-optimizations -mfpmath=sse2 -ffast-math -march=rocketlake
+results:
+
+
+
+ARM M1 Mac
+compiler: apple clang
+CPU: Apple M1
+compiler flags: -O3 -finline-functions -m64 -funroll-loops -oFast -ffast-math -mcpu=apple-a14
+results:

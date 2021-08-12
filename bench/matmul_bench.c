@@ -32,8 +32,12 @@ void double_multiply()
     {
         reset_matrix(result_matrix_gen);
 
+        // DISP_MATRIX_ISET() branches every iteration, not ideal, therefore new version is added after
         // do randomization, invalidate cache
+#if 0
         DISP_MATRIX_ISET(input_a_matrix_gen, rand()%a_rows, rand()%a_cols, (double)(rand()%100));
+#endif
+        matrix_assign_item_d(input_a_matrix_gen, rand()%a_rows, rand()%a_cols, (double)(rand()%100));
 
         multiply(input_a_matrix_gen, input_b_matrix_gen, result_matrix_gen);
 
@@ -71,8 +75,12 @@ void float_multiply()
     {
         reset_matrix(output_res_matrix_gen);
 
+        // DISP_MATRIX_ISET() branches every iteration, not ideal, therefore new version is added after
         // do randomization, invalidate cache
+#if 0
         DISP_MATRIX_ISET(input_a_matrix_gen, rand()%a_rows, rand()%a_cols, (float)(rand()%100));
+#endif
+        matrix_assign_item_f(input_a_matrix_gen, rand()%a_rows, rand()%a_cols, (float )(rand()%100));
 
         multiply(input_a_matrix_gen, input_b_matrix_gen, output_res_matrix_gen);
 
@@ -96,7 +104,7 @@ int main()
     assert(sizeof(float) == 4);
     assert(sizeof(double) == 8);
 
-    int repeat_count = 50;
+    int repeat_count = 10;
 
     double float_msecs = print_elapsed_time(float_multiply, "float", repeat_count);
     double double_msecs = print_elapsed_time(double_multiply, "double", repeat_count);

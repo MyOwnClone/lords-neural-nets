@@ -126,7 +126,7 @@ int normalize(Matrix **a, int length, int max_num)
     for (int i = 0; i < length; i++)
     {
         Matrix *matrix = a[i];
-        if (is_null(matrix))
+        if (is_matrix_null(matrix))
         {
             return -1;
         }

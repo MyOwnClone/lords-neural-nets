@@ -170,8 +170,8 @@ void mnist_float()
     printf("acc %f, loss: %f\n", metrics.acc, metrics.loss);
 #endif
 
-    float expected_acc_threshold = 0.9;
-    float expected_loss_threshold = 0.2;
+    float expected_acc_threshold = 0.9f;
+    float expected_loss_threshold = 0.2f;
 
     if (metrics.acc < expected_acc_threshold || metrics.loss >= expected_loss_threshold)
     {

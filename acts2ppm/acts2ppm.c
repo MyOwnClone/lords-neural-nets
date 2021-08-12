@@ -88,6 +88,8 @@ int main(int argc, char **argv)
 
     int last_col = 0;
 
+    char output_filename[MAX_LINE_LEN];
+
     while (fgets(line_buff, MAX_LINE_LEN, act_file) != NULL)
     {
         trim_whitespace(trimmed_line_buff, MAX_LINE_LEN, line_buff);
@@ -143,8 +145,6 @@ int main(int argc, char **argv)
             {
                 fclose(out_file);
             }
-
-            char output_filename[MAX_LINE_LEN];
 
             sprintf(output_filename, "ppm_out\\\\%d.ppm", epoch_count++);
 

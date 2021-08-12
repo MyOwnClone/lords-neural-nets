@@ -24,7 +24,7 @@ static int test_vectorize_float()
     // Test
     for (int i = 0; i < 15; i++)
     {
-        if (is_null(a[i]))
+        if (is_matrix_null(a[i]))
         {
             res += fail(__func__,  __LINE__, "Vectorized matrix is null");
         }
@@ -74,7 +74,7 @@ static int test_vectorize()
     // Test
     for (int i = 0; i < 15; i++)
     {
-        if (is_null(a[i]))
+        if (is_matrix_null(a[i]))
         {
             res += fail(__func__,  __LINE__, "Vectorized matrix is null");
         }

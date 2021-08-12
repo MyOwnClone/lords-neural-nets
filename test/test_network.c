@@ -88,7 +88,7 @@ static int test_predict_float()
 
     Matrix *result = predict(network, input);
 
-    if (is_null(result))
+    if (is_matrix_null(result))
     {
         res += fail(__func__,  __LINE__, "Result matrix should not be null");
     }
@@ -120,7 +120,7 @@ static int test_predict()
 
     Matrix *result = predict(network, input);
 
-    if (is_null(result))
+    if (is_matrix_null(result))
     {
         res += fail(__func__,  __LINE__, "Result matrix should not be null");
     }

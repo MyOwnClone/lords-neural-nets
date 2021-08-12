@@ -25,7 +25,7 @@ static int test_create_layer_float()
         res+=fail(__func__,  __LINE__, "Wrong layer activation function");
     }
 
-    if (is_null(layer->weights) || is_null(layer->bias) || is_null(layer->neurons))
+    if (is_matrix_null(layer->weights) || is_matrix_null(layer->bias) || is_matrix_null(layer->neurons))
     {
         res+=fail(__func__,  __LINE__, "Layer cannot be null");
     }
@@ -81,7 +81,7 @@ static int test_create_layer()
         res+=fail(__func__,  __LINE__, "Wrong layer activation function");
     }
 
-    if (is_null(layer->weights) || is_null(layer->bias) || is_null(layer->neurons))
+    if (is_matrix_null(layer->weights) || is_matrix_null(layer->bias) || is_matrix_null(layer->neurons))
     {
         res+=fail(__func__,  __LINE__, "Layer cannot be null");
     }
@@ -133,7 +133,7 @@ int test_layer_compute_float()
         res+=fail(__func__,  __LINE__, "Layer compute failed");
     }
 
-    if (is_null(layer->neurons_act))
+    if (is_matrix_null(layer->neurons_act))
     {
         res+=fail(__func__,  __LINE__, "Layer neurons cannot be null");
     }
@@ -168,7 +168,7 @@ int test_layer_compute()
         res+=fail(__func__,  __LINE__, "Layer compute failed");
     }
 
-    if (is_null(layer->neurons_act))
+    if (is_matrix_null(layer->neurons_act))
     {
         res+=fail(__func__,  __LINE__, "Layer neurons cannot be null");
     }
