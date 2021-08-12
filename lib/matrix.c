@@ -229,6 +229,8 @@ int multiply_transposed(Matrix *in_a, Matrix *in_b_t, Matrix *out_result)
         return -1;
     }
 
+    // DISP_MATRIX_ISET() branches every iteration, not ideal, therefore new version is added after
+#if 0
     for (int i = 0; i < in_a->rows; i++)
     {
         for (int j = 0; j < in_b_t->rows; j++)
@@ -240,6 +242,53 @@ int multiply_transposed(Matrix *in_a, Matrix *in_b_t, Matrix *out_result)
                 DISP_MATRIX_IADD(out_result, i, j, DISP_MATRIX_IGET(in_a, i, k) * DISP_MATRIX_IGET(in_b_t, j, k))
             }            
         }        
+    }
+#endif
+    if (is_float_matrix(in_a) && is_float_matrix(in_b_t) && is_float_matrix(out_result))
+    {
+        for (int i = 0; i < in_a->rows; i++)
+        {
+            for (int j = 0; j < in_b_t->rows; j++)
+            {
+                matrix_assign_item_f(out_result, i, j, 0);
+
+                for (int k = 0; k < in_a->cols; k++)
+                {
+                    float a_item = matrix_get_item_f(in_a, i, k);
+                    float b_item = matrix_get_item_f(in_b_t, j, k);
+
+                    float orig_value = matrix_get_item_f(out_result, i, j);
+
+                    matrix_assign_item_f(out_result, i, j, (a_item * b_item) + orig_value);
+                }
+            }
+        }
+    }
+    else if (!is_float_matrix(in_a) && !is_float_matrix(in_b_t) && !is_float_matrix(out_result))
+    {
+        for (int i = 0; i < in_a->rows; i++)
+        {
+            for (int j = 0; j < in_b_t->rows; j++)
+            {
+                matrix_assign_item_d(out_result, i, j, 0);
+
+                for (int k = 0; k < in_a->cols; k++)
+                {
+                    double a_item = matrix_get_item_d(in_a, i, k);
+                    double b_item = matrix_get_item_d(in_b_t, j, k);
+
+                    double orig_value = matrix_get_item_d(out_result, i, j);
+
+                    matrix_assign_item_d(out_result, i, j, (a_item * b_item) + orig_value);
+                }
+            }
+        }
+    }
+    else
+    {
+        RED_COLOR;
+        fprintf(stderr, "error: Matrix type mismatch in multiply()!!!");
+        RESET_COLOR;
     }
 
     return 0;
@@ -354,12 +403,12 @@ int apply_f(Matrix *in_a, Matrix *out_result, float (*fn)(float), int in_layer_i
         for (int col = 0; col < in_a->cols; col++)
         {
 #ifdef INTROSPECT
-            float old_value = DISP_MATRIX_IGET(out_result, row, col);
+            float old_value = matrix_get_item_f(out_result, row, col);
 #endif
-            DISP_MATRIX_IAPPLY_FN(out_result, row, col, in_a, fn)
+            matrix_item_apply_fn_f(out_result, row, col, in_a, fn);
 
 #ifdef INTROSPECT
-            float new_value = DISP_MATRIX_IGET(out_result, row, col);
+            float new_value = matrix_get_item_f(out_result, row, col);
 
             if (g_introspection_file_handle)
             {
@@ -400,13 +449,13 @@ int apply_d(Matrix *in_a, Matrix *out_result, double (*fn)(double), int in_layer
         for (int col = 0; col < in_a->cols; col++)
         {
 #ifdef INTROSPECT
-            double old_value = DISP_MATRIX_IGET(out_result, row, col);
+            double old_value = matrix_get_item_d(out_result, row, col);
 #endif
 
-            DISP_MATRIX_IAPPLY_FN(out_result, row, col, in_a, fn)
+            matrix_item_apply_fn_d(out_result, row, col, in_a, fn);
 
 #ifdef INTROSPECT
-            float new_value = DISP_MATRIX_IGET(out_result, row, col);
+            double new_value = matrix_get_item_d(out_result, row, col);
 
             if (g_introspection_file_handle)
             {
@@ -581,16 +630,14 @@ bool is_equal(Matrix *in_matrix, int in_rows, int in_cols, const double in_d_mat
         {
             if (is_float_matrix(in_matrix))
             {
-                float f_value = (float) in_f_mat[i][j];
-
-                if ((float)DISP_MATRIX_IGET(in_matrix, i, j) != f_value)
+                if (matrix_get_item_f(in_matrix, i, j) != in_f_mat[i][j])
                 {
                     return false;
                 }
             }
             else
             {
-                if (DISP_MATRIX_IGET(in_matrix, i, j) != in_d_mat[i][j])
+                if (matrix_get_item_d(in_matrix, i, j) != in_d_mat[i][j])
                 {
                     return false;
                 }
@@ -730,4 +777,18 @@ double matrix_get_item_d(Matrix *in_x, int in_row, int in_col)
 float matrix_get_item_f(Matrix *in_x, int in_row, int in_col)
 {
     return in_x->f_matrix[in_row][in_col];
+}
+
+void matrix_item_apply_fn_f(Matrix *out_result, int in_row, int in_col, Matrix *in_source, float (*fn)(float))
+{
+    float tmp_result = fn(matrix_get_item_f(in_source, in_row, in_col));
+
+    matrix_assign_item_f(out_result, in_row, in_col, tmp_result);
+}
+
+void matrix_item_apply_fn_d(Matrix *out_result, int in_row, int in_col, Matrix *in_source, double (*fn)(double))
+{
+    double tmp_result = fn(matrix_get_item_d(in_source, in_row, in_col));
+
+    matrix_assign_item_d(out_result, in_row, in_col, tmp_result);
 }

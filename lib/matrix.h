@@ -65,6 +65,9 @@ void matrix_assign_item_from_other(Matrix *in_out_x, Matrix *in_y, int in_row1, 
 // Item APPLY FuNction
 #define DISP_MATRIX_IAPPLY_FN(result, row, col, source, function) DISP_MATRIX_ISET(result, row, col, function(DISP_MATRIX_IGET(source, row, col)))
 
+void matrix_item_apply_fn_f(Matrix *out_result, int in_row, int in_col, Matrix *in_source, float (*fn)(float));
+void matrix_item_apply_fn_d(Matrix *out_result, int in_row, int in_col, Matrix *in_source, double (*fn)(double));
+
 // Item ADD
 #define DISP_MATRIX_IADD(x, row, col, val) DISP_MATRIX_ISET(x, row, col, DISP_MATRIX_IGET(x, row, col) + (val))
 
