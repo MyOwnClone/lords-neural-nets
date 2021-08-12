@@ -12,6 +12,11 @@ mnist double: Average time elapsed over 10 runs: 26698.200000 ms
 
 float over double speed-up factor: 0.704869x
 
+after DEBRANCHIZATION:
+mnist float: Average time elapsed over 10 runs: 12429.200000 ms
+mnist double: Average time elapsed over 10 runs: 12657.300000 ms
+float over double speed-up factor: 1.018352x
+
 ARM M1 Mac
 compiler: apple clang
 CPU: Apple M1
