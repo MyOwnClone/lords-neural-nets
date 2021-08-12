@@ -152,7 +152,7 @@ int multiply(Matrix *in_a, Matrix *in_b, Matrix *out_result)
         return -1;
     }
 
-    // too much branchin in each iteration (DISP_*() calls)
+    // too much branching in each iteration (DISP_*() calls)
 #if 0
     for (int row = 0; row < in_a->rows; row++)
     {

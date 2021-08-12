@@ -4,7 +4,11 @@ CPU: Intel® Core™ i7-10700KF (cometlake), Intel® SSE4.1, Intel® SSE4.2, Int
 compiler flags: -O3 -finline-functions -m64 -funroll-loops -oFast -funsafe-math-optimizations -mfpmath=sse2 -ffast-math -march=rocketlake
 results:
 
-
+sizeof(float) == 4
+sizeof(double) == 8
+float: Average time elapsed over 10 runs: 558.900000 ms
+double: Average time elapsed over 10 runs: 505.600000 ms
+float over double speed-up factor: 0.904634x
 
 ARM M1 Mac
 compiler: apple clang

@@ -111,7 +111,7 @@ int main()
 
     printf("float over double speed-up factor: %fx\n", (double_msecs / float_msecs));
 
-    // these results are obsole, TODO: write results to separated txt file
+    // these results are obsolete, TODO: write results to separated txt file
     // mingw 64 gcc, windows 10, intel i7 cometlake
     /*
      *  sizeof(float) == 4
