@@ -42,7 +42,6 @@ Matrix* generate_matrix(int in_rows, int in_cols, const double in_double_mat[][i
     {
         if (in_dataType == D_DOUBLE)
         {
-            //matrix_gen->d_matrix = (double **) malloc(sizeof(double) * in_rows * in_cols);
             matrix_gen->d_matrix = (double **) malloc(sizeof(double *) * in_rows);
             for (int i = 0; i < in_rows; i++)
             {

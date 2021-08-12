@@ -17,6 +17,7 @@ FIXME: test_predict_float:104 Result matrix should not 0
 TODO: better branching off (matrix.h) support
 TODO: disassembly? DONE for DEBUG binaries
 TODO: disassembly of release/optimised binaries
+TODO: allocate matrices as linear memory segment, without separate allocations for rows, rewrite adressing to use (row * row_len) * col
 
 TODO: add support for visualization of activation values for individial neurons when doing forward/backward pass
     * maybe just export normalized values to csv
