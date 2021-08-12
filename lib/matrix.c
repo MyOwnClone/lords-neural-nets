@@ -20,7 +20,6 @@ Matrix* generate_matrix(int in_rows, int in_cols, const double in_double_mat[][i
 
     matrix_gen->rows = in_rows;
     matrix_gen->cols = in_cols;
-    matrix_gen->matrix = NULL;
     matrix_gen->d_matrix = NULL;
     matrix_gen->f_matrix = NULL;
     matrix_gen->type = in_dataType;
@@ -39,13 +38,15 @@ Matrix* generate_matrix(int in_rows, int in_cols, const double in_double_mat[][i
         return NULL;
     }
 
-    if (in_rows > 0 && in_cols > 0) {
+    if (in_rows > 0 && in_cols > 0)
+    {
         if (in_dataType == D_DOUBLE)
         {
-            matrix_gen->matrix = (double **) malloc(sizeof(double *) * in_rows);
+            //matrix_gen->d_matrix = (double **) malloc(sizeof(double) * in_rows * in_cols);
+            matrix_gen->d_matrix = (double **) malloc(sizeof(double *) * in_rows);
             for (int i = 0; i < in_rows; i++)
             {
-                matrix_gen->matrix[i] = (double *) malloc(sizeof(double) * in_cols);
+                matrix_gen->d_matrix[i] = (double *) malloc(sizeof(double) * in_cols);
                 for (int j = 0; j < in_cols; j++)
                 {
                     if (in_double_mat != NULL)
@@ -110,7 +111,7 @@ size_t get_matrix_data_size(Matrix *in_matrix)
 
 bool is_matrix_null(Matrix *in_a)
 {
-    if (in_a == NULL || (in_a->matrix == NULL && in_a->f_matrix == NULL))
+    if (in_a == NULL || (in_a->d_matrix == NULL && in_a->f_matrix == NULL))
     {
         return true;
     }

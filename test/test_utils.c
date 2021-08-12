@@ -86,7 +86,7 @@ static int test_vectorize()
 
         for (int j = 0; j < 15; j++)
         {
-            if ((i == j && a[i]->matrix[j][0] != 1) || (i != j && a[i]->matrix[j][0] != 0))
+            if ((i == j && a[i]->d_matrix[j][0] != 1) || (i != j && a[i]->d_matrix[j][0] != 0))
             {
                 res += fail(__func__,  __LINE__, "Wrong vectorized matrix values");
             }            
@@ -180,7 +180,7 @@ static int test_normalize()
     {
         for (int j = 0; j < 3; j++)
         {
-            if (a[0]->matrix[i][j] != 0.25 || a[1]->matrix[i][j] != 0.5 || a[2]->matrix[i][j] != 0.75)
+            if (a[0]->d_matrix[i][j] != 0.25 || a[1]->d_matrix[i][j] != 0.5 || a[2]->d_matrix[i][j] != 0.75)
             {
                 res += fail(__func__,  __LINE__, "Wrong normalized matrix values");
             }

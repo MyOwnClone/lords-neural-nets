@@ -86,7 +86,7 @@ static int test_create_matrix()
         res+=fail(__func__,  __LINE__, "Matrix struct is NULL");
     }
 
-    if (matrix->matrix != NULL) {
+    if (matrix->d_matrix != NULL) {
         res+=fail(__func__,  __LINE__, "Matrix in matrix struct is not NULL");
     }
    
@@ -1070,7 +1070,7 @@ static int test_argmax()
     }
 
     int index = 4;
-    a->matrix[index][0] += 10;
+    a->d_matrix[index][0] += 10;
 
     arg = argmax(a);
 

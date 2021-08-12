@@ -21,11 +21,7 @@ typedef struct
     // all the *_matrix field should be technically called with suffix _gen, cause memory is malloced, but it would pollute code too much
 
     float **f_matrix;
-
-    union {
-        double **matrix;    // just a hack to be able to use old name 'matrix' and also new name 'd_matrix' for the same double matrix
-        double **d_matrix;
-    };
+    double **d_matrix;
 } Matrix;
 
 // TODO: in memory dataset/loader
