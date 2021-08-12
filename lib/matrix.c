@@ -609,12 +609,37 @@ int hadamard(Matrix *in_a, Matrix *in_b, Matrix *out_result)
         return -1;
     }
 
-    for (int row = 0; row < in_a->rows; row++)
+    if (is_float_matrix(in_a) && is_float_matrix(in_b) && is_float_matrix(out_result))
     {
-        for (int col = 0; col < in_a->cols; col++)
+        for (int row = 0; row < in_a->rows; row++)
         {
-            DISP_MATRIX_ISET(out_result, row, col, DISP_MATRIX_IGET(in_a, row, col) * DISP_MATRIX_IGET(in_b, row, col) )
-        }        
+            for (int col = 0; col < in_a->cols; col++)
+            {
+                float a_item = matrix_get_item_f(in_a, row, col);
+                float b_item = matrix_get_item_f(in_b, row, col);
+
+                matrix_assign_item_f(out_result, row, col, a_item * b_item);
+            }
+        }
+    }
+    else if(!is_float_matrix(in_a) && !is_float_matrix(in_b) && !is_float_matrix(out_result))
+    {
+        for (int row = 0; row < in_a->rows; row++)
+        {
+            for (int col = 0; col < in_a->cols; col++)
+            {
+                double a_item = matrix_get_item_d(in_a, row, col);
+                double b_item = matrix_get_item_d(in_b, row, col);
+
+                matrix_assign_item_d(out_result, row, col, a_item * b_item);
+            }
+        }
+    }
+    else
+    {
+        RED_COLOR;
+        fprintf(stderr, "error: Matrix type mismatch in hadamard()!!!");
+        RESET_COLOR;
     }
 
     return 0;    
@@ -626,23 +651,49 @@ int argmax(Matrix *in_a)
 
     if (in_a->rows == 1)
     {
-        for (int i = 0; i < in_a->cols; i++)
+        if (is_float_matrix(in_a))
         {
-            if (DISP_MATRIX_IGET(in_a, 0, i) > DISP_MATRIX_IGET(in_a, 0, max))
+            for (int i = 0; i < in_a->cols; i++)
             {
-                max = i;
+                if (matrix_get_item_f(in_a, 0, i) > matrix_get_item_f(in_a, 0,  max))
+                {
+                    max = i;
+                }
             }
-        }        
+        }
+        else
+        {
+            for (int i = 0; i < in_a->cols; i++)
+            {
+                if (matrix_get_item_d(in_a, 0, i) > matrix_get_item_d(in_a, 0,  max))
+                {
+                    max = i;
+                }
+            }
+        }
     }
     else if (in_a->cols == 1)
     {
-        for (int i = 0; i < in_a->rows; i++)
+        if (is_float_matrix(in_a))
         {
-            if (DISP_MATRIX_IGET(in_a, i, 0) > DISP_MATRIX_IGET(in_a, max, 0))
+            for (int i = 0; i < in_a->rows; i++)
             {
-                max = i;
+                if (matrix_get_item_f(in_a, i, 0) > matrix_get_item_f(in_a, max,0))
+                {
+                    max = i;
+                }
             }
-        }   
+        }
+        else
+        {
+            for (int i = 0; i < in_a->rows; i++)
+            {
+                if (matrix_get_item_d(in_a, i, 0) > matrix_get_item_d(in_a, max, 0))
+                {
+                    max = i;
+                }
+            }
+        }
     }
     else
     {
@@ -743,18 +794,24 @@ bool is_equal(Matrix *in_matrix, int in_rows, int in_cols, const double in_d_mat
         return false;
     }
 
-    for (int i = 0; i < in_rows; i++)
+    if (is_float_matrix(in_matrix))
     {
-        for (int j = 0; j < in_cols; j++)
+        for (int i = 0; i < in_rows; i++)
         {
-            if (is_float_matrix(in_matrix))
+            for (int j = 0; j < in_cols; j++)
             {
                 if (matrix_get_item_f(in_matrix, i, j) != in_f_mat[i][j])
                 {
                     return false;
                 }
             }
-            else
+        }
+    }
+    else
+    {
+        for (int i = 0; i < in_rows; i++)
+        {
+            for (int j = 0; j < in_cols; j++)
             {
                 if (matrix_get_item_d(in_matrix, i, j) != in_d_mat[i][j])
                 {
